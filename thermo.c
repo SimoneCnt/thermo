@@ -146,8 +146,13 @@ main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    /* Check if you gave at least A or B */
+    if (!hasA && !hasB) {
+        printf("Error! You did not specified neither A nor B!\n");
+        return EXIT_FAILURE;
+    }
+
     /* Command line parsing went ok. Can continue. */
-    printf("Work!\n");
 
     /* Work with mol A */
     if (hasA) {

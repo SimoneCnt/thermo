@@ -25,6 +25,19 @@
 #ifndef _THERMO_
 #define _THERMO_
 
+/**
+ *
+ * @defgroup modthermo Thermo Module
+ *
+ * Calculate themodynamic quantities based on the canonical partition function.
+ * With a nice equation!
+ * \f{equation}{ 
+ *      \mu = \frac{\partial}{\partial N} \ln Q
+ * \f}
+ * blablabla.
+ *
+ *//
+
 /* Constants */
 #define CNS_PI     3.14159265358979323846  /* pi []                              */
 #define CNS_2PI    (2.0*CNS_PI)            /* 2pi []                             */

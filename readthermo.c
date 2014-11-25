@@ -29,8 +29,8 @@
  * Read a thermo file and save all quantities inside a Thermo structure
  * 
  * @param[in,out] A Pointer to an initialized @c Thermo structure
- * @paral[in] fname Input thermo filename
- *
+ * @param[in] fname Input thermo filename
+ * @retval EXIT_SUCCESS if everithing is ok, EXIT_FAILURE otherwise
  */
 
 

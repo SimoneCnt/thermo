@@ -33,8 +33,8 @@
  * 
  * @param[in] A Pointer to an initialized @c Thermo structure
  * @param[in] B Pointer to an initialized @c Thermo structure
- * @paran[in] nA Stechiometric coefficient for structure @c A
- * @paran[in] nB Stechiometric coefficient for structure @c B
+ * @param[in] nA Stechiometric coefficient for structure @c A
+ * @param[in] nB Stechiometric coefficient for structure @c B
  * @param[out] D Pointer to an initialized @c Thermo structure
  *
  */
