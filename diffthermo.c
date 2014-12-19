@@ -48,44 +48,58 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
     D->q_elec = 0; // nB * B->q_elec  - nA * A->q_elec    ; 
     D->q_tr   = 0; // nB * B->q_tr    - nA * A->q_tr      ;
     D->q_rot  = 0; // nB * B->q_rot   - nA * A->q_rot     ;
-    D->q_vib  = 0; // nB * B->q_vib   - nA * A->q_vib     ;
-    D->q_tot  = 0; // nB * B->q_tot   - nA * A->q_tot     ;
+    D->q_vibcl= 0; // nB * B->q_vib   - nA * A->q_vib     ;
+    D->q_vibqm= 0; // nB * B->q_vib   - nA * A->q_vib     ;
+    D->q_totcl= 0; // nB * B->q_tot   - nA * A->q_tot     ;
+    D->q_totqm= 0; // nB * B->q_tot   - nA * A->q_tot     ;
 
     D->S_elec = 0; // nB * B->S_elec  - nA * A->S_elec    ;
     D->S_tr   = 0; // nB * B->S_tr    - nA * A->S_tr      ;
     D->S_rot  = 0; // nB * B->S_rot   - nA * A->S_rot     ;
-    D->S_vib  = 0; // nB * B->S_vib   - nA * A->S_vib     ;
-    D->S_tot  = 0; // nB * B->S_tot   - nA * A->S_tot     ;
+    D->S_vibcl= 0; // nB * B->S_vib   - nA * A->S_vib     ;
+    D->S_vibqm= 0; // nB * B->S_vib   - nA * A->S_vib     ;
+    D->S_totcl= 0; // nB * B->S_tot   - nA * A->S_tot     ;
+    D->S_totqm= 0; // nB * B->S_tot   - nA * A->S_tot     ;
 
     D->U_elec = 0; // nB * B->U_elec  - nA * A->U_elec    ;
     D->U_tr   = 0; // nB * B->U_tr    - nA * A->U_tr      ;
     D->U_rot  = 0; // nB * B->U_rot   - nA * A->U_rot     ;
-    D->U_vib  = 0; // nB * B->U_vib   - nA * A->U_vib     ;
-    D->U_tot  = 0; // nB * B->U_tot   - nA * A->U_tot     ;
+    D->U_vibcl= 0; // nB * B->U_vib   - nA * A->U_vib     ;
+    D->U_vibqm= 0; // nB * B->U_vib   - nA * A->U_vib     ;
+    D->U_totcl= 0; // nB * B->U_tot   - nA * A->U_tot     ;
+    D->U_totqm= 0; // nB * B->U_tot   - nA * A->U_tot     ;
 
     D->F_elec = 0; // nB * B->F_elec  - nA * A->F_elec    ;
     D->F_tr   = 0; // nB * B->F_tr    - nA * A->F_tr      ;
     D->F_rot  = 0; // nB * B->F_rot   - nA * A->F_rot     ;
-    D->F_vib  = 0; // nB * B->F_vib   - nA * A->F_vib     ;
-    D->F_tot  = 0; // nB * B->F_tot   - nA * A->F_tot     ;
+    D->F_vibcl= 0; // nB * B->F_vib   - nA * A->F_vib     ;
+    D->F_vibqm= 0; // nB * B->F_vib   - nA * A->F_vib     ;
+    D->F_totcl= 0; // nB * B->F_tot   - nA * A->F_tot     ;
+    D->F_totqm= 0; // nB * B->F_tot   - nA * A->F_tot     ;
 
-    D->Sm_elec= nB * B->Sm_elec - nA * A->Sm_elec   ;
-    D->Sm_tr  = nB * B->Sm_tr   - nA * A->Sm_tr     ;
-    D->Sm_rot = nB * B->Sm_rot  - nA * A->Sm_rot    ;
-    D->Sm_vib = nB * B->Sm_vib  - nA * A->Sm_vib    ;
-    D->Sm_tot = nB * B->Sm_tot  - nA * A->Sm_tot    ;
+    D->Sm_elec  = nB * B->Sm_elec  - nA * A->Sm_elec  ;
+    D->Sm_tr    = nB * B->Sm_tr    - nA * A->Sm_tr    ;
+    D->Sm_rot   = nB * B->Sm_rot   - nA * A->Sm_rot   ;
+    D->Sm_vibcl = nB * B->Sm_vibcl - nA * A->Sm_vibcl ;
+    D->Sm_vibqm = nB * B->Sm_vibqm - nA * A->Sm_vibqm ;
+    D->Sm_totcl = nB * B->Sm_totcl - nA * A->Sm_totcl ;
+    D->Sm_totqm = nB * B->Sm_totqm - nA * A->Sm_totqm ;
 
-    D->Um_elec= nB * B->Um_elec - nA * A->Um_elec   ;
-    D->Um_tr  = nB * B->Um_tr   - nA * A->Um_tr     ;
-    D->Um_rot = nB * B->Um_rot  - nA * A->Um_rot    ;
-    D->Um_vib = nB * B->Um_vib  - nA * A->Um_vib    ;
-    D->Um_tot = nB * B->Um_tot  - nA * A->Um_tot    ;
+    D->Um_elec  = nB * B->Um_elec  - nA * A->Um_elec  ;
+    D->Um_tr    = nB * B->Um_tr    - nA * A->Um_tr    ;
+    D->Um_rot   = nB * B->Um_rot   - nA * A->Um_rot   ;
+    D->Um_vibcl = nB * B->Um_vibcl - nA * A->Um_vibcl ;
+    D->Um_vibqm = nB * B->Um_vibqm - nA * A->Um_vibqm ;
+    D->Um_totcl = nB * B->Um_totcl - nA * A->Um_totcl ;
+    D->Um_totqm = nB * B->Um_totqm - nA * A->Um_totqm ;
 
-    D->Fm_elec= nB * B->Fm_elec - nA * A->Fm_elec   ;
-    D->Fm_tr  = nB * B->Fm_tr   - nA * A->Fm_tr     ;
-    D->Fm_rot = nB * B->Fm_rot  - nA * A->Fm_rot    ;
-    D->Fm_vib = nB * B->Fm_vib  - nA * A->Fm_vib    ;
-    D->Fm_tot = nB * B->Fm_tot  - nA * A->Fm_tot    ;
+    D->Fm_elec  = nB * B->Fm_elec  - nA * A->Fm_elec  ;
+    D->Fm_tr    = nB * B->Fm_tr    - nA * A->Fm_tr    ;
+    D->Fm_rot   = nB * B->Fm_rot   - nA * A->Fm_rot   ;
+    D->Fm_vibcl = nB * B->Fm_vibcl - nA * A->Fm_vibcl ;
+    D->Fm_vibqm = nB * B->Fm_vibqm - nA * A->Fm_vibqm ;
+    D->Fm_totcl = nB * B->Fm_totcl - nA * A->Fm_totcl ;
+    D->Fm_totqm = nB * B->Fm_totqm - nA * A->Fm_totqm ;
 
     return;
 }

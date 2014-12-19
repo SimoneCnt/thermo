@@ -45,7 +45,7 @@ thermo_calcthermo(Thermo *A)
     int i;                          /* Counter */
     long int ndx;
     double kBT = CNS_kB * A->T;     /* kB T */
-    double tmp;
+    double tmp, preUqm;
 
     /* Logarithm of the molecular partition function */
 
@@ -59,8 +59,8 @@ thermo_calcthermo(Thermo *A)
     }
     A->q_rot /= 2.0;
     
-    /* Vibrational */
-    A->q_vib = 0;
+    /* Vibrational (classic) */
+    A->q_vibcl = 0;
     A->Fm_vib_cumul_cl   = malloc(A->nu_np*sizeof(double));
     A->Fm_vib_cumul_cl_k = malloc(A->v*sizeof(double));
     for (i=0; i<A->nu_np; i++) {
@@ -69,7 +69,7 @@ thermo_calcthermo(Thermo *A)
 	for (i=0; i<A->v; i++) {
 
         tmp = log( kBT / ( CNS_h * A->nu[i] * CNS_C * 100.0));
-		A->q_vib += tmp;
+		A->q_vibcl += tmp;
 
         A->Fm_vib_cumul_cl_k[i] = -CNS_j2kcal * CNS_NA * kBT * tmp;
 
@@ -81,54 +81,76 @@ thermo_calcthermo(Thermo *A)
         A->Fm_vib_cumul_cl[ndx] -= CNS_j2kcal * CNS_NA * kBT * tmp;
 	}
 
+    /* Vibrational (quantistic) */
+    A->q_vibqm = 0;
+    preUqm = 0;
+    for (i=0; i<A->v; i++) {
+        tmp = ( CNS_h * A->nu[i] * CNS_C * 100.0) / (2.0*kBT);
+        A->q_vibqm += -log( 2.0*sinh(tmp));
+        preUqm += tmp/tanh(tmp);
+    }
+
     /* Electronic */
     A->q_elec = -A->E / (CNS_NA * kBT);
 
     /* Total */
-    A->q_tot = A->q_tr * A->q_rot * A->q_vib * A->q_elec;
+    A->q_totcl = A->q_tr * A->q_rot * A->q_vibcl * A->q_elec;
+    A->q_totqm = A->q_tr * A->q_rot * A->q_vibqm * A->q_elec;
 
 
     /* Free energy */
     A->F_tr    = - CNS_j2kcal * A->n * CNS_NA * kBT * (A->q_tr + 1.0 - log(A->n*CNS_NA));   /* Translational */
     A->F_rot   = - CNS_j2kcal * A->n * CNS_NA * kBT * A->q_rot;                             /* Rotational    */
-    A->F_vib   = - CNS_j2kcal * A->n * CNS_NA * kBT * A->q_vib;                             /* Vibrational   */
+    A->F_vibcl = - CNS_j2kcal * A->n * CNS_NA * kBT * A->q_vibcl;                           /* Vibrational   */
+    A->F_vibqm = - CNS_j2kcal * A->n * CNS_NA * kBT * A->q_vibqm;                           /* Vibrational   */
     A->F_elec  = - A->n * CNS_NA * kBT * A->q_elec;                                         /* Electronic    */
-    A->F_tot   = A->F_tr + A->F_rot + A->F_vib + A->F_elec;                                 /* Total         */
+    A->F_totcl = A->F_tr + A->F_rot + A->F_vibcl + A->F_elec;                               /* Total         */
+    A->F_totqm = A->F_tr + A->F_rot + A->F_vibqm + A->F_elec;                               /* Total         */
 
     /* Chemical potential */
     A->Fm_tr   = A->F_tr   / (A->n) + CNS_NA*CNS_j2kcal*kBT;                                /* Translational */
     A->Fm_rot  = A->F_rot  / (A->n);                                                        /* Rotational    */
-    A->Fm_vib  = A->F_vib  / (A->n);                                                        /* Vibrational   */
+    A->Fm_vibcl= A->F_vibcl/ (A->n);                                                        /* Vibrational   */
+    A->Fm_vibqm= A->F_vibqm/ (A->n);                                                        /* Vibrational   */
     A->Fm_elec = A->F_elec / (A->n);                                                        /* Electronic    */
-    A->Fm_tot  = A->Fm_tr + A->Fm_rot + A->Fm_vib + A->Fm_elec;                             /* Total         */
+    A->Fm_totcl= A->Fm_tr + A->Fm_rot + A->Fm_vibcl + A->Fm_elec;                           /* Total         */
+    A->Fm_totqm= A->Fm_tr + A->Fm_rot + A->Fm_vibqm + A->Fm_elec;                           /* Total         */
 
     /* Internal Energy */
     A->U_tr    = CNS_j2kcal * A->n * CNS_NA * kBT * A->t / 2.0;                             /* Translational */
     A->U_rot   = CNS_j2kcal * A->n * CNS_NA * kBT * A->r / 2.0;                             /* Rotational    */
-    A->U_vib   = CNS_j2kcal * A->n * CNS_NA * kBT * A->v;                                   /* Vibrational   */
+    A->U_vibcl = CNS_j2kcal * A->n * CNS_NA * kBT * A->v;                                   /* Vibrational   */
+    A->U_vibqm = CNS_j2kcal * A->n * CNS_NA * kBT * preUqm;                                 /* Vibrational   */
     A->U_elec  = A->n * A->E;                                                               /* Electronic    */
-    A->U_tot   = A->U_tr + A->U_rot + A->U_vib + A->U_elec;                                 /* Total         */
+    A->U_totcl = A->U_tr + A->U_rot + A->U_vibcl + A->U_elec;                               /* Total         */
+    A->U_totqm = A->U_tr + A->U_rot + A->U_vibqm + A->U_elec;                               /* Total         */
 
     /* Molar internal energy */
     A->Um_tr   = A->U_tr   / (A->n);                                                        /* Translational */
     A->Um_rot  = A->U_rot  / (A->n);                                                        /* Rotational    */
-    A->Um_vib  = A->U_vib  / (A->n);                                                        /* Vibrational   */
+    A->Um_vibcl= A->U_vibcl/ (A->n);                                                        /* Vibrational   */
+    A->Um_vibqm= A->U_vibqm/ (A->n);                                                        /* Vibrational   */
     A->Um_elec = A->U_elec / (A->n);                                                        /* Electronic    */
-    A->Um_tot  = A->U_tot  / (A->n);                                                        /* Total         */
+    A->Um_totcl= A->U_totcl/ (A->n);                                                        /* Total         */
+    A->Um_totqm= A->U_totqm/ (A->n);                                                        /* Total         */
 
     /* Entropy */
-    A->S_tr    = - 1000.0 * (A->F_tr  - A->U_tr ) / A->T;                                   /* Translational */
-    A->S_rot   = - 1000.0 * (A->F_rot - A->U_rot) / A->T;                                   /* Rotational    */
-    A->S_vib   = - 1000.0 * (A->F_vib - A->U_vib) / A->T;                                   /* Vibrational   */
+    A->S_tr    = - 1000.0 * (A->F_tr    - A->U_tr ) / A->T;                                 /* Translational */
+    A->S_rot   = - 1000.0 * (A->F_rot   - A->U_rot) / A->T;                                 /* Rotational    */
+    A->S_vibcl = - 1000.0 * (A->F_vibcl - A->U_vibcl) / A->T;                               /* Vibrational   */
+    A->S_vibqm = - 1000.0 * (A->F_vibqm - A->U_vibqm) / A->T;                               /* Vibrational   */
     A->S_elec  = 0.0;                                                                       /* Electronic    */
-    A->S_tot   = A->S_tr + A->S_rot + A->S_vib;                                             /* Total         */
+    A->S_totcl = A->S_tr + A->S_rot + A->S_vibcl;                                           /* Total         */
+    A->S_totqm = A->S_tr + A->S_rot + A->S_vibqm;                                           /* Total         */
 
     /* Molar entropy */
-    A->Sm_tr   = A->S_tr  / A->n - 1000.0*CNS_NA*CNS_j2kcal*CNS_kB;                         /* Translational */
-    A->Sm_rot  = A->S_rot / A->n;                                                           /* Rotational    */
-    A->Sm_vib  = A->S_vib / A->n;                                                           /* Vibrational   */
+    A->Sm_tr   = A->S_tr    / A->n - 1000.0*CNS_NA*CNS_j2kcal*CNS_kB;                       /* Translational */
+    A->Sm_rot  = A->S_rot   / A->n;                                                         /* Rotational    */
+    A->Sm_vibcl= A->S_vibcl / A->n;                                                         /* Vibrational   */
+    A->Sm_vibqm= A->S_vibqm / A->n;                                                         /* Vibrational   */
     A->Sm_elec = 0.0;                                                                       /* Electronic    */
-    A->Sm_tot  = A->Sm_tr + A->Sm_rot + A->Sm_vib;                                          /* Total         */
+    A->Sm_totcl= A->Sm_tr + A->Sm_rot + A->Sm_vibcl;                                        /* Total         */
+    A->Sm_totqm= A->Sm_tr + A->Sm_rot + A->Sm_vibqm;                                        /* Total         */
 
     return;
 }

@@ -36,7 +36,7 @@
  * \f}
  * blablabla.
  *
- *//
+ */
 
 /* Constants */
 #define CNS_PI     3.14159265358979323846  /* pi []                              */
@@ -66,15 +66,15 @@ typedef struct {
     double *nu;	/* Vibrational normal modes in cm-1 */
     double dnu; /* Accuracy in vibrational spectra for cumulative and vdos calculations */
     long int nu_np;  /* TODO */
-    double  q_elec,  q_tr,  q_rot,  q_vib,  q_tot; /* Natural logarithm of the molecular partition function: ln(q) */
-    double  S_elec,  S_tr,  S_rot,  S_vib,  S_tot; /* Entropy */
-    double  U_elec,  U_tr,  U_rot,  U_vib,  U_tot; /* Internal Energy */
-    double  F_elec,  F_tr,  F_rot,  F_vib,  F_tot; /* Free energy */
-    double Sm_elec, Sm_tr, Sm_rot, Sm_vib, Sm_tot; /* Molar Entropy */
-    double Um_elec, Um_tr, Um_rot, Um_vib, Um_tot; /* Molar Internal Energy */
-    double Fm_elec, Fm_tr, Fm_rot, Fm_vib, Fm_tot; /* Molar Free energy (chemical potential) */
-    double *Fm_vib_cumul_cl, *Fm_vib_cumul_qm, *Fm_vib_cumul_delta; /* Cumulative vibrational free energy per frequency */
-    double *Fm_vib_cumul_cl_k, *Fm_vib_cumul_qm_k, *Fm_vib_cumul_delta_k; /* Cumulative vibrational free energy per mode */
+    double  q_elec,  q_tr,  q_rot,  q_vibcl,  q_vibqm,  q_totcl,  q_totqm;  /* Natural logarithm of the molecular partition function: ln(q) */
+    double  S_elec,  S_tr,  S_rot,  S_vibcl,  S_vibqm,  S_totcl,  S_totqm;  /* Entropy */
+    double  U_elec,  U_tr,  U_rot,  U_vibcl,  U_vibqm,  U_totcl,  U_totqm;  /* Internal Energy */
+    double  F_elec,  F_tr,  F_rot,  F_vibcl,  F_vibqm,  F_totcl,  F_totqm;  /* Free energy */
+    double Sm_elec, Sm_tr, Sm_rot, Sm_vibcl, Sm_vibqm, Sm_totcl, Sm_totqm;  /* Molar Entropy */
+    double Um_elec, Um_tr, Um_rot, Um_vibcl, Um_vibqm, Um_totcl, Um_totqm;  /* Molar Internal Energy */
+    double Fm_elec, Fm_tr, Fm_rot, Fm_vibcl, Fm_vibqm, Fm_totcl, Fm_totqm;  /* Molar Free energy (chemical potential) */
+    double *Fm_vib_cumul_cl, *Fm_vib_cumul_qm, *Fm_vib_cumul_delta;         /* Cumulative vibrational free energy per frequency */
+    double *Fm_vib_cumul_cl_k, *Fm_vib_cumul_qm_k, *Fm_vib_cumul_delta_k;   /* Cumulative vibrational free energy per mode */
     double *vdos; /* Vibrational density of states */
 } Thermo;
 
