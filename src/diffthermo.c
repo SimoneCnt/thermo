@@ -4,7 +4,7 @@
  *  Given two systems and the stechiometric coefficents calculates the 
  *  thermodynamic quantities for the reaction aA<->bB
  *
- *  Copyright (C) 2014 Simone Conti
+ *  Copyright (C) 2014, 2015 Simone Conti
  *
  *  This file is part of Thermo
  * 
@@ -100,6 +100,8 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
     D->Fm_vibqm = nB * B->Fm_vibqm - nA * A->Fm_vibqm ;
     D->Fm_totcl = nB * B->Fm_totcl - nA * A->Fm_totcl ;
     D->Fm_totqm = nB * B->Fm_totqm - nA * A->Fm_totqm ;
+
+    D->ZPE      = nB * B->ZPE      - nA * A->ZPE      ;
 
     return;
 }
