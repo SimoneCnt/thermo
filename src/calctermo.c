@@ -50,7 +50,7 @@ thermo_calcthermo(Thermo *A)
     /* Logarithm of the molecular partition function */
 
     /* Translational */
-    A->q_tr  = (A->t / 2.0 ) * log( (CNS_2PI * (A->m/(CNS_NA*1000.0)) * kBT) / CNS_h2 ) + log(A->V/1000.0);
+    A->q_tr  = (A->t / 2.0 ) * log( (CNS_2PI * (A->m/(CNS_NA*1000.0)) * kBT) / CNS_h2 ) + log(A->V/(pow(10.0, A->t)));
 
     /* Rotational */
     A->q_rot = log(CNS_PI/(A->s*A->s)) + A->r * log( (8.0 * CNS_PI2 * kBT) / CNS_h2);
@@ -84,11 +84,14 @@ thermo_calcthermo(Thermo *A)
     /* Vibrational (quantistic) */
     A->q_vibqm = 0;
     preUqm = 0;
+    A->ZPE = 0;
     for (i=0; i<A->v; i++) {
         tmp = ( CNS_h * A->nu[i] * CNS_C * 100.0) / (2.0*kBT);
         A->q_vibqm += -log( 2.0*sinh(tmp));
         preUqm += tmp/tanh(tmp);
+        A->ZPE += ( CNS_h * A->nu[i] * CNS_C * 100.0) / (2.0);
     }
+    A->ZPE *= CNS_NA / 4184.0;
 
     /* Electronic */
     A->q_elec = -A->E / (CNS_NA * kBT);

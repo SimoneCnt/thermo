@@ -60,6 +60,8 @@ thermo_printthermo(const Thermo *A, int onlyInt)
     printf("   Fm %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f kcal/mol\n", A->Fm_elec, A->Fm_tr, A->Fm_rot, A->Fm_vibcl, A->Fm_vibqm, A->Fm_totcl, A->Fm_totqm);
     printf("\n");
 
+    printf("ZPE: %10.3f kcal/mol\n\n", A->ZPE);
+
     return;
 }
 
