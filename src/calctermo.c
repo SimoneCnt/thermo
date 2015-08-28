@@ -3,7 +3,8 @@
  *  thermo/calcthermo.c
  *  Calculate all thermodynamic quantities based on partition function
  *
- *  Copyright (C) 2014 Simone Conti
+ *  Copyright (C) 2014, 2015 Simone Conti
+ *  Copyright (C) 2015 Université de Strasbourg
  *
  *  This file is part of Thermo
  * 

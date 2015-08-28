@@ -2,7 +2,8 @@
  *
  *  thermo/thermo.c
  *
- *  Copyright (C) 2014 Simone Conti
+ *  Copyright (C) 2014, 2015 Simone Conti
+ *  Copyright (C) 2015 Université de Strasbourg
  *
  *  Thermo is free software: you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software 
@@ -219,9 +220,11 @@ main(int argc, char *argv[])
 
 void version() {
     printf("\n");
-    printf("thermo 1.0\n");
+    printf("    Thermo 1.0\n");
+    printf("    ==========\n");
     printf("\n");
-    printf("Copyright (C) 2014 Simone Conti.\n");
+    printf("Copyright (C) 2014, 2015 Simone Conti\n");
+    printf("Copyright (C) 2015 Université de Strasbourg\n");
     printf("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n");
     printf("This is free software: you are free to change and redistribute it.\n");
     printf("There is NO WARRANTY, to the extent permitted by law.\n");
@@ -251,8 +254,10 @@ void help() {
     usage();
     printf("\n");
     printf("Examples:\n");
+    printf("  See test/ directory for working examples.\n");
     printf("\n");
-    printf("Report bugs to <simonecnt@gmail.com>.\n");
+    printf("Report bugs to <https://github.com/SimoneCnt/thermo/issues> \n");
+    printf("  or directly to <simonecnt@gmail.com>.\n");
     printf("\n");
 }
 

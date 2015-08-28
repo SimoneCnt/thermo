@@ -3,7 +3,8 @@
  *  thermo/printthermo.c
  *  Print to stdout the evaluated internal energy, entropy and free energy
  *
- *  Copyright (C) 2014 Simone Conti
+ *  Copyright (C) 2014, 2015 Simone Conti
+ *  Copyright (C) 2015 Université de Strasbourg
  *
  *  This file is part of Thermo
  * 

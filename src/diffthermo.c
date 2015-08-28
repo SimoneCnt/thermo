@@ -5,6 +5,7 @@
  *  thermodynamic quantities for the reaction aA<->bB
  *
  *  Copyright (C) 2014, 2015 Simone Conti
+ *  Copyright (C) 2015 Université de Strasbourg
  *
  *  This file is part of Thermo
  * 
