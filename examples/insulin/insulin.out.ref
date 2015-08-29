@@ -1,7 +1,9 @@
 
-thermo 1.0
+    Thermo 1.0
+    ==========
 
-Copyright (C) 2014 Simone Conti.
+Copyright (C) 2014, 2015 Simone Conti
+Copyright (C) 2015 Université de Strasbourg
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -45,7 +47,7 @@ Intensive (molar) quantities:
  -TSm      0.000    -13.046    -14.930    -11.106    -11.106    -39.081    -39.082 kcal/mol
    Fm  -1208.700    -12.152    -14.035     -8.125     -8.124  -1243.012  -1243.011 kcal/mol
 
-ZPE:      0.100 kcal/mol
+Zero point vibrational energy:       0.100 kcal/mol
 
 
 Molecule B: <dimer.inp>                
@@ -84,7 +86,7 @@ Intensive (molar) quantities:
  -TSm      0.000    -13.666    -15.654    -11.474    -11.474    -40.794    -40.794 kcal/mol
    Fm  -2541.200    -12.772    -14.760     -8.493     -8.493  -2577.225  -2577.224 kcal/mol
 
-ZPE:      0.087 kcal/mol
+Zero point vibrational energy:       0.087 kcal/mol
 
 
 Differences for the reaction 2A <-> 1B                
@@ -97,6 +99,6 @@ Intensive (molar) quantities:
  -TSm      0.000     12.426     14.205     10.737     10.738     37.368     37.369 kcal/mol
    Fm   -123.800     11.532     13.311      7.757      7.756    -91.201    -91.202 kcal/mol
 
-ZPE:     -0.112 kcal/mol
+Zero point vibrational energy:      -0.112 kcal/mol
 
 

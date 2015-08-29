@@ -51,7 +51,7 @@ Intensive (molar) quantities:
  -TSm      0.000     -9.746     -8.941      1.432     -7.875    -17.254    -26.562 kcal/mol
    Fm    -43.300     -8.852     -8.047     19.317     35.907    -40.881    -24.291 kcal/mol
 
-ZPE:     39.567 kcal/mol
+Zero point vibrational energy:      39.567 kcal/mol
 
 
 Molecule B: <c7ax.inp>                
@@ -94,7 +94,7 @@ Intensive (molar) quantities:
  -TSm      0.000     -9.746     -8.906      1.976     -7.437    -16.676    -26.088 kcal/mol
    Fm    -41.310     -8.852     -8.012     19.861     36.611    -38.313    -21.562 kcal/mol
 
-ZPE:     39.992 kcal/mol
+Zero point vibrational energy:      39.992 kcal/mol
 
 
 Differences for the reaction 1A <-> 1B                
@@ -107,6 +107,7 @@ Intensive (molar) quantities:
  -TSm      0.000     -0.000      0.035      0.543      0.439      0.578      0.474 kcal/mol
    Fm      1.990      0.000      0.035      0.543      0.704      2.568      2.729 kcal/mol
 
-ZPE:      0.425 kcal/mol
+Zero point vibrational energy:       0.425 kcal/mol
+Vibrational quantum correction:      0.161 kcal/mol
 
 

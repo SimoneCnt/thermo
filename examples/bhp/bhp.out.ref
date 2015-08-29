@@ -125,7 +125,7 @@ Intensive (molar) quantities:
  -TSm      0.000    -12.033    -13.350    -36.987   -174.660    -62.369   -200.042 kcal/mol
    Fm   -525.880    -11.138    -12.455    245.593    489.889   -303.880    -59.584 kcal/mol
 
-ZPE:    584.552 kcal/mol
+Zero point vibrational energy:     584.552 kcal/mol
 
 
 Molecule B: <bhp2.inp>                
@@ -242,7 +242,7 @@ Intensive (molar) quantities:
  -TSm      0.000    -12.033    -13.235    -37.203   -175.152    -62.471   -200.420 kcal/mol
    Fm   -524.130    -11.138    -12.341    245.378    490.018   -302.232    -57.591 kcal/mol
 
-ZPE:    585.499 kcal/mol
+Zero point vibrational energy:     585.499 kcal/mol
 
 
 Differences for the reaction 1A <-> 1B                
@@ -255,6 +255,7 @@ Intensive (molar) quantities:
  -TSm      0.000     -0.000      0.114     -0.216     -0.492     -0.101     -0.378 kcal/mol
    Fm      1.750      0.000      0.114     -0.216      0.128      1.649      1.993 kcal/mol
 
-ZPE:      0.948 kcal/mol
+Zero point vibrational energy:       0.948 kcal/mol
+Vibrational quantum correction:      0.344 kcal/mol
 
 

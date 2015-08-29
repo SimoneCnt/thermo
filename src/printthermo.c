@@ -61,7 +61,13 @@ thermo_printthermo(const Thermo *A, int onlyInt)
     printf("   Fm %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f kcal/mol\n", A->Fm_elec, A->Fm_tr, A->Fm_rot, A->Fm_vibcl, A->Fm_vibqm, A->Fm_totcl, A->Fm_totqm);
     printf("\n");
 
-    printf("ZPE: %10.3f kcal/mol\n\n", A->ZPE);
+    printf("Zero point vibrational energy:  %10.3f kcal/mol\n", A->ZPE);
+    
+    if (A->qm_corr!=0) {
+    printf("Vibrational quantum correction: %10.3f kcal/mol\n", A->qm_corr);
+    }
+
+    printf("\n");
 
     return;
 }

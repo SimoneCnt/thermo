@@ -94,6 +94,9 @@ thermo_calcthermo(Thermo *A)
     }
     A->ZPE *= CNS_NA / 4184.0;
 
+    /* Vibrational quantum correction ~ see M.Cecchini, JCTC 2015 */
+    A->qm_corr = 0;
+
     /* Electronic */
     A->q_elec = -A->E / (CNS_NA * kBT);
 

@@ -48,7 +48,6 @@
 #define CNS_h2     (CNS_h*CNS_h)           /* Planck constant squared [ (Js)^2 ] */
 #define CNS_NA     6.02214129E+23          /* Avogadro number []                 */
 #define CNS_C      299792458.0             /* Speed of light [ m/s ]             */
-//#define CNS_cal    4.1867999409            /* One calorie in joule [ J/cal ]     */
 #define CNS_cal    4.184                   /* One calorie in joule [ J/cal ]     */
 #define CNS_j2kcal (1.0/(CNS_cal*1000.0))  /* Convert joule to kcal [ kcal/J ]   */
 
@@ -64,7 +63,7 @@ typedef struct {
     double s;	/* Symmetry number */
     double m;	/* Mass of the system in g/mol */
     double E;	/* Energy of the system in kcal/mol */
-    double *I;	/* Moments of inertia in g/mol/A^2 */
+    double *I;	/* Moments of inertia in g/mol*A^2 */
     double *nu;	/* Vibrational normal modes in cm-1 */
     double dnu; /* Accuracy in vibrational spectra for cumulative and vdos calculations */
     long int nu_np;  /* TODO */
@@ -78,7 +77,8 @@ typedef struct {
     double *Fm_vib_cumul_cl, *Fm_vib_cumul_qm, *Fm_vib_cumul_delta;         /* Cumulative vibrational free energy per frequency */
     double *Fm_vib_cumul_cl_k, *Fm_vib_cumul_qm_k, *Fm_vib_cumul_delta_k;   /* Cumulative vibrational free energy per mode */
     double *vdos; /* Vibrational density of states */
-    double ZPE; /* Zero-Point Energy */
+    double ZPE; /* Zero-Point vibrational energy */
+    double qm_corr; /* Vibrational quantum correction as defined by M. Cecchini, JCTC 2015 */
 } Thermo;
 
 

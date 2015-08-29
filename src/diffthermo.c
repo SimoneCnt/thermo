@@ -104,6 +104,13 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
 
     D->ZPE      = nB * B->ZPE      - nA * A->ZPE      ;
 
+    /* Vibrational quantum correction ~ see M.Cecchini, JCTC 2015 */
+    if (nA==1 && nB==1) {
+        D->qm_corr = D->Fm_totqm - D->Fm_totcl;
+    } else {
+        D->qm_corr = 0;
+    }
+
     return;
 }
-    
+
