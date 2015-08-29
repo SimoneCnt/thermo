@@ -1,0 +1,70 @@
+
+# Thermo input file for c7eq conformation
+
+# To reproduce the data in 
+# M. Cecchini, "Quantum Corrections to the Free Energy Difference between 
+# Peptides and Proteins Conformers", Journal of Chemical Teory and 
+# Computations (2015) ASAP
+
+
+# Number of moles [mol]
+n 1
+
+# Volume [dm^x]
+V 1
+
+# Temperature [K]
+T 300
+
+# Translational modes
+t 3
+
+# Rotational modes and principal moments of inertia [g/mol*A^2]
+r 3
+274.9699
+486.0823
+666.1023
+
+# Molecular mass [g/mol]
+m 144.17420
+
+# Symmetry number
+s 1.00
+
+# Molar energy [kcal/mol]
+E -43.30
+
+# Number of vibrations and normal modes frequencies [cm^-1]
+v 30
+54.055345
+88.432648
+107.878904
+196.274515
+204.337449
+231.934483
+260.366453
+310.874337
+389.065514
+407.624211
+438.666250
+590.387821
+597.748899
+641.375567
+701.790971
+824.243156
+857.069512
+877.412241
+900.312596
+1009.513247
+1134.065710
+1195.930023
+1333.798051
+1365.304213
+1602.037839
+1631.995453
+1657.083987
+1675.456844
+3196.054714
+3196.625934
+
+# End

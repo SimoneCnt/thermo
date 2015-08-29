@@ -1,0 +1,112 @@
+
+    Thermo 1.0
+    ==========
+
+Copyright (C) 2014, 2015 Simone Conti
+Copyright (C) 2015 Université de Strasbourg
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Simone Conti.
+
+
+Molecule A: <c7eq.inp>                
+---------------------------------------------
+
+Parsed thermodynamic quantities:
+   Temperature [K]:           300
+   Number of moles [mol]:     1
+   Volume [dm^3]:             1
+   Concentration [M]:         1
+   Molecular mass [g/mol]:    144.174
+   Molar energy [kcal/mol]:   -43.300000
+   Degree of freedom:
+      translational:          3
+      rotational:             3
+         moments of inerzia [g/mol/A^2]:
+            274.969900
+            486.082300
+            666.102300
+         symmetry number:     1
+      vibrational modes:      30
+         frequencies [1/cm]: 
+  54.055345    88.432648   107.878904   196.274515   204.337449   231.934483  
+ 260.366453   310.874337   389.065514   407.624211   438.666250   590.387821  
+ 597.748899   641.375567   701.790971   824.243156   857.069512   877.412241  
+ 900.312596  1009.513247  1134.065710  1195.930023  1333.798051  1365.304213  
+1602.037839  1631.995453  1657.083987  1675.456844  3196.054714  3196.625934  
+
+Extensive quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl    TotQm 
+   U     -43.300      0.894      0.894     17.885     43.782    -23.627      2.271 kcal
+   S       0.000     34.473     29.803     -4.775     26.251     59.502     90.527  cal
+ -TS       0.000    -10.342     -8.941      1.432     -7.875    -17.850    -27.158 kcal
+   F     -43.300     -9.448     -8.047     19.317     35.907    -41.477    -24.887 kcal
+
+Intensive (molar) quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl      TotQm 
+   Um    -43.300      0.894      0.894     17.885     43.782    -23.627      2.271 kcal/mol
+   Sm      0.000     32.486     29.803     -4.775     26.251     57.514     88.540  cal/mol
+ -TSm      0.000     -9.746     -8.941      1.432     -7.875    -17.254    -26.562 kcal/mol
+   Fm    -43.300     -8.852     -8.047     19.317     35.907    -40.881    -24.291 kcal/mol
+
+ZPE:     39.567 kcal/mol
+
+
+Molecule B: <c7ax.inp>                
+---------------------------------------------
+
+Parsed thermodynamic quantities:
+   Temperature [K]:           300
+   Number of moles [mol]:     1
+   Volume [dm^3]:             1
+   Concentration [M]:         1
+   Molecular mass [g/mol]:    144.174
+   Molar energy [kcal/mol]:   -41.310000
+   Degree of freedom:
+      translational:          3
+      rotational:             3
+         moments of inerzia [g/mol/A^2]:
+            241.664100
+            532.892400
+            614.589200
+         symmetry number:     1
+      vibrational modes:      30
+         frequencies [1/cm]: 
+  60.485949    88.751065   136.850327   185.620387   221.865431   252.469274  
+ 292.534285   346.645841   374.119055   399.555665   533.732977   573.222299  
+ 613.036215   655.066332   717.899286   808.905882   843.861953   884.178002  
+ 901.184363  1040.837338  1143.895145  1224.867803  1318.136052  1388.244013  
+1598.474294  1625.837813  1663.587143  1675.139965  3194.487755  3211.449328  
+
+Extensive quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl    TotQm 
+   U     -41.310      0.894      0.894     17.885     44.048    -21.637      4.526 kcal
+   S       0.000     34.473     29.686     -6.586     24.789     57.574     88.948  cal
+ -TS       0.000    -10.342     -8.906      1.976     -7.437    -17.272    -26.684 kcal
+   F     -41.310     -9.448     -8.012     19.861     36.611    -38.909    -22.158 kcal
+
+Intensive (molar) quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl      TotQm 
+   Um    -41.310      0.894      0.894     17.885     44.048    -21.637      4.526 kcal/mol
+   Sm      0.000     32.486     29.686     -6.586     24.789     55.587     86.961  cal/mol
+ -TSm      0.000     -9.746     -8.906      1.976     -7.437    -16.676    -26.088 kcal/mol
+   Fm    -41.310     -8.852     -8.012     19.861     36.611    -38.313    -21.562 kcal/mol
+
+ZPE:     39.992 kcal/mol
+
+
+Differences for the reaction 1A <-> 1B                
+---------------------------------------------
+
+Intensive (molar) quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl      TotQm 
+   Um      1.990      0.000      0.000      0.000      0.265      1.990      2.255 kcal/mol
+   Sm      0.000      0.000     -0.117     -1.811     -1.462     -1.928     -1.579  cal/mol
+ -TSm      0.000     -0.000      0.035      0.543      0.439      0.578      0.474 kcal/mol
+   Fm      1.990      0.000      0.035      0.543      0.704      2.568      2.729 kcal/mol
+
+ZPE:      0.425 kcal/mol
+
+
