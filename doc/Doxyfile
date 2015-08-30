@@ -766,10 +766,9 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = ../README.md \
-                         ../LICENSE.md \
                          ../INSTALL.md \
+                         ../USAGE_EXAMPLES.md \
                          ../THEORY.md \
-                         ../EXAMPLES.md \
                          ../src/calctermo.c \
                          ../src/cumulvib.c \
                          ../src/delete.c \

@@ -1,15 +1,65 @@
 
-Examples
-========
+Usage Examples
+==============
 
-Inside the `examples` directory it is possible to find some ready to use input 
-files for some published applications. A reference output is present.
+Here a small description on how to use the code is given. Inside the `examples` 
+directory it is possible to find some ready to use input files for some more 
+applications. A reference output is normally present with the `.ref` suffix.
+
+
+Water
+-----
+
+The easiest system we can take as example is water. Here a sample input script
+to evaluate the thermodynamic properties of an hypotetical box of 22.465 liters 
+which contains 1 mol of gas water at 298.15 kelvin (1 atm pressure). Each water 
+molecule will have three translational degrees of freedom, three rotational 
+(with the associated moments of inertia), and \f$3N-6=3\f$ vibrations (and 
+associated frequencies). The simmetry number is also reported: since water 
+symmetry pointgroup is C2v, the symmetry number is 2. The mass is also specified. 
+
+    # Set temperature in Kelvin
+    T 298.15
+
+    # Set number of mols and volume (1 atm pressure)
+    n 1
+    V 22.465
+
+    # Mass in g/mol
+    m 18.01528
+
+    # Translational degrees of freedom
+    t 3
+
+    # Rotational degrees of freedom and moments of inertia in g/mol Ang^2
+    r 3
+    1.7704
+    0.6169
+    1.1535
+
+    # Symmetry number
+    s 2
+
+    # Number of vibrations and their frequencies in cm-1
+    v 3
+    1635.618
+    3849.420
+    3974.869
+
+Save this input as e.g. `water.inp` and run it with `thermo -A water.inp` 
+The output will print all parsed options and at the end all thermodynamic 
+quantites, like energy, entropy, free energy, and chemical potential, are 
+printed. For example, the evaluated translational molar entropy is evaluated 
+to be 32.452 cal mol<sup>-1</sup> K<sup>-1</sup> and the zero point vibrational
+energy to be 13.524 kcal mol<sup>-1</sup>.
+
+Input and reference output can be found in the `water` subdirectory.
 
 
 Dimerization of Insulin
 -----------------------
 
-This first example in based on the reference paper by B. Tidor and 
+A second example in based on the reference paper by B. Tidor and 
 M. Karplus \cite tidor1994contribution, published in 1994:
 
 > B. Tidor and M.Karplus, "The Contribution of Vibrational Entropy to 
@@ -23,11 +73,16 @@ Translational and rotational contribution are calculated in good agreement
 with the data reported in the paper, while the vibrational ones are incorrect 
 due to the limited number of frequences reported in the main text.
 
-The input files are inside the `insulin` subdirectory. They can be run with:
+The input files are inside the `insulin` subdirectory. Since we want to study
+the dimerization reaction, it is possible to run at the same time both the 
+monomer and the dimer, and, thanks to the `--stechio`` command line option,
+the differences for the dimerization reaction are automatically printed. 
+The Thermo command line can thus be:
 
     thermo -A monomer.inp -B dimer.inp --stechio 2:1 > insulin.out
 
-The reference output is `insulin.out.ref`
+The reference output is `insulin.out.ref`. At the moment only reactions between
+two species can be studied (so only `-A` and `-B` command are available).
 
 
 Free Energy Difference between Peptides and Proteins Conformers
