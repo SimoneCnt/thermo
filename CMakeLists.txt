@@ -11,6 +11,9 @@ project (Thermo C)
 # Fix for MacOSX
 set(CMAKE_MACOSX_RPATH 1)
 
+# Compiling flags
+set(CMAKE_C_FLAGS "-g -O3 -march=native -flto")
+
 # Set the current directory for -I
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -25,7 +28,6 @@ set(SOURCE_THERMO
     src/printthermo.c 
     src/readthermo.c 
     src/vdos.c 
-    src/vdosfvib.c
 )
 
 # Build static libthermo.a
