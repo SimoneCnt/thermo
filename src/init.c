@@ -25,11 +25,10 @@
 
 /**
  * @ingroup modthermo
- * @brief Initialize to default values a Thermo structure a Thermo structure
  *
  * Initialize to defualt values a Thermo structure. In particular: temperature 
  * sets to 300K, number of moles to 1, volume to 1 liter, and accuracy in 
- * vibrational to 1cm-1.
+ * vibrational to 1cm<sup>-1</sup>.
  * 
  * @param[in,out] A Pointer to an initialized @c Thermo structure
  *

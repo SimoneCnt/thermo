@@ -25,9 +25,8 @@
 
 /**
  * @ingroup modthermo
- * @brief Delete all allocated memory inside a Thermo structure
  *
- * Delete all allocated memory inside a Thermo structure
+ * Delete all allocated memory inside a Thermo structure.
  * 
  * @param[in,out] A Pointer to an initialized @c Thermo structure
  *

@@ -31,11 +31,6 @@
  * @defgroup modthermo Thermo Module
  *
  * Calculate themodynamic quantities based on the canonical partition function.
- * With a nice equation!
- * \f{equation}{ 
- *      \mu = \frac{\partial}{\partial N} \ln Q
- * \f}
- * blablabla.
  *
  */
 

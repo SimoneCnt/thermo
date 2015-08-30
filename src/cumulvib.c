@@ -26,12 +26,12 @@
 
 /**
  * @ingroup modthermo
- * @brief Print the vibrational free energy in a cumulative way as a function
- *        of the vibrational frequencies.
  *
- * This function generates two file called @c fname.k.dat and @c fname.f.dat . 
- * Both contain the cumulative vibrational free energy: the first as a function 
- * of the number of modes, the second as a function of the frequency.
+ * Print the vibrational free energy in a cumulative way as a function
+ * of the vibrational frequencies. This function generates two file called 
+ * @c fname.k.dat and @c fname.f.dat . Both contain the cumulative vibrational 
+ * free energy: the first as a function of the number of modes, the second as a 
+ * function of the frequency.
  * 
  * @param[in] A     Pointer to an initialized @c Thermo structure
  * @param[in] fname Base filename to save the cumulative vibrational free energy

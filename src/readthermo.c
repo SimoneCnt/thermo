@@ -25,7 +25,6 @@
 
 /**
  * @ingroup modthermo
- * @brief Read a thermo file and save all quantities inside a Thermo structure
  *
  * Read a thermo file and save all quantities inside a Thermo structure
  * 

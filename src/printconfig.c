@@ -25,7 +25,6 @@
 
 /**
  * @ingroup modthermo
- * @brief Print to stdout the parsed quantities from a Thermo input file.
  *
  * Print to stdout the parsed quantities from a Thermo input file.
  * 

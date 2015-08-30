@@ -25,8 +25,8 @@
 
 /**
  * @ingroup modthermo
- * @brief Calculate all thermodynamic quantities based on partition function
  *
+ * Calculate all thermodynamic quantities based on partition function.
  * Taken an initialized @c Thermo structure, evaluates the translational, 
  * rotational, vibrational and electronic contributions to the partition function.
  * From that, the internal energy, entropy and free energy are evaluated. 

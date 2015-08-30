@@ -26,11 +26,12 @@
 
 /**
  * @ingroup modthermo
- * @brief Given two systems and the stechiometric coefficents calculates the 
- *        thermodynamic quantities for the reaction aA<->bB
  *
+ * Calculate the thermodynamic quantities for a chemical reaction.
  * Given two systems and the stechiometric coefficents calculates the 
- * thermodynamic quantities for the reaction aA<->bB. Evaluates D = nB*B - nA*A
+ * thermodynamic quantities for the reaction \f$ aA \rightleftharpoons bB \f$. 
+ * Evaluates \f$ D = nB \cdot B - nA \cdot A \f$. For all energy, entropy and 
+ * free energy.
  * 
  * @param[in] A Pointer to an initialized @c Thermo structure
  * @param[in] B Pointer to an initialized @c Thermo structure

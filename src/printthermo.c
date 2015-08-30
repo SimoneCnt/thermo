@@ -25,7 +25,6 @@
 
 /**
  * @ingroup modthermo
- * @brief Print to stdout the evaluated internal energy, entropy and free energy
  *
  * Print to stdout the evaluated internal energy, entropy and free energy
  * 
