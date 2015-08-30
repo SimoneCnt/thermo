@@ -91,6 +91,6 @@ void thermo_printconfig(const Thermo *A);
 void thermo_printthermo(const Thermo *A, int onlyInt); 
 int  thermo_readthermo(Thermo *A, const char *fname);
 void thermo_vdos(Thermo *A, const char *fname);
-void thermo_vdosfvib(const Thermo *A, const char *fname);
+//void thermo_vdosfvib(const Thermo *A, const char *fname);
 
 #endif

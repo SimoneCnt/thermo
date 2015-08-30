@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 
     /* Declare used variables */
     int hasA=0, hasB=0, hasStechio=0, nA, nB, nr, cumul=0, vdos=0;
-    char *nameA, *nameB, *namevdos;
+    char *nameA, *nameB;
 
     /* Define and initialize Thermo structures */
     Thermo A, B, D;
@@ -52,8 +52,8 @@ main(int argc, char *argv[])
         {"A",       required_argument, 0, 'A'},
         {"B",       required_argument, 0, 'B'},
         {"stechio", required_argument, 0, 's'},
-        {"cumul",   required_argument, 0, 'c'},
-        {"vdos",    required_argument, 0, 'd'},
+        {"cumul",   no_argument,       0, 'c'},
+        {"vdos",    no_argument,       0, 'd'},
         {"dnu",     required_argument, 0, 'n'},
         {"version", no_argument,       0, 'v'},
         {"help",    no_argument,       0, 'h'},
@@ -64,7 +64,7 @@ main(int argc, char *argv[])
 
     /* Parse command line options */
     while (1) {
-        c = getopt_long_only(argc, argv, "A:B:s:cd:n:vh", long_options, &option_index);
+        c = getopt_long_only(argc, argv, "A:B:s:cdn:vh", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1) break;
@@ -102,7 +102,6 @@ main(int argc, char *argv[])
 
             case 'd': /* Vibrational density of states */
                 vdos=1;
-                namevdos = optarg;
                 break;
 
             case 'n': /* Accuracy in vibration hystograms */
@@ -164,10 +163,7 @@ main(int argc, char *argv[])
         thermo_calcthermo(&A);
         thermo_printthermo(&A,0);
         if (cumul) thermo_cumulvib(&A, "fvib");
-        if (vdos)  {
-            thermo_vdos(&A, namevdos);
-            thermo_vdosfvib(&A,"fvib.vdos.dat");
-        }
+        if (vdos)  thermo_vdos(&A, "vdos_A.dat");
     }
 
     /* Work with mol B */
@@ -179,7 +175,7 @@ main(int argc, char *argv[])
         thermo_calcthermo(&B);
         thermo_printthermo(&B,0);
         if (cumul) thermo_cumulvib(&B, "molB.cumul");
-        if (vdos)  thermo_vdos(&B, namevdos);
+        if (vdos)  thermo_vdos(&B, "vdos_B.dat");
     }
 
     /* Evaluate difference in reaction */

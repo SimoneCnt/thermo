@@ -26,14 +26,16 @@
 
 /**
  * @ingroup modthermo
- * @brief Evaluate the vibrational density of states VDOS starting from the 
- *        vibrational frequencies
  *
- * Evaluate the vibrational density of states VDOS starting from the 
- * vibrational frequencies
- * 
+ * Evaluate the vibrational density of states (VDOS) starting from the 
+ * vibrational frequencies. The free energy is vibrational free energy is also
+ * evaluated as integral over the VDOS (see Theory). In the output file, the VDOS, 
+ * the free energy at each point, and the cumulative free energy is printes as a 
+ * function of the frequency. To change the resolutin of the calculated VDOS, 
+ * use the -n, --dnu command line option.
+ *
  * @param[in] A Pointer to an initialized @c Thermo structure
- * @param[in] fname Filename where to print the VDOS
+ * @param[in] fname Filename where to print the VDOS and the free energy.
  *
  */
 
@@ -47,7 +49,11 @@ void
 thermo_vdos(Thermo *A, const char *fname)
 {
 
-    long int i, ii;
+    int i, ii;
+    int period = 5;                 /* Period for moving average of VDOS */
+    int weig, totweig;
+    double accu, F, Ftot;
+    double kBT = CNS_kB * A->T;
     double *vdos_tmp;
     FILE *out = fopen(fname, "w");
 
@@ -67,8 +73,6 @@ thermo_vdos(Thermo *A, const char *fname)
     }
 
     /* Do moving average */
-    int period = 5;
-    int weig = 0, totweig = 0;
     for (i=0; i<A->nu_np; i++) {
         totweig = 0;
         for (ii=-period; ii<=period; ii++) {
@@ -82,7 +86,7 @@ thermo_vdos(Thermo *A, const char *fname)
     }
 
     /* Normalize it */
-    double accu=0;
+    accu=0;
     for (i=0; i<A->nu_np; i++) {
         accu += vdos_tmp[i];
     }
@@ -90,9 +94,13 @@ thermo_vdos(Thermo *A, const char *fname)
         A->vdos[i] = vdos_tmp[i] * A->v / accu;
     }
 
-    /* Print the vdos */
+    /* Print the vdos, the free energy gain at each point, and the cumulative free energy */
+    fprintf(out, "#freq      vdos           F        Ftot\n");
+    Ftot=0;
     for (i=0; i<A->nu_np; i++) {
-        fprintf(out, "%lf %11.4e \n", A->dnu*i, A->vdos[i]);
+        F = -CNS_j2kcal * CNS_NA * kBT * log( kBT / ( CNS_h * (i+1) * A->dnu * CNS_C * 100.0)) * A->vdos[i];
+        Ftot += F;
+        fprintf(out, "%7.2f %+11.4e %+10.4f %+10.4f \n", A->dnu*i, A->vdos[i], F, Ftot);
     }
 
     free(vdos_tmp);
