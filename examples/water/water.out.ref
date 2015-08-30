@@ -1,0 +1,52 @@
+
+    Thermo 1.0
+    ==========
+
+Copyright (C) 2014, 2015 Simone Conti
+Copyright (C) 2015 Université de Strasbourg
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Simone Conti.
+
+
+Molecule A: <water.inp>                
+---------------------------------------------
+
+Parsed thermodynamic quantities:
+   Temperature [K]:           298.15
+   Number of moles [mol]:     1
+   Volume [dm^3]:             22.465
+   Concentration [M]:         0.0445137
+   Molecular mass [g/mol]:    18.0153
+   Molar energy [kcal/mol]:   0.000000
+   Degree of freedom:
+      translational:          3
+      rotational:             3
+         moments of inerzia [g/mol/A^2]:
+            1.770400
+            0.616900
+            1.153500
+         symmetry number:     2
+      vibrational modes:      3
+         frequencies [1/cm]: 
+1635.618000  3849.420000  3974.869000  
+
+Extensive quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl    TotQm 
+   U       0.000      0.889      0.889      1.777     13.525      3.555     15.303 kcal
+   S       0.000     34.440     10.449     -9.820      0.007     35.068     44.895  cal
+ -TS       0.000    -10.268     -3.115      2.928     -0.002    -10.456    -13.386 kcal
+   F       0.000     -9.379     -2.227      4.705     13.523     -6.901      1.917 kcal
+
+Intensive (molar) quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl      TotQm 
+   Um      0.000      0.889      0.889      1.777     13.525      3.555     15.303 kcal/mol
+   Sm      0.000     32.452     10.449     -9.820      0.007     33.081     42.908  cal/mol
+ -TSm      0.000     -9.676     -3.115      2.928     -0.002     -9.863    -12.793 kcal/mol
+   Fm      0.000     -8.787     -2.227      4.705     13.523     -6.308      2.510 kcal/mol
+
+Zero point vibrational energy:      13.524 kcal/mol
+
+

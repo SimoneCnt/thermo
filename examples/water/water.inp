@@ -1,0 +1,30 @@
+
+# Water
+
+# Set temperature in Kelvin
+T 298.15
+
+# Set number of mols and volume (1 atm pressure)
+n 1
+V 22.465
+
+# Mass in g/mol
+m 18.01528
+
+# Translational degrees of freedom
+t 3
+
+# Rotational degrees of freedom and moments of inertia in g/mol Ang^2
+r 3
+1.7704
+0.6169
+1.1535
+
+# Symmetry number
+s 2
+
+# Number of vibrations and their frequencies in cm-1
+v 3
+1635.618
+3849.420
+3974.869
