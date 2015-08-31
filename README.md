@@ -8,9 +8,9 @@ from a statistical mechanics approach. This involves the calculation of
 energy, entropy and free energy of molecules from their molecular properties
 like the mass, the moments of inertia, or the vibrational frequencies. 
 
-In the next chapters, it will be described  how to download and install the
-code and how to use it with some examples. Next, a Theory chapter aims to 
-described in details the underlying statistical mechanics to understand how 
+In the next chapters, it will be described how to download and install the
+code and how to use it with some examples. Next, a Theory chapter aims at 
+describing in details the underlying statistical mechanics to understand how 
 this works and under which approximations and limits the obtained results can 
 be interpreted (currently it is a work in progress).
 
