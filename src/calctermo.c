@@ -60,41 +60,46 @@ thermo_calcthermo(Thermo *A)
     }
     A->q_rot /= 2.0;
     
-    /* Vibrational (classic) */
+
+    /* Vibrational */
     A->q_vibcl = 0;
+    A->q_vibqm = 0;
+    preUqm = 0;
+    A->ZPE = 0;
     A->Fm_vib_cumul_cl   = malloc(A->nu_np*sizeof(double));
     A->Fm_vib_cumul_cl_k = malloc(A->v*sizeof(double));
+    A->Fm_vib_cumul_qm   = malloc(A->nu_np*sizeof(double));
+    A->Fm_vib_cumul_qm_k = malloc(A->v*sizeof(double));
     for (i=0; i<A->nu_np; i++) {
         A->Fm_vib_cumul_cl[i] = 0;
+        A->Fm_vib_cumul_qm[i] = 0;
     }
 	for (i=0; i<A->v; i++) {
-
-        tmp = log( kBT / ( CNS_h * A->nu[i] * CNS_C * 100.0));
-		A->q_vibcl += tmp;
-
-        A->Fm_vib_cumul_cl_k[i] = -CNS_j2kcal * CNS_NA * kBT * tmp;
 
         ndx = lrint(A->nu[i]/A->dnu);
         if (ndx>=A->nu_np) {
             printf("Warning! ndx=%ld greather than nu_np=%ld\n", ndx, A->nu_np);
             ndx = A->nu_np-1;
         }
-        A->Fm_vib_cumul_cl[ndx] -= CNS_j2kcal * CNS_NA * kBT * tmp;
-	}
 
-    /* Vibrational (quantistic) */
-    A->q_vibqm = 0;
-    preUqm = 0;
-    A->ZPE = 0;
-    for (i=0; i<A->v; i++) {
+        /* Classic */
+        tmp = log( kBT / ( CNS_h * A->nu[i] * CNS_C * 100.0));
+		A->q_vibcl += tmp;
+        A->Fm_vib_cumul_cl_k[i] = -CNS_j2kcal * CNS_NA * kBT * tmp;
+        A->Fm_vib_cumul_cl[ndx] -= CNS_j2kcal * CNS_NA * kBT * tmp;
+
+        /* Quantic */
         tmp = ( CNS_h * A->nu[i] * CNS_C * 100.0) / (2.0*kBT);
         A->q_vibqm += -log( 2.0*sinh(tmp));
+        A->Fm_vib_cumul_qm_k[i] = -CNS_j2kcal * CNS_NA * kBT * (-log(2.0*sinh(tmp)));
+        A->Fm_vib_cumul_qm[ndx] -= CNS_j2kcal * CNS_NA * kBT * (-log(2.0*sinh(tmp)));
         preUqm += tmp/tanh(tmp);
         A->ZPE += ( CNS_h * A->nu[i] * CNS_C * 100.0) / (2.0);
-    }
+
+	}
     A->ZPE *= CNS_NA / 4184.0;
 
-    /* Vibrational quantum correction ~ see M.Cecchini, JCTC 2015 */
+    /* Vibrational quantum correction ~ see M. Cecchini, JCTC 2015 */
     A->qm_corr = 0;
 
     /* Electronic */

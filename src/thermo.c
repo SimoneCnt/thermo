@@ -162,7 +162,7 @@ main(int argc, char *argv[])
         thermo_printconfig(&A);
         thermo_calcthermo(&A);
         thermo_printthermo(&A,0);
-        if (cumul) thermo_cumulvib(&A, "fvib");
+        if (cumul) thermo_cumulvib(&A, "cumul_A");
         if (vdos)  thermo_vdos(&A, "vdos_A.dat");
     }
 
@@ -174,7 +174,7 @@ main(int argc, char *argv[])
         thermo_printconfig(&B);
         thermo_calcthermo(&B);
         thermo_printthermo(&B,0);
-        if (cumul) thermo_cumulvib(&B, "molB.cumul");
+        if (cumul) thermo_cumulvib(&B, "cumul_B");
         if (vdos)  thermo_vdos(&B, "vdos_B.dat");
     }
 
@@ -184,6 +184,7 @@ main(int argc, char *argv[])
                 \n---------------------------------------------\n\n", nA, nB);
         thermo_diffthermo(&A, &B, nA, nB, &D);
         thermo_printthermo(&D,1);
+        if (cumul) thermo_cumulvib(&D, "cumul_D");
     }
 
     /* Cleaning */

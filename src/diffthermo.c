@@ -42,6 +42,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "thermo.h"
 
 void
@@ -105,12 +106,38 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
 
     D->ZPE      = nB * B->ZPE      - nA * A->ZPE      ;
 
-    /* Vibrational quantum correction ~ see M.Cecchini, JCTC 2015 */
-    if (nA==1 && nB==1) {
-        D->qm_corr = D->Fm_totqm - D->Fm_totcl;
+    /* Cumulative vibrational free energy.
+       If a conformational equilibrium is studied, clauclate the cumulative
+       as a function of both number of modes and frequency, if a generic
+       equilibrium, calculate only the frequency one. */
+
+    int i;
+
+    if ( (nA==nB) && (A->v==B->v) ) {
+        D->n = A->v;
     } else {
-        D->qm_corr = 0;
+        D->v = 0;
     }
+
+    D->Fm_vib_cumul_cl   = malloc(D->nu_np*sizeof(double));
+    D->Fm_vib_cumul_cl_k = malloc(D->v*sizeof(double));
+    D->Fm_vib_cumul_qm   = malloc(D->nu_np*sizeof(double));
+    D->Fm_vib_cumul_qm_k = malloc(D->v*sizeof(double));
+
+    /* Frequency-based */
+    for (i=0; i<D->nu_np; i++) {
+        D->Fm_vib_cumul_cl[i] = nB * B->Fm_vib_cumul_cl[i] - nA * A->Fm_vib_cumul_cl[i];
+        D->Fm_vib_cumul_qm[i] = nB * B->Fm_vib_cumul_qm[i] - nA * A->Fm_vib_cumul_qm[i];
+    }
+
+    /* Modes-based */
+    for (i=0; i<D->v; i++) {
+        D->Fm_vib_cumul_cl_k[i] = nB * B->Fm_vib_cumul_cl_k[i] - nA * A->Fm_vib_cumul_cl_k[i];
+        D->Fm_vib_cumul_qm_k[i] = nB * B->Fm_vib_cumul_qm_k[i] - nA * A->Fm_vib_cumul_qm_k[i];
+	}
+
+    /* Vibrational quantum correction ~ see M. Cecchini, JCTC 2015 */
+    D->qm_corr = D->Fm_totqm - D->Fm_totcl;
 
     return;
 }
