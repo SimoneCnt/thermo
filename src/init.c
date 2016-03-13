@@ -53,7 +53,7 @@ thermo_init(Thermo *A)
     A->n   = 1.0;     /* Number of moles */
     A->V   = 1.0;     /* Volume */
     A->dnu = 1.0;     /* Accuracy in vibrational spectra */
-    A->nu_np = lrint(ceil(4000.0/A->dnu));
+    A->nu_np = (int)lrint(ceil(4000.0/A->dnu));
     A->vdos=NULL;
     return;
 }

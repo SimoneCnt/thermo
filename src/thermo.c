@@ -2,8 +2,8 @@
  *
  *  thermo/thermo.c
  *
- *  Copyright (C) 2014, 2015 Simone Conti
- *  Copyright (C) 2015 Université de Strasbourg
+ *  Copyright (C) 2014-2016 Simone Conti
+ *  Copyright (C) 2015-2016 Université de Strasbourg
  *
  *  Thermo is free software: you can redistribute it and/or modify it under the
  *  terms of the GNU General Public License as published by the Free Software 
@@ -106,7 +106,7 @@ main(int argc, char *argv[])
 
             case 'n': /* Accuracy in vibration hystograms */
                 sscanf(optarg, "%lf", &A.dnu);
-                A.nu_np = lrint(ceil(4000.0/A.dnu));
+                A.nu_np = (int)lrint(ceil(4000.0/A.dnu));
                 B.dnu   = A.dnu;
                 B.nu_np = A.nu_np;
                 D.dnu   = A.dnu;
@@ -196,32 +196,13 @@ main(int argc, char *argv[])
     return 0;
 }
 
-
-
-/* Initial concentration scan */
-/*int main(int argc, char *argv[]) {
-    thermo A;
-    cyg_thermo_init(&A);
-    cyg_thermo_read(&A, argv[1]);
-    double C0, mu;
-    for (C0=1e-12; C0<10; C0*=1.2) {
-        A.C = C0;
-        mu = print_all(&A);
-        printf(" %+e %lf \n" , C0, mu);
-    }
-    free(A.nu);
-    free(A.I);
-    return 0;
-}*/
-
-
 void version() {
     printf("\n");
     printf("    Thermo 1.0\n");
     printf("    ==========\n");
     printf("\n");
-    printf("Copyright (C) 2014, 2015 Simone Conti\n");
-    printf("Copyright (C) 2015 Université de Strasbourg\n");
+    printf("Copyright (C) 2014-2016 Simone Conti\n");
+    printf("Copyright (C) 2015-2016 Université de Strasbourg\n");
     printf("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n");
     printf("This is free software: you are free to change and redistribute it.\n");
     printf("There is NO WARRANTY, to the extent permitted by law.\n");
@@ -251,7 +232,7 @@ void help() {
     usage();
     printf("\n");
     printf("Examples:\n");
-    printf("  See test/ directory for working examples.\n");
+    printf("  See examples/ directory for working examples.\n");
     printf("\n");
     printf("Report bugs to <https://github.com/SimoneCnt/thermo/issues> \n");
     printf("  or directly to <simonecnt@gmail.com>.\n");

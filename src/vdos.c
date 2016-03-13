@@ -58,8 +58,8 @@ thermo_vdos(Thermo *A, const char *fname)
     FILE *out = fopen(fname, "w");
 
     /* Allocate the vdos and initialize to zero */
-    A->vdos  = malloc(A->nu_np*sizeof(double));
-    vdos_tmp = malloc(A->nu_np*sizeof(double));
+    A->vdos  = malloc((size_t)(A->nu_np)*sizeof(double));
+    vdos_tmp = malloc((size_t)(A->nu_np)*sizeof(double));
     for (i=0; i<A->nu_np; i++) {
         A->vdos[i]  = 0;
         vdos_tmp[i] = 0;
@@ -67,7 +67,7 @@ thermo_vdos(Thermo *A, const char *fname)
 
     /* Populate the vdos */
     for (i=0; i<A->v; i++) {
-        ii = lrint(A->nu[i]/A->dnu);
+        ii = (int)lrint(A->nu[i]/A->dnu);
         if (ii>=A->nu_np) ii=A->nu_np-1;
         A->vdos[ii]++;
     }

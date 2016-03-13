@@ -1,5 +1,5 @@
 #
-# Build the Thermo executable and the small thermo library
+# Build the Thermo executable
 #
 
 # Set the required CMake version
@@ -11,14 +11,35 @@ project (Thermo C)
 # Fix for MacOSX
 set(CMAKE_MACOSX_RPATH 1)
 
-# Compiling flags
-set(CMAKE_C_FLAGS "-g -O3 -march=native -flto")
+# Set basic compiler options
+set(CMAKE_C_FLAGS "")
+if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
+    set(CMAKE_C_FLAGS "${MCAKE_C_FLAGS} -std=c99 -g -O2")
+elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -c99 -gopt")
+endif()
+
+# Set warnings option
+if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs")
+elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ")
+endif()
+
+# Set optimizations
+if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fshort-enums -fno-common -O3 -march=native -flto")
+elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ")
+endif()
+
+message("Compiling options: ${CMAKE_C_FLAGS}")
 
 # Set the current directory for -I
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Source files
-set(SOURCE_THERMO 
+set(SRC_THERMO 
     src/calctermo.c 
     src/cumulvib.c 
     src/delete.c 
@@ -28,20 +49,9 @@ set(SOURCE_THERMO
     src/printthermo.c 
     src/readthermo.c 
     src/vdos.c 
+    src/thermo.c
 )
 
-# Build static libthermo.a
-add_library(thermo-static STATIC ${SOURCE_THERMO})
-set_target_properties(thermo-static PROPERTIES OUTPUT_NAME "thermo")
-target_link_libraries(thermo-static m )
-
-# Build shared libthermo.so
-add_library(thermo-shared SHARED ${SOURCE_THERMO})
-set_target_properties(thermo-shared PROPERTIES OUTPUT_NAME "thermo")
-target_link_libraries(thermo-shared m )
-
 # Build thermo (statically linked to libthermo)
-add_executable(thermo src/thermo.c)
-target_link_libraries(thermo thermo-static) 
-
+add_executable(thermo ${SRC_THERMO})
 

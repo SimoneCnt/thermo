@@ -119,10 +119,10 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
         D->v = 0;
     }
 
-    D->Fm_vib_cumul_cl   = malloc(D->nu_np*sizeof(double));
-    D->Fm_vib_cumul_cl_k = malloc(D->v*sizeof(double));
-    D->Fm_vib_cumul_qm   = malloc(D->nu_np*sizeof(double));
-    D->Fm_vib_cumul_qm_k = malloc(D->v*sizeof(double));
+    D->Fm_vib_cumul_cl   = malloc((size_t)(D->nu_np)*sizeof(double));
+    D->Fm_vib_cumul_cl_k = malloc((size_t)(D->v)*sizeof(double));
+    D->Fm_vib_cumul_qm   = malloc((size_t)(D->nu_np)*sizeof(double));
+    D->Fm_vib_cumul_qm_k = malloc((size_t)(D->v)*sizeof(double));
 
     /* Frequency-based */
     for (i=0; i<D->nu_np; i++) {

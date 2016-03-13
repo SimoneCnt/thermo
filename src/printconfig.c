@@ -49,14 +49,14 @@ thermo_printconfig(const Thermo *A)
     printf("   Molecular mass [g/mol]:    %g\n",A->m);
     printf("   Molar energy [kcal/mol]:   %.6f\n",A->E);
     printf("   Degree of freedom:\n");
-    printf("      translational:          %g\n",A->t);
-    printf("      rotational:             %g\n",A->r);
+    printf("      translational:          %d\n",A->t);
+    printf("      rotational:             %d\n",A->r);
     printf("         moments of inerzia [g/mol/A^2]:\n");
     for (i=0; i<A->r; i++) { 
     printf("            %.6f\n",A->I[i]); 
     }
-    printf("         symmetry number:     %g\n",A->s);
-    printf("      vibrational modes:      %g\n",A->v);
+    printf("         symmetry number:     %d\n",A->s);
+    printf("      vibrational modes:      %d\n",A->v);
     printf("         frequencies [1/cm]: \n");
     for (i=0; i<A->v; i++) {
         printf("%11.6f  ",A->nu[i]);

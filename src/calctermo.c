@@ -44,7 +44,7 @@ void
 thermo_calcthermo(Thermo *A) 
 {
     int i;                          /* Counter */
-    long int ndx;
+    int ndx;
     double kBT = CNS_kB * A->T;     /* kB T */
     double tmp, preUqm;
 
@@ -66,19 +66,19 @@ thermo_calcthermo(Thermo *A)
     A->q_vibqm = 0;
     preUqm = 0;
     A->ZPE = 0;
-    A->Fm_vib_cumul_cl   = malloc(A->nu_np*sizeof(double));
-    A->Fm_vib_cumul_cl_k = malloc(A->v*sizeof(double));
-    A->Fm_vib_cumul_qm   = malloc(A->nu_np*sizeof(double));
-    A->Fm_vib_cumul_qm_k = malloc(A->v*sizeof(double));
+    A->Fm_vib_cumul_cl   = malloc((size_t)(A->nu_np)*sizeof(double));
+    A->Fm_vib_cumul_cl_k = malloc((size_t)(A->v)*sizeof(double));
+    A->Fm_vib_cumul_qm   = malloc((size_t)(A->nu_np)*sizeof(double));
+    A->Fm_vib_cumul_qm_k = malloc((size_t)(A->v)*sizeof(double));
     for (i=0; i<A->nu_np; i++) {
         A->Fm_vib_cumul_cl[i] = 0;
         A->Fm_vib_cumul_qm[i] = 0;
     }
 	for (i=0; i<A->v; i++) {
 
-        ndx = lrint(A->nu[i]/A->dnu);
+        ndx = (int)lrint(A->nu[i]/A->dnu);
         if (ndx>=A->nu_np) {
-            printf("Warning! ndx=%ld greather than nu_np=%ld\n", ndx, A->nu_np);
+            printf("Warning! ndx=%d greather than nu_np=%d\n", ndx, A->nu_np);
             ndx = A->nu_np-1;
         }
 

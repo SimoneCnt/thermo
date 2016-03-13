@@ -49,19 +49,19 @@
 
 /* Structure which contain all input informations about a system */
 typedef struct {
+    int     t;	/* Number of translation degree of freedom */
+    int     r;	/* Number of rotational degree of freedom */
+    int     v;	/* Number of vibrational degree of freedom */
+    int     s;	/* Symmetry number */
+    int    nu_np;  /* TODO */
     double T;   /* Temperature in kelvin */
     double V;   /* Volume */
     double n;   /* Number of mols  */
-    double t;	/* Number of translation degree of freedom */
-    double r;	/* Number of rotational degree of freedom */
-    double v;	/* Number of vibrational degree of freedom */
-    double s;	/* Symmetry number */
     double m;	/* Mass of the system in g/mol */
     double E;	/* Energy of the system in kcal/mol */
     double *I;	/* Moments of inertia in g/mol*A^2 */
     double *nu;	/* Vibrational normal modes in cm-1 */
     double dnu; /* Accuracy in vibrational spectra for cumulative and vdos calculations */
-    long int nu_np;  /* TODO */
     double  q_elec,  q_tr,  q_rot,  q_vibcl,  q_vibqm,  q_totcl,  q_totqm;  /* Natural logarithm of the molecular partition function: ln(q) */
     double  S_elec,  S_tr,  S_rot,  S_vibcl,  S_vibqm,  S_totcl,  S_totqm;  /* Entropy */
     double  U_elec,  U_tr,  U_rot,  U_vibcl,  U_vibqm,  U_totcl,  U_totqm;  /* Internal Energy */

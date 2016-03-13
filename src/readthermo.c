@@ -84,14 +84,14 @@ thermo_readthermo(Thermo *A, const char *fname)
                 A->m = val; 
                 break;
             case 't':           /* Translational degree of freedom */
-                A->t = val;
+                A->t = (int)val;
                 break;
             case 's':           /* Symmetry Number */
-                A->s = val;
+                A->s = (int)val;
                 break;
             case 'r':           /* Rotational degree of freedom and moments of inertia */
-                A->r = val;
-                A->I=(double*)malloc(A->r*sizeof(double));
+                A->r = (int)val;
+                A->I=(double*)malloc((size_t)(A->r)*sizeof(double));
                 for (i=0; i<A->r; i++) {    /* all inertia moments in g/mol/A^2 */
                     if ((tmp=fgets(row, 80, fp))!=NULL) {
                         if (row[0]!='#' && row[0]!='\n') {	
@@ -105,8 +105,8 @@ thermo_readthermo(Thermo *A, const char *fname)
                 }
                 break;
             case 'v':           /* Vibrational degree of freedom and normal mode frequencies */
-                A->v = val;
-                A->nu=(double*)malloc(A->v*sizeof(double));
+                A->v = (int)val;
+                A->nu=(double*)malloc((size_t)(A->v)*sizeof(double));
                 for (i=0; i<A->v; i++) {    /* all vibrational modes in cm-1 */
                     if ((tmp=fgets(row, 80, fp))!=NULL) {
                         if (row[0]!='#' && row[0]!='\n') {	
