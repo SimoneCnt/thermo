@@ -55,3 +55,8 @@ set(SRC_THERMO
 # Build thermo (statically linked to libthermo)
 add_executable(thermo ${SRC_THERMO})
 
+# Link math library
+IF(UNIX)
+  target_link_libraries(thermo m)
+ENDIF(UNIX)
+
