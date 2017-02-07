@@ -21,9 +21,9 @@ License and Copyright
 This code and manual has been written by Simone Conti at work a the University
 of Strasbourg:
 
-&copy; 2014, 2015 Simone Conti
+&copy; 2014-2017 Simone Conti
 
-&copy; 2015 Université de Strasbourg
+&copy; 2015-2016 Université de Strasbourg
 
 Thermo is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software 
@@ -49,11 +49,8 @@ Citation References
 -------------------
 
 If you use the Thermo software in scientific publications, please cite
-\cite haar2015supramolecular
+\cite conti2016predicting
 
-> S. Haar, A. Ciesielski, J. Clough, H. Yang, R. Mazzaro, F. Richard, 
-> S. Conti, N. Merstorf, M. Cecchini, V. Morandi, C. Casiraghi, and P. Samorì.
-> "A supramolecular strategy to leverage the liquid-phase exfoliation of 
-> graphene in presence of surfactants: unraveling the role of the length of 
-> fatty acids.", Small, 2015, 11(14), pp. 1736–1736
+> S. Conti and M. Cecchini "Predicting molececular self-assembly at surfaces: 
+> a statistical thermodynamics and modeling approach", PCCP, 2016, 18, pp. 1480-31493
 

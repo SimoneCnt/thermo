@@ -73,7 +73,7 @@ F_{tr} &= -Nk_BT\ln\frac{q_{tr}e}{N} = -Nk_BT\ln\left[ \left( \frac{2 \pi m k_B 
        &= -Nk_BT \left( \frac{t}{2}\ln \frac{2 \pi m k_B T}{h^2} + 1 - \ln\frac{N}{V} \right)
 \f}
 \f{align}{
-F_{rot} = -Nk_BT\ln q_{rot} = -Nk_BT \left[ \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r I_i\right]
+F_{rot} = -Nk_BT\ln q_{rot} = -Nk_BT \left[ \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r \ln I_i\right]
 \f}
 \f{align}{
 F_{vib,cl} = -Nk_BT\ln q_{vib,cl} = -Nk_BT \sum_{i=1}^f \ln \frac{k_BT}{h\nu_i}
@@ -98,7 +98,7 @@ Molar Helmholtz free energy
 \mu_{tr} &= \frac{\partial F_{tr}}{\partial N} = -k_BT\frac{t}{2}\ln \frac{2 \pi m k_B T}{h^2} + k_BT\ln\frac{N}{V} = \frac{F_{tr}}{N} + k_BT
 \f}
 \f{align}{
-\mu_{rot} &= \frac{\partial F_{rot}}{\partial N} = -k_BT \left[ \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r I_i\right] = \frac{F_{rot}}{N}
+\mu_{rot} &= \frac{\partial F_{rot}}{\partial N} = -k_BT \left[ \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r \ln I_i\right] = \frac{F_{rot}}{N}
 \f}
 \f{align}{
 \mu_{vib,cl} &= \frac{\partial F_{vib,cl}}{\partial N} = -k_BT \sum_{i=1}^f \ln \frac{k_BT}{h\nu_i} = \frac{F_{vib,cl}}{N}
@@ -171,7 +171,7 @@ S &= \frac{\partial}{\partial T}\left( k_BT\ln Q\right) = k_B\ln Q + k_BT\frac{\
 S_{tr} = Nk_B\ln \frac{q_{tr}e}{N} + Nk_BT\frac{\partial}{\partial T} \ln q_{tr} = Nk_B\left(\frac{t}{2}\ln\frac{2\pi m k_BT}{h^2} + \frac{t+2}{2} - \ln\frac{N}{V}\right)
 \f}
 \f{align}{
-S_{rot} = Nk_B\ln q_{rot} + Nk_BT\frac{\partial}{\partial T} \ln q_{rot} = Nk_B\left( \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r I_i + \frac{r}{2} \right)
+S_{rot} = Nk_B\ln q_{rot} + Nk_BT\frac{\partial}{\partial T} \ln q_{rot} = Nk_B\left( \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r \ln I_i + \frac{r}{2} \right)
 \f}
 \f{align}{
 S_{vib,cl} = Nk_B\ln q_{vib,cl} + Nk_BT\frac{\partial}{\partial T} \ln q_{vib,cl} = Nk_B \left(f+ \sum _{i=1} ^f \ln \frac{k_BT}{h\nu_i} \right) 
@@ -192,7 +192,7 @@ S_m &= \frac{\partial S}{\partial N} = \frac{\partial S_{tr}}{\partial N} + \fra
 S_{m,tr} = \frac{\partial S_{tr}}{\partial N} = k_B\left(\frac{t}{2}\ln\frac{2\pi m k_BT}{h^2} + \frac{t}{2} - \ln\frac{N}{V}\right) = \frac{S_{tr}}{N} - k_B
 \f}
 \f{align}{
-S_{m,rot} = \frac{\partial S_{rot}}{\partial N} = k_B\left( \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r I_i + \frac{r}{2} \right) = \frac{S_{rot}}{N}
+S_{m,rot} = \frac{\partial S_{rot}}{\partial N} = k_B\left( \frac{1}{2} \ln \frac{\pi}{\sigma^2} + \frac{r}{2}\ln\frac{8\pi^2k_BT}{h^2} + \frac{1}{2}\sum_{i=1}^r \ln I_i + \frac{r}{2} \right) = \frac{S_{rot}}{N}
 \f}
 \f{align}{
 S_{m,vib,cl} = \frac{\partial S_{vib,cl}}{\partial N} = k_B \left(f+ \sum _{i=1} ^f \ln \frac{k_BT}{h\nu_i} \right) = \frac{S_{vib,cl}}{N}
