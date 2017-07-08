@@ -14,7 +14,7 @@ The easiest system we can take as example is water. Here a sample input script
 to evaluate the thermodynamic properties of an hypotetical box of 22.465 liters 
 which contains 1 mol of gas water at 298.15 kelvin (1 atm pressure). Each water 
 molecule will have three translational degrees of freedom, three rotational 
-(with the associated moments of inertia), and \f$3N-6=3\f$ vibrations (and 
+(with the associated moments of inertia), and $3N-6=3$ vibrations (and
 associated frequencies). The simmetry number is also reported: since water 
 symmetry pointgroup is C2v, the symmetry number is 2. The mass is also specified. 
 
@@ -60,7 +60,7 @@ Dimerization of Insulin
 -----------------------
 
 A second example in based on the reference paper by B. Tidor and 
-M. Karplus \cite tidor1994contribution, published in 1994:
+M. Karplus [@tidor1994contribution], published in 1994:
 
 > B. Tidor and M.Karplus, "The Contribution of Vibrational Entropy to 
 > Molecular Association: The Dimerization of Insulin", Journal of 
@@ -98,22 +98,12 @@ peptides and proteins conformes:
  -  the converter of the biomolecular motor myosin VI (`conv`) in the 
     pre-powerstroke (pps) and rigor-like (rig) conformations.
 
-\latexonly
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.5\textwidth]{../mc_qmcorr.pdf}
-\caption{Representation of the three examples to study the quantum correction 
-to the conformational free energy difference: the alanine dipeptide, the beta 
-hairpin of protein G and the converter of myosin VI. Reproduced 
-from~\cite{cecchini2015quantum}.}
-\label{fig_mc_qmcorr}
-\end{figure}
-\endlatexonly
+![Representation of the three examples to study the quantum correction to the conformational free energy difference: the alanine dipeptide, the beta hairpin of protein G and the converter of myosin VI. Reproduced from ref. @cecchini2015quantum.\label{fig_mc_qmcorr}](doc/mc_qmcorr.pdf){width=70%}
 
-These examples, see Fig. \latexonly\ref{fig_mc_qmcorr}\endlatexonly, are taken 
-form the work of M. Cecchini, JCTC 2015 \cite cecchini2015quantum , where they 
-were used to develop a quantum correction to the classical conformational free 
-energy difference. 
+These examples, see Fig. \ref{fig_mc_qmcorr}, are taken
+form the work of M. Cecchini, JCTC 2015 [@cecchini2015quantum], where they
+were used to develop a quantum correction to the classical conformational free
+energy difference.
 
 > M. Cecchini, "Quantum Corrections to the Free Energy Difference between
 > Peptides and Proteins Conformers", Journal of Chemical Theory and 

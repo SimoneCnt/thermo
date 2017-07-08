@@ -60,3 +60,10 @@ ADD_CUSTOM_TARGET(release
   COMMENT "Switch CMAKE_BUILD_TYPE to Release"
   )
 
+# Add a target to generate documentation with pandoc
+add_custom_target(doc
+    pandoc --filter pandoc-citeproc -s README.md INSTALL.md EXAMPLES.md THEORY.md doc/references.md doc/metadata.yaml -V documentclass=article -V classoption:fleqn -V geometry:margin=1.5in -V colorlinks=true --table-of-contents --number-sections -o ${CMAKE_SOURCE_DIR}/manual.pdf
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Generating documentation with pandoc"
+)
+

@@ -42,15 +42,15 @@ The Thermo Manual is licensed under the Creative Commons
 Attribution-ShareAlike 4.0 International License. To view a copy of this 
 license, visit http://creativecommons.org/licenses/by-sa/4.0/.
 
-\latexonly \includegraphics[width=2cm]{../cc-by-sa.pdf} \endlatexonly
+![](doc/cc-by-sa.pdf){width=2cm}\
 
 
 Citation References
 -------------------
 
 If you use the Thermo software in scientific publications, please cite
-\cite conti2016predicting
+[@conti2016predicting]
 
-> S. Conti and M. Cecchini "Predicting molececular self-assembly at surfaces: 
+> S. Conti and M. Cecchini "Predicting molecular self-assembly at surfaces:
 > a statistical thermodynamics and modeling approach", PCCP, 2016, 18, pp. 1480-31493
 

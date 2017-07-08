@@ -1,0 +1,8 @@
+---
+title: 'Thermo Manual'
+author: 'Simone Conti'
+date: '\today'
+link-citations: true
+bibliography: 'doc/bibliography.bib'
+csl: 'doc/biblio.csl'
+---
