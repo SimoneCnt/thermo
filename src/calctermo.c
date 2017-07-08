@@ -1,39 +1,13 @@
-/******************************************************************************
- *
- *  thermo/calcthermo.c
- *  Calculate all thermodynamic quantities based on partition function
- *
- *  Copyright (C) 2014, 2015 Simone Conti
- *  Copyright (C) 2015 Université de Strasbourg
- *
- *  This file is part of Thermo
- * 
- *  Thermo is free software: you can redistribute it and/or modify it under the
- *  terms of the GNU General Public License as published by the Free Software 
- *  Foundation, either version 3 of the License, or (at your option) any later 
- *  version.
- *
- *  Thermo is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
- *  details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- ******************************************************************************/
 
-/**
- * @ingroup modthermo
- *
- * Calculate all thermodynamic quantities based on partition function.
- * Taken an initialized @c Thermo structure, evaluates the translational, 
- * rotational, vibrational and electronic contributions to the partition function.
- * From that, the internal energy, entropy and free energy are evaluated. 
- * 
- * @param[in,out]  A  Pointer to an initialized @c Thermo structure
- *
- */
+/*
+    Calculate all thermodynamic quantities based on partition function.
+    Taken an initialized Thermo structure, evaluates the translational, 
+    rotational, vibrational and electronic contributions to the partition function.
+    From that, the internal energy, entropy and free energy are evaluated. 
+
+    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2015 Université de Strasbourg
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -78,7 +52,7 @@ thermo_calcthermo(Thermo *A)
 
         ndx = (int)lrint(A->nu[i]/A->dnu);
         if (ndx>=A->nu_np) {
-            printf("Warning! ndx=%d greather than nu_np=%d\n", ndx, A->nu_np);
+            fprintf(fpout, "Warning! ndx=%d greather than nu_np=%d\n", ndx, A->nu_np);
             ndx = A->nu_np-1;
         }
 

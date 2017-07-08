@@ -1,35 +1,24 @@
-/******************************************************************************
- *
- *  thermo/thermo.c
- *
- *  Copyright (C) 2014-2016 Simone Conti
- *  Copyright (C) 2015-2016 Université de Strasbourg
- *
- *  Thermo is free software: you can redistribute it and/or modify it under the
- *  terms of the GNU General Public License as published by the Free Software 
- *  Foundation, either version 3 of the License, or (at your option) any later 
- *  version.
- *
- *  Thermo is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
- *  details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- ******************************************************************************/
+
+/*
+    Thermo
+
+    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2015-2016 Université de Strasbourg
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <getopt.h>
+#include <string.h>
 #include "thermo.h"
 
 /* Functions defined at the end of this file */
 static void version(void);  /* Print version info */
 static void usage(void);    /* Print the usage of the software */
 static void help(void);     /* Print some help */
+
+FILE *fpout=NULL;
 
 /* Main */
 int 
@@ -38,7 +27,9 @@ main(int argc, char *argv[])
 
     /* Declare used variables */
     int hasA=0, hasB=0, hasStechio=0, nA, nB, nr, cumul=0, vdos=0;
-    char *nameA, *nameB;
+    char *nameA=NULL, *nameB=NULL;
+    char *outfile=NULL;
+    fpout = stderr;
 
     /* Define and initialize Thermo structures */
     Thermo A, B, D;
@@ -51,6 +42,7 @@ main(int argc, char *argv[])
     static struct option long_options[] = {
         {"A",       required_argument, 0, 'A'},
         {"B",       required_argument, 0, 'B'},
+        {"out",     required_argument, 0, 'o'},
         {"stechio", required_argument, 0, 's'},
         {"cumul",   no_argument,       0, 'c'},
         {"vdos",    no_argument,       0, 'd'},
@@ -60,11 +52,10 @@ main(int argc, char *argv[])
         {0, 0, 0, 0}
     };
 
-    version();
 
     /* Parse command line options */
     while (1) {
-        c = getopt_long_only(argc, argv, "A:B:s:cdn:vh", long_options, &option_index);
+        c = getopt_long_only(argc, argv, "A:B:o:s:cdn:vh", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1) break;
@@ -81,14 +72,20 @@ main(int argc, char *argv[])
                 nameB = optarg;
                 break;
 
+            case 'o': /* Output file */
+                outfile = optarg;
+                break;
+
             case 's': /* Stechiometric coefficients */
                 nr = sscanf(optarg, "%d:%d", &nA, &nB);
                 if (nr!=2) {
-                    printf("Error parsing --stechio option! I cannot find two coefficients in a:b form!\n\n");
+                    version();
+                    fprintf(stderr, "Error parsing --stechio option! I cannot find two coefficients in a:b form!\n\n");
                     usage();
                     return EXIT_FAILURE;
                 } else if (nA<1 || nB<1) {
-                    printf("Error parsing --stechio option! One (or both) of the two coefficients are less than one!\n\n");
+                    version();
+                    fprintf(stderr, "Error parsing --stechio option! One (or both) of the two coefficients are less than one!\n\n");
                     usage();
                     return EXIT_FAILURE;
                 } else {
@@ -114,22 +111,26 @@ main(int argc, char *argv[])
                 break;
 
             case 'v': /* Version */
+                version();
                 return EXIT_SUCCESS;
                 break;
 
             case 'h': /* Help */
+                version();
                 help();
                 return EXIT_SUCCESS;
                 break;
 
             case '?': /* Error in command line */
+                version();
                 fprintf(stderr, "Error parsing command line options. Exiting.\n\n");
                 usage();
                 return EXIT_FAILURE;
                 break;
 
             default: /* Unknown error */
-                printf("Unexpected error in command line parsing. Exiting.\n\n");
+                version();
+                fprintf(stderr, "Unexpected error in command line parsing. Exiting.\n\n");
                 usage();
                 return EXIT_FAILURE;
         }
@@ -137,18 +138,32 @@ main(int argc, char *argv[])
 
     /* Extraneous options */
     if (optind < argc) {
-        printf ("Error! Extraneous options found in command line parsing: ");
+        version();
+        fprintf(stderr, "Error! Extraneous options found in command line parsing: ");
         while (optind < argc) {
-            printf("%s ", argv[optind++]);
+            fprintf(stderr, "%s ", argv[optind++]);
         }
-        printf("\n\n");
+        fprintf(stderr, "\n\n");
         usage();
         return EXIT_FAILURE;
     }
 
+    /* Open outfile for writing */
+    if (outfile) {
+        fpout = fopen(outfile, "w");
+        if (!fpout) {
+            version();
+            fprintf(stderr, "ERROR! Impossible to open file <%s> for writing!\n", outfile);
+            return EXIT_FAILURE;
+        }
+    } else {
+        fpout = stdout;
+    }
+    version();
+
     /* Check if you gave at least A or B */
     if (!hasA && !hasB) {
-        printf("Error! You did not specified neither A nor B!\n");
+        fprintf(stderr, "Error! You did not specified neither A nor B!\n");
         return EXIT_FAILURE;
     }
 
@@ -156,8 +171,8 @@ main(int argc, char *argv[])
 
     /* Work with mol A */
     if (hasA) {
-        printf("\nMolecule A: <%s>\
-                \n---------------------------------------------\n\n", nameA);
+        fprintf(fpout, "\nMolecule A: <%s>\
+                \n---------------------------------------------\n\n", strrchr(nameA, '/')+1);
         thermo_readthermo(&A, nameA);
         thermo_printconfig(&A);
         thermo_calcthermo(&A);
@@ -168,8 +183,8 @@ main(int argc, char *argv[])
 
     /* Work with mol B */
     if (hasB) {
-        printf("\nMolecule B: <%s>\
-                \n---------------------------------------------\n\n", nameB);
+        fprintf(fpout, "\nMolecule B: <%s>\
+                \n---------------------------------------------\n\n", strrchr(nameB, '/')+1);
         thermo_readthermo(&B, nameB);
         thermo_printconfig(&B);
         thermo_calcthermo(&B);
@@ -180,7 +195,7 @@ main(int argc, char *argv[])
 
     /* Evaluate difference in reaction */
     if (hasA && hasB && hasStechio) {
-        printf("\nDifferences for the reaction %dA <-> %dB\
+        fprintf(fpout, "\nDifferences for the reaction %dA <-> %dB\
                 \n---------------------------------------------\n\n", nA, nB);
         thermo_diffthermo(&A, &B, nA, nB, &D);
         thermo_printthermo(&D,1);
@@ -197,45 +212,46 @@ main(int argc, char *argv[])
 }
 
 void version() {
-    printf("\n");
-    printf("    Thermo 1.0\n");
-    printf("    ==========\n");
-    printf("\n");
-    printf("Copyright (C) 2014-2016 Simone Conti\n");
-    printf("Copyright (C) 2015-2016 Université de Strasbourg\n");
-    printf("License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n");
-    printf("This is free software: you are free to change and redistribute it.\n");
-    printf("There is NO WARRANTY, to the extent permitted by law.\n");
-    printf("\n");
-    printf("Written by Simone Conti.\n");
-    printf("\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "    Thermo 1.0\n");
+    fprintf(fpout, "    ==========\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "Copyright (C) 2014-2017 Simone Conti\n");
+    fprintf(fpout, "Copyright (C) 2015-2016 Université de Strasbourg\n");
+    fprintf(fpout, "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n");
+    fprintf(fpout, "This is free software: you are free to change and redistribute it.\n");
+    fprintf(fpout, "There is NO WARRANTY, to the extent permitted by law.\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "Written by Simone Conti.\n");
+    fprintf(fpout, "\n");
 }
 
 void usage() {
-    printf("Usage: thermo [OPTION]...\n");
-    printf("\n");
-    printf("Options:\n");
-    printf("   -A, --A        fname   Input thermo file for the molecule A\n");
-    printf("   -o, --B        fname   Input thermo file for the molecule B\n");
-    printf("   -s, --stechio  a:b     Stechiometric coefficients for the reaction aA<->bB\n");
-    printf("   -c, --cumul    fname   Print the cumulative vibrational chemical potential\n");
-    printf("   -d, --vdos     fname   Print the vibrational density of state\n");
-    printf("   -n, --dnu      real    Accuracy in the calculation of the vibration hystograms\n");
-    printf("   -h, --help             Show this help and exit\n");
-    printf("   -v, --version          Print version information and exit\n");
-    printf("\n");
+    fprintf(fpout, "Usage: thermo [OPTION]...\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "Options:\n");
+    fprintf(fpout, "   -A, --A        fname   Input thermo file for the molecule A\n");
+    fprintf(fpout, "   -B, --B        fname   Input thermo file for the molecule B\n");
+    fprintf(fpout, "   -o, --out      fname   Output file\n");
+    fprintf(fpout, "   -s, --stechio  a:b     Stechiometric coefficients for the reaction aA<->bB\n");
+    fprintf(fpout, "   -c, --cumul    fname   Print the cumulative vibrational chemical potential\n");
+    fprintf(fpout, "   -d, --vdos     fname   Print the vibrational density of state\n");
+    fprintf(fpout, "   -n, --dnu      real    Accuracy in the calculation of the vibration hystograms\n");
+    fprintf(fpout, "   -h, --help             Show this help and exit\n");
+    fprintf(fpout, "   -v, --version          Print version information and exit\n");
+    fprintf(fpout, "\n");
 }
 
 void help() {
-    printf("thermo is a wonderfull software :D\n");
-    printf("\n");
+    fprintf(fpout, "thermo is a wonderfull software :D\n");
+    fprintf(fpout, "\n");
     usage();
-    printf("\n");
-    printf("Examples:\n");
-    printf("  See examples/ directory for working examples.\n");
-    printf("\n");
-    printf("Report bugs to <https://github.com/SimoneCnt/thermo/issues> \n");
-    printf("  or directly to <simonecnt@gmail.com>.\n");
-    printf("\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "Examples:\n");
+    fprintf(fpout, "  See examples/ directory for working examples.\n");
+    fprintf(fpout, "\n");
+    fprintf(fpout, "Report bugs to <https://github.com/SimoneCnt/thermo/issues> \n");
+    fprintf(fpout, "  or directly to <simonecnt@gmail.com>.\n");
+    fprintf(fpout, "\n");
 }
 

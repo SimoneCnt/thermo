@@ -1,38 +1,13 @@
-/******************************************************************************
- *
- *  thermo/thermo.h
- *  Intialize to default values a Thermo structure
- *
- *  Copyright (C) 2014, 2015 Simone Conti
- *  Copyright (C) 2015 Université de Strasbourg
- *
- *  This file is part of Thermo
- * 
- *  Thermo is free software: you can redistribute it and/or modify it under the
- *  terms of the GNU General Public License as published by the Free Software 
- *  Foundation, either version 3 of the License, or (at your option) any later 
- *  version.
- *
- *  Thermo is distributed in the hope that it will be useful, but WITHOUT ANY 
- *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
- *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more 
- *  details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- ******************************************************************************/
+
+/*
+    Thermo header file.
+
+    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2015 Université de Strasbourg
+*/
 
 #ifndef _THERMO_
 #define _THERMO_
-
-/**
- *
- * @defgroup modthermo Thermo Module
- *
- * Calculate themodynamic quantities based on the canonical partition function.
- *
- */
 
 /* Constants */
 #define CNS_PI     3.14159265358979323846  /* pi []                              */
@@ -46,6 +21,8 @@
 #define CNS_cal    4.184                   /* One calorie in joule [ J/cal ]     */
 #define CNS_j2kcal (1.0/(CNS_cal*1000.0))  /* Convert joule to kcal [ kcal/J ]   */
 
+/* File pointer for the output */
+extern FILE *fpout;
 
 /* Structure which contain all input informations about a system */
 typedef struct {
