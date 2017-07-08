@@ -2,8 +2,8 @@
     Thermo 1.0
     ==========
 
-Copyright (C) 2014, 2015 Simone Conti
-Copyright (C) 2015 Université de Strasbourg
+Copyright (C) 2014-2017 Simone Conti
+Copyright (C) 2015-2016 Université de Strasbourg
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -109,5 +109,4 @@ Intensive (molar) quantities:
 
 Zero point vibrational energy:       0.425 kcal/mol
 Vibrational quantum correction:      0.161 kcal/mol
-
 

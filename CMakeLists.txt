@@ -1,39 +1,24 @@
 #
-# Build the Thermo executable
+# Thermo
 #
 
-# Set the required CMake version
-cmake_minimum_required(VERSION 2.8.7)
-
-# Set the project name
-project (Thermo C)
-
-# Fix for MacOSX
+cmake_minimum_required(VERSION 3.7.1)
 set(CMAKE_MACOSX_RPATH 1)
+project(Thermo C)
+include(CheckIncludeFiles)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
-# Set basic compiler options
-set(CMAKE_C_FLAGS "")
-if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
-    set(CMAKE_C_FLAGS "${MCAKE_C_FLAGS} -std=c99 -g -O2")
-elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -c99 -gopt")
+# Set compiler options for C 
+set(CMAKE_C_STANDARD 99)
+# GCC
+if(${CMAKE_C_COMPILER_ID} MATCHES "GNU") 
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O1 -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs ")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native -ffast-math")
+# Clang
+elseif(${CMAKE_C_COMPILER_ID} MATCHES "Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O1 -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native -ffast-math")
 endif()
-
-# Set warnings option
-if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs")
-elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ")
-endif()
-
-# Set optimizations
-if((${CMAKE_C_COMPILER_ID} MATCHES "GNU") OR (${CMAKE_C_COMPILER_ID} MATCHES "Clang"))
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fshort-enums -fno-common -O3 -march=native -flto")
-elseif(${CMAKE_C_COMPILER_ID} MATCHES "PGI")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ")
-endif()
-
-message("Compiling options: ${CMAKE_C_FLAGS}")
 
 # Set the current directory for -I
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
@@ -56,7 +41,22 @@ set(SRC_THERMO
 add_executable(thermo ${SRC_THERMO})
 
 # Link math library
-IF(UNIX)
-  target_link_libraries(thermo m)
-ENDIF(UNIX)
+target_link_libraries(thermo m)
+
+# Enable Testing
+enable_testing()
+add_subdirectory(examples EXCLUDE_FROM_ALL)
+
+# Add debug and release targets
+ADD_CUSTOM_TARGET(debug
+  COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
+  COMMENT "Switch CMAKE_BUILD_TYPE to Debug"
+  )
+
+ADD_CUSTOM_TARGET(release
+  COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target all
+  COMMENT "Switch CMAKE_BUILD_TYPE to Release"
+  )
 
