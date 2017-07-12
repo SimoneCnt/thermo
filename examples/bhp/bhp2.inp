@@ -8,34 +8,34 @@
 
 
 # Number of moles [mol]
-n 1
+nmol = 1
 
 # Volume [dm^x]
-V 1
+volume = 1
 
 # Temperature [K]
-T 300
+temp = 300
 
 # Translational modes
-t 3
+trans = 3
 
 # Rotational modes and principal moments of inertia [g/mol*A^2]
-r 3
+rota = 3
 36675.16
 60759.51
 72137.68
 
 # Molecular mass [g/mol]
-m 1859.92700
+mass = 1859.92700
 
 # Symmetry number
-s 1.00
+sigma = 1.00
 
 # Molar energy [kcal/mol]
-E -524.13
+ener = -524.13
 
 # Number of vibrations and normal modes frequencies [cm^-1]
-v 474
+vibr = 474
 6.719747
 8.059686
 11.156182

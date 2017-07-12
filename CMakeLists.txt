@@ -25,6 +25,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Source files
 set(SRC_THERMO 
+    src/getline.c
     src/calctermo.c 
     src/cumulvib.c 
     src/delete.c 

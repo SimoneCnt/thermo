@@ -6,9 +6,7 @@
     Copyright (C) 2015 Université de Strasbourg
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include "cygtools.h"
 #include "thermo.h"
 
 /* Read a system from file */
@@ -16,89 +14,112 @@ int
 thermo_readthermo(Thermo *A, const char *fname) 
 {
 
-    char    *tmp, row[180], c[2];
+    char    *row=NULL, *key, *val;
     int     nr, i;
-    double  val;
     FILE    *fp;
 
     /* Open input config file */
-    fp = fopen(fname, "r");
-    if (fp==NULL) {
-            fprintf(stderr,"\n   ERROR!! Is not possible to open %s in mode r. Quit.\n\n", fname);
-            exit(EXIT_FAILURE);
-    }
+    fp = cyg_fopen(fname, "r");
+    cyg_assert(fp!=NULL, E_FAILURE, "Error opening input file.");
+
 
     /* Read all elements */
-    while ((tmp=fgets(row, 180, fp))!=NULL) {
-        nr=sscanf(row,"%1s %lf", c, &val);
-        if (nr<=0) {            /* Skip empty lines */
-            continue;
-        } else if (c[0]=='#') { /* Skip comments */
-            continue;
-        } else if (nr==1) {
-            fprintf(stderr,"\n   ERROR!! I cannot understand your input file at \n");
-            fprintf(stderr,"      %s", row);
-            fprintf(stderr,"   Quitting.\n\n");
-            exit(EXIT_FAILURE);
+    while (cyg_getline(&row, fp) != -1) {
+
+        /* Skip empty or comment lines */
+        if (cyg_isstrempty(row, "# \n\r\t\0")) continue;
+
+        /* Parse all key:val pairs */
+        key = strtok(row, "=");
+        val = strtok(NULL, "=");
+        cyg_assert(val!=NULL, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+
+        /* Temperature in kelvin */
+        if (strncmp(key, "temperature", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->T));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
-        switch (c[0]) {
-            case 'T':           /* Temperature in kelvin */
-                A->T = val;
-                break;
-            case 'n':           /* Number of moles */
-                A->n = val;
-                break;
-            case 'V':           /* Volume (liters) */
-                A->V = val;
-                break;
-            case 'm':           /* Molecular mass in g/mol */
-                A->m = val; 
-                break;
-            case 't':           /* Translational degree of freedom */
-                A->t = (int)val;
-                break;
-            case 's':           /* Symmetry Number */
-                A->s = (int)val;
-                break;
-            case 'r':           /* Rotational degree of freedom and moments of inertia */
-                A->r = (int)val;
-                A->I=(double*)malloc((size_t)(A->r)*sizeof(double));
-                for (i=0; i<A->r; i++) {    /* all inertia moments in g/mol/A^2 */
-                    if ((tmp=fgets(row, 80, fp))!=NULL) {
-                        if (row[0]!='#' && row[0]!='\n') {	
-                            if ((nr=sscanf(row,"%lf",&val))!=1) {
-                                fprintf(stderr,"\n   ERROR r !! fscanf return %d instead of 1\n",nr);
-                                exit(EXIT_FAILURE);
-                            }
-                            A->I[i] = val;
-                        }
-                    }
+
+        /* Number of moles */
+        else if (strncmp(key, "nmoles", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->n));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Volume (liters) */
+        else if (strncmp(key, "volume", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->V));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Molecular mass in g/mol */
+        else if (strncmp(key, "mass", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->m));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Translational degree of freedom */
+        else if (strncmp(key, "translations", 4)==0) {
+            nr = sscanf(val, "%d", &(A->t));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Symmetry Number */
+        else if (strncmp(key, "sigma", 4)==0) {
+            nr = sscanf(val, "%d", &(A->s));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Rotational degree of freedom and moments of inertia */
+        else if (strncmp(key, "rotations", 4)==0) {
+            nr = sscanf(val, "%d", &(A->r));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+
+            /* Read inertia moments in g/mol/A^2 */
+            A->I = cyg_malloc(NULL, (A->r)*cyg_sizeof(double));
+            cyg_assert(A->I!=NULL, E_FAILURE, "Memory allocation failed!");
+            for (i=0; i<A->r; i++) {
+                if (cyg_getline(&row, fp) != -1) {
+                    if (cyg_isstrempty(row, "#\n\0")) continue;
+                    nr=sscanf(row, "%lf", &(A->I[i]));
+                    cyg_assert(nr==1, E_FAILURE, "Impossible to read inertia moment #%d (expected #%d)", i, A->r);
                 }
-                break;
-            case 'v':           /* Vibrational degree of freedom and normal mode frequencies */
-                A->v = (int)val;
-                A->nu=(double*)malloc((size_t)(A->v)*sizeof(double));
-                for (i=0; i<A->v; i++) {    /* all vibrational modes in cm-1 */
-                    if ((tmp=fgets(row, 80, fp))!=NULL) {
-                        if (row[0]!='#' && row[0]!='\n') {	
-                            if ((nr=sscanf(row,"%lf",&val))!=1) {
-                                fprintf(stderr,"\n  ERROR v !! fscanf return %d instead of 1\n",nr);
-                                exit(EXIT_FAILURE);
-                            }
-                            A->nu[i]=val;
-                        }
-                    }
+            }
+        }
+
+        /* Vibrational degree of freedom and normal mode frequencies */
+        else if (strncmp(key, "vibrations", 4)==0) {
+            nr = sscanf(val, "%d", &(A->v));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+
+            /* Read vibrational modes in cm-1 */
+            A->nu = cyg_malloc(NULL, (A->v)*cyg_sizeof(double));
+            cyg_assert(A->nu!=NULL, E_FAILURE, "Memory allocation failed!");
+            for (i=0; i<A->v; i++) {
+                if (cyg_getline(&row, fp) != -1) {
+                    if (cyg_isstrempty(row, "#\n\0")) continue;
+                    nr=sscanf(row, "%lf", &(A->nu[i]));
+                    cyg_assert(nr==1, E_FAILURE, "Impossible to read vibration #%d (expected #%d)", i, A->v);
                 }
-                break;		
-            case 'E':           /* Energy in kcal/mol */
-                A->E = val;
-                break;
-            default:
-                fprintf(fpout, "Warning: unknown option %s\n",c);
-                break;
+            }
+        }
+
+        /* Energy in kcal/mol */
+        else if (strncmp(key, "energy", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->E));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Unknown Keyword */
+        else {
+            cyg_logErr("Unknown keyword <%s>", key);
+            return E_FAILURE;
         }
     }
+
+    /* Clean and return */
     fclose(fp);
-    return 0;
+    free(row);
+    return E_SUCCESS;
 }
 

@@ -1,35 +1,35 @@
 
 # Temperature (in kelvin)
-T 300
+temp = 300
 
 # Volume (in litres)
-V 1
+volume = 1
 
 # Number of mols (mols)
-n 1
+nmols = 1
 
 # Number of translational degrees of freedom
-t 3
+trans = 3
 
 # Number of rotational degrees of freedom
 # followed by the moments of inertia (g/mol*A^2)
-r 3
+rota = 3
 1291062.96218778
 1291062.96218778
 1291062.96218778
 
 # The mass of the molecule (in g/mol)
-m 11551.2
+mass = 11551.2
 
 # The simmetry number
-s 2
+sigma = 2
 
 # The molar electronic energy (kcal/mol)
-E -2541.2
+ener = -2541.2
 
 # Number of vibrational degrees of freedom
 # followed by the frequencies (in cm-1)
-v 5
+vibra = 5
 9.7
 10.6
 13.0

@@ -7,34 +7,34 @@
 # Computations (2015) ASAP
 
 # Number of moles [mol]
-n 1
+nmoles = 1
 
 # Volume [dm^x]
-V 1
+volume = 1
 
 # Temperature [K]
-T 300
+temp = 300
 
 # Translational modes
-t 3
+trans = 3
 
 # Rotational modes and principal moments of inertia [g/mol*A^2]
-r 3
+rota = 3
 26634.34
 92656.67
 95610.19
 
 # Molecular mass [g/mol]
-m 1859.92700
+mass = 1859.92700
 
 # Symmetry number
-s 1.00
+sigma = 1.00
 
 # Molar energy [kcal/mol]
-E -525.88
+ener = -525.88
 
 # Number of vibrations and normal modes frequencies [cm^-1]
-v 474
+vibr = 474
 7.227725
 11.901532
 12.042323
