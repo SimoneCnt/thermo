@@ -76,13 +76,15 @@ thermo_readthermo(Thermo *A, const char *fname)
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
 
             /* Read inertia moments in g/mol/A^2 */
-            A->I = cyg_malloc(NULL, (A->r)*cyg_sizeof(double));
-            cyg_assert(A->I!=NULL, E_FAILURE, "Memory allocation failed!");
-            for (i=0; i<A->r; i++) {
-                if (cyg_getline(&row, fp) != -1) {
-                    if (cyg_isstrempty(row, "#\n\0")) continue;
-                    nr=sscanf(row, "%lf", &(A->I[i]));
-                    cyg_assert(nr==1, E_FAILURE, "Impossible to read inertia moment #%d (expected #%d)", i, A->r);
+            if (A->r>0) {
+                A->I = cyg_malloc(NULL, (A->r)*cyg_sizeof(double));
+                cyg_assert(A->I!=NULL, E_FAILURE, "Memory allocation failed!");
+                for (i=0; i<A->r; i++) {
+                    if (cyg_getline(&row, fp) != -1) {
+                        if (cyg_isstrempty(row, "#\n\0")) continue;
+                        nr=sscanf(row, "%lf", &(A->I[i]));
+                        cyg_assert(nr==1, E_FAILURE, "Impossible to read inertia moment #%d (expected #%d)", i, A->r);
+                    }
                 }
             }
         }
@@ -107,6 +109,14 @@ thermo_readthermo(Thermo *A, const char *fname)
         /* Energy in kcal/mol */
         else if (strncmp(key, "energy", 4)==0) {
             nr = sscanf(val, "%lf", &(A->E));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Hessian matrix file */
+        else if (strncmp(key, "hessian", 4)==0) {
+            char tmpstr[128];
+            nr = sscanf(val, "%127s", tmpstr);
+            A->hessfile = strdup(tmpstr);
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 

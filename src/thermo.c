@@ -6,11 +6,7 @@
     Copyright (C) 2015-2016 Université de Strasbourg
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <getopt.h>
-#include <string.h>
+#include "cygtools.h"
 #include "thermo.h"
 
 /* Functions defined at the end of this file */
@@ -26,7 +22,7 @@ main(int argc, char *argv[])
 {
 
     /* Declare used variables */
-    int hasA=0, hasB=0, hasStechio=0, nA, nB, nr, cumul=0, vdos=0;
+    int hasA=0, hasB=0, hasStechio=0, nA, nB, nr, cumul=0, vdos=0, ret;
     char *nameA=NULL, *nameB=NULL;
     char *outfile=NULL;
     fpout = stderr;
@@ -171,9 +167,15 @@ main(int argc, char *argv[])
 
     /* Work with mol A */
     if (hasA) {
+        char *sname = strrchr(nameA, '/'); if (sname==NULL) sname=nameA; else sname++;
         fprintf(fpout, "\nMolecule A: <%s>\
-                \n---------------------------------------------\n\n", strrchr(nameA, '/')+1);
-        thermo_readthermo(&A, nameA);
+                \n---------------------------------------------\n\n", sname);
+        ret = thermo_readthermo(&A, nameA);
+        cyg_assert(ret==E_SUCCESS, E_FAILURE, "Failing reading thermo input file <%s>", nameA);
+        if (A.hessfile) {
+            thermo_readhessian(&A);
+            thermo_calcfreqs(&A);
+        }
         thermo_printconfig(&A);
         thermo_calcthermo(&A);
         thermo_printthermo(&A,0);
@@ -183,9 +185,15 @@ main(int argc, char *argv[])
 
     /* Work with mol B */
     if (hasB) {
+        char *sname = strrchr(nameB, '/'); if (sname==NULL) sname=nameB; else sname++;
         fprintf(fpout, "\nMolecule B: <%s>\
-                \n---------------------------------------------\n\n", strrchr(nameB, '/')+1);
-        thermo_readthermo(&B, nameB);
+                \n---------------------------------------------\n\n", sname);
+        ret = thermo_readthermo(&B, nameB);
+        cyg_assert(ret==E_SUCCESS, E_FAILURE, "Failing reading thermo input file <%s>", nameB);
+        if (B.hessfile) {
+            thermo_readhessian(&B);
+            thermo_calcfreqs(&B);
+        }
         thermo_printconfig(&B);
         thermo_calcthermo(&B);
         thermo_printthermo(&B,0);
@@ -213,7 +221,7 @@ main(int argc, char *argv[])
 
 void version() {
     fprintf(fpout, "\n");
-    fprintf(fpout, "    Thermo 1.0\n");
+    fprintf(fpout, "    Thermo 2.0\n");
     fprintf(fpout, "    ==========\n");
     fprintf(fpout, "\n");
     fprintf(fpout, "Copyright (C) 2014-2017 Simone Conti\n");

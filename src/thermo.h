@@ -31,6 +31,9 @@ typedef struct {
     int     v;	/* Number of vibrational degree of freedom */
     int     s;	/* Symmetry number */
     int    nu_np;  /* TODO */
+    int     natoms; /* Number of atoms of the molecule */
+    char   *hessfile; /* Name of the file containing the hessian matrix */
+    double *hessian; /* Hessian matrix */
     double T;   /* Temperature in kelvin */
     double V;   /* Volume */
     double n;   /* Number of mols  */
@@ -64,5 +67,8 @@ void thermo_printthermo(const Thermo *A, int onlyInt);
 int  thermo_readthermo(Thermo *A, const char *fname);
 void thermo_vdos(Thermo *A, const char *fname);
 //void thermo_vdosfvib(const Thermo *A, const char *fname);
+int thermo_readhessian(Thermo *A);
+int thermo_calcfreqs(Thermo *A);
+int mtx_dsyev(int n, double *a, double *w, const char *JOBZ, const char *UPLO);
 
 #endif

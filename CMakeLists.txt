@@ -34,6 +34,9 @@ set(SRC_THERMO
     src/printconfig.c 
     src/printthermo.c 
     src/readthermo.c 
+    src/readhessian.c
+    src/calcfreqs.c
+    src/dsyev.c
     src/vdos.c 
     src/thermo.c
 )
@@ -43,6 +46,22 @@ add_executable(thermo ${SRC_THERMO})
 
 # Link math library
 target_link_libraries(thermo m)
+
+# Linear algebra (lapack and blas)
+if(DEFINED ENV{LAPACK_INCL} AND DEFINED ENV{LAPACK_LINK})
+    include_directories($ENV{LAPACK_INLC})
+    target_link_libraries(thermo $ENV{LAPACK_LINK})
+    add_definitions(-DHAVE_LAPACK)
+else()
+    find_package(LAPACK)
+    find_package(BLAS)
+    if(${LAPACK_FOUND} AND ${BLAS_FOUND})
+        target_link_libraries(thermo ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+        add_definitions(-DHAVE_LAPACK)
+    else()
+        message(WARNING "WARNING!\nImpossible to find lapack. Some functions will be disabled.\nSet environmental variables LAPACK_INCL and LAPACK_LINK")
+    endif()
+endif()
 
 # Enable Testing
 enable_testing()
