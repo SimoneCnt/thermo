@@ -1,6 +1,6 @@
 
-Usage Examples
-==============
+Examples
+========
 
 Here a small description on how to use the code is given. Inside the `examples` 
 directory it is possible to find some ready to use input files for some more 
@@ -19,29 +19,29 @@ associated frequencies). The simmetry number is also reported: since water
 symmetry pointgroup is C2v, the symmetry number is 2. The mass is also specified. 
 
     # Set temperature in Kelvin
-    T 298.15
+    temperature = 298.15
 
     # Set number of mols and volume (1 atm pressure)
-    n 1
-    V 22.465
+    nmols = 1
+    volume = 22.465
 
     # Mass in g/mol
-    m 18.01528
+    mass = 18.01528
 
     # Translational degrees of freedom
-    t 3
+    translational = 3
 
     # Rotational degrees of freedom and moments of inertia in g/mol Ang^2
-    r 3
+    rotational = 3
     1.7704
     0.6169
     1.1535
 
     # Symmetry number
-    s 2
+    sigma = 2
 
     # Number of vibrations and their frequencies in cm-1
-    v 3
+    vibrations = 3
     1635.618
     3849.420
     3974.869
@@ -53,7 +53,7 @@ printed. For example, the evaluated translational molar entropy is evaluated
 to be 32.452 cal mol<sup>-1</sup> K<sup>-1</sup> and the zero point vibrational
 energy to be 13.524 kcal mol<sup>-1</sup>.
 
-Input and reference output can be found in the `water` subdirectory.
+Input and reference output can be found in the `examples/water` subdirectory.
 
 
 Dimerization of Insulin
@@ -71,9 +71,9 @@ dimer is discussed as example of how the vibrational entropy can partially
 counterbalance the net lost in translational and rotational degrees of freedom.
 Translational and rotational contribution are calculated in good agreement 
 with the data reported in the paper, while the vibrational ones are incorrect 
-due to the limited number of frequences reported in the main text.
+due to the limited number of frequences reported in the paper itself.
 
-The input files are inside the `insulin` subdirectory. Since we want to study
+The input files are inside the `examples/insulin` subdirectory. Since we want to study
 the dimerization reaction, it is possible to run at the same time both the 
 monomer and the dimer, and, thanks to the `--stechio`` command line option,
 the differences for the dimerization reaction are automatically printed. 
@@ -91,11 +91,11 @@ Free Energy Difference between Peptides and Proteins Conformers
 Three examples are included to study the difference in free energy between 
 peptides and proteins conformes: 
 
- -  alanine dipeptide (`diala` directory) in its c7 equatorial (c7eq) and c7 
+ -  alanine dipeptide (`examples/diala` directory) in its c7 equatorial (c7eq) and c7 
     axial (c7ax) conformations;
- -  beta hairpin from protein G (`bhp`) in the native beta-harpin (bhp1)
+ -  beta hairpin from protein G (`examples/bhp`) in the native beta-harpin (bhp1)
     and in a three-stranded beta sheet (bhp2) conformations;
- -  the converter of the biomolecular motor myosin VI (`conv`) in the 
+ -  the converter of the biomolecular motor myosin VI (`examples/conv`) in the 
     pre-powerstroke (pps) and rigor-like (rig) conformations.
 
 ![Representation of the three examples to study the quantum correction to the conformational free energy difference: the alanine dipeptide, the beta hairpin of protein G and the converter of myosin VI. Reproduced from ref. @cecchini2015quantum.\label{fig_mc_qmcorr}](doc/mc_qmcorr.pdf){width=70%}
