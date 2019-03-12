@@ -20,8 +20,17 @@ elseif(${CMAKE_C_COMPILER_ID} MATCHES "Clang")
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native -ffast-math")
 endif()
 
-# Set the current directory for -I
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+# Get version from last git commit
+execute_process(COMMAND git describe --long --tags --dirty --always  OUTPUT_VARIABLE GIT_VERSION RESULT_VARIABLE WITH_GIT OUTPUT_STRIP_TRAILING_WHITESPACE)
+if (NOT (${WITH_GIT} EQUAL 0))
+    set(GIT_VERSION "unknown")
+endif(NOT (${WITH_GIT} EQUAL 0))
+
+# Set include directories
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_BINARY_DIR}/src)
+
+# Generate thermo.h
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/thermo.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/thermo.h)
 
 # Source files
 set(SRC_THERMO 

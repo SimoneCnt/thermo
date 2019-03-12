@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "thermo.h"
+#include <thermo.h>
 
 void 
 thermo_vdos(Thermo *A, const char *fname)

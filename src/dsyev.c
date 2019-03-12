@@ -5,8 +5,8 @@
     Simone Conti 2016-2017
 */
 
-#include "cygtools.h"
-#include "thermo.h"
+#include <cygtools.h>
+#include <thermo.h>
 
 extern void dsyev_(const char* jobz, const char* uplo, int* n, double* a, int* lda,
                 double* w, double* work, int* lwork, int* info );

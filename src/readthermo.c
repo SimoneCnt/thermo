@@ -6,8 +6,8 @@
     Copyright (C) 2015 Université de Strasbourg
 */
 
-#include "cygtools.h"
-#include "thermo.h"
+#include <cygtools.h>
+#include <thermo.h>
 
 /* Read a system from file */
 int 

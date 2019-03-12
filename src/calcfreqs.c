@@ -5,8 +5,8 @@
     Simone Conti 2016-2017
 */
 
-#include "cygtools.h"
-#include "thermo.h"
+#include <cygtools.h>
+#include <thermo.h>
 
 int
 thermo_calcfreqs(Thermo *A)

@@ -43,7 +43,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "thermo.h"
+#include <thermo.h>
 
 void 
 thermo_cumulvib(const Thermo *A, const char *fname) 

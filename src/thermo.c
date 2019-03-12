@@ -2,15 +2,17 @@
 /*
     Thermo
 
-    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2014-2017-2019 Simone Conti
     Copyright (C) 2015-2016 Université de Strasbourg
 */
 
-#include "cygtools.h"
-#include "thermo.h"
+#include <cygtools.h>
+#include <thermo.h>
+
 
 /* Functions defined at the end of this file */
 static void version(void);  /* Print version info */
+static void version2(void);  /* Print version info -- more system specifics*/
 static void usage(void);    /* Print the usage of the software */
 static void help(void);     /* Print some help */
 
@@ -108,6 +110,7 @@ main(int argc, char *argv[])
 
             case 'v': /* Version */
                 version();
+                version2();
                 return EXIT_SUCCESS;
                 break;
 
@@ -224,13 +227,20 @@ void version() {
     fprintf(fpout, "    Thermo 2.0\n");
     fprintf(fpout, "    ==========\n");
     fprintf(fpout, "\n");
-    fprintf(fpout, "Copyright (C) 2014-2017 Simone Conti\n");
+    fprintf(fpout, "Copyright (C) 2014-2017-2019 Simone Conti\n");
     fprintf(fpout, "Copyright (C) 2015-2016 Université de Strasbourg\n");
     fprintf(fpout, "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n");
     fprintf(fpout, "This is free software: you are free to change and redistribute it.\n");
     fprintf(fpout, "There is NO WARRANTY, to the extent permitted by law.\n");
     fprintf(fpout, "\n");
     fprintf(fpout, "Written by Simone Conti.\n");
+    fprintf(fpout, "\n");
+}
+
+void version2() {
+    fprintf(fpout, "GIT version: %s\n", GIT_VERSION);
+    fprintf(fpout, "Compiled on %s using the %s C compiler v%s \n", BUILD_DATE, CC_ID, CC_VERSION);
+    fprintf(fpout, "    on a %s (%s) machine\n", SYSTEM_GEN, SYSTEM_PROC);
     fprintf(fpout, "\n");
 }
 

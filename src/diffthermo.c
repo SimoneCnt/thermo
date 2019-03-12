@@ -43,7 +43,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "thermo.h"
+#include <thermo.h>
 
 void
 thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)

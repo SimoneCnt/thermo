@@ -7,7 +7,7 @@
 */
 
 #include <assert.h>
-#include "cygtools.h"
+#include <cygtools.h>
 
 int cyg_getline (char **lineptr, FILE *stream) {
 

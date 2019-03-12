@@ -9,6 +9,14 @@
 #ifndef _THERMO_
 #define _THERMO_
 
+/* System-specific variables set at configuration/build time */
+#define GIT_VERSION "@GIT_VERSION@"
+#define SYSTEM_GEN  "@CMAKE_SYSTEM@"
+#define SYSTEM_PROC "@CMAKE_SYSTEM_PROCESSOR@"
+#define CC_ID       "@CMAKE_C_COMPILER_ID@"
+#define CC_VERSION  "@CMAKE_C_COMPILER_VERSION@"
+#define BUILD_DATE  __DATE__ " at " __TIME__
+
 /* Constants */
 #define CNS_PI     3.14159265358979323846  /* pi []                              */
 #define CNS_2PI    (2.0*CNS_PI)            /* 2pi []                             */

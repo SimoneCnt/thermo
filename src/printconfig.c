@@ -7,7 +7,7 @@
 */
 
 #include <stdio.h>
-#include "thermo.h"
+#include <thermo.h>
 
 void
 thermo_printconfig(const Thermo *A) 
