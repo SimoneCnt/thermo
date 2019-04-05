@@ -218,7 +218,6 @@ main(int argc, char *argv[])
     thermo_delete(&B);
     thermo_delete(&D);
 
-    printf("\n");
     return 0;
 }
 

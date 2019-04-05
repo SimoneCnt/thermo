@@ -2,7 +2,7 @@
 /*
     Read a thermo file and save all quantities inside a Thermo structure.
 
-    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015 Université de Strasbourg
 */
 
@@ -15,7 +15,9 @@ thermo_readthermo(Thermo *A, const char *fname)
 {
 
     char    *row=NULL, *key, *val;
+    char    unit[8];
     int     nr, i;
+    double  tmpd;
     FILE    *fp;
 
     /* Open input config file */
@@ -78,17 +80,33 @@ thermo_readthermo(Thermo *A, const char *fname)
 
         /* Rotational degree of freedom and moments of inertia */
         else if (strncmp(key, "rotations", 4)==0) {
+            memset(unit, '\0', sizeof(unit));
             nr = sscanf(val, "%d", &(A->r));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
-            /* Read inertia moments in g/mol/A^2 */
+            if (strstr(val, "unit")!=NULL) {
+                nr = sscanf(val, " %*d %*s %7s", unit);
+                cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s> while reading unit", val, key);
+                if (strncmp(unit, "K", 1)==0 || strncmp(unit, "gmolA2", 6)==0) {
+                    fprintf(fpout, "Found unit <%s> for rotations\n", unit);
+                } else {
+                    cyg_logErr("Impossible to understand unit <%s> for rotations. Possible values are gmolA2 (default) or K\n", unit);
+                    return E_FAILURE;
+                }
+            }
+            /* Read inertia moments */
             if (A->r>0) {
                 A->I = cyg_malloc(NULL, (A->r)*cyg_sizeof(double));
                 cyg_assert(A->I!=NULL, E_FAILURE, "Memory allocation failed!");
                 for (i=0; i<A->r; i++) {
                     if (cyg_getline(&row, fp) != -1) {
                         if (cyg_isstrempty(row, "#\n\0")) continue;
-                        nr=sscanf(row, "%lf", &(A->I[i]));
+                        nr=sscanf(row, "%lf", &tmpd);
                         cyg_assert(nr==1, E_FAILURE, "Impossible to read inertia moment #%d (expected #%d)", i, A->r);
+                        if (strncmp(unit, "K", 1)==0) {
+                            A->I[i] = thermo_kelvin2inertia(tmpd);
+                        } else {
+                            A->I[i] = tmpd;
+                        }
                     }
                 }
             }
@@ -96,17 +114,32 @@ thermo_readthermo(Thermo *A, const char *fname)
 
         /* Vibrational degree of freedom and normal mode frequencies */
         else if (strncmp(key, "vibrations", 4)==0) {
+            memset(unit, '\0', sizeof(unit));
             nr = sscanf(val, "%d", &(A->v));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
-
-            /* Read vibrational modes in cm-1 */
+            if (strstr(val, "unit")!=NULL) {
+                nr = sscanf(val, " %*d %*s %7s", unit);
+                cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s> while reading unit", val, key);
+                if (strncmp(unit, "K", 1)==0 || strncmp(unit, "cm-1", 6)==0) {
+                    fprintf(fpout, "Found unit <%s> for vibrations\n", unit);
+                } else {
+                    cyg_logErr("Impossible to understand unit <%s> for vibrations. Possible values are cm-1 (default) or K\n", unit);
+                    return E_FAILURE;
+                }
+            }
+            /* Read vibrational modes */
             A->nu = cyg_malloc(NULL, (A->v)*cyg_sizeof(double));
             cyg_assert(A->nu!=NULL, E_FAILURE, "Memory allocation failed!");
             for (i=0; i<A->v; i++) {
                 if (cyg_getline(&row, fp) != -1) {
                     if (cyg_isstrempty(row, "#\n\0")) continue;
-                    nr=sscanf(row, "%lf", &(A->nu[i]));
+                    nr=sscanf(row, "%lf", &tmpd);
                     cyg_assert(nr==1, E_FAILURE, "Impossible to read vibration #%d (expected #%d)", i, A->v);
+                    if (strncmp(unit, "K", 1)==0) {
+                        A->nu[i] = thermo_kelvin2cm(tmpd);
+                    } else {
+                        A->nu[i] = tmpd;
+                    }
                 }
             }
         }

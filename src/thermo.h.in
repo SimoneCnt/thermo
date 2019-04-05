@@ -80,4 +80,7 @@ int thermo_readhessian(Thermo *A);
 int thermo_calcfreqs(Thermo *A);
 int mtx_dsyev(int n, double *a, double *w, const char *JOBZ, const char *UPLO);
 
+double thermo_kelvin2inertia (double kelvin);
+double thermo_kelvin2cm(double kelvin);
+
 #endif

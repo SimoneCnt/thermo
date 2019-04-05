@@ -5,7 +5,7 @@
     rotational, vibrational and electronic contributions to the partition function.
     From that, the internal energy, entropy and free energy are evaluated. 
 
-    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015 Université de Strasbourg
 */
 
@@ -139,5 +139,19 @@ thermo_calcthermo(Thermo *A)
     A->Sm_totqm= A->Sm_tr + A->Sm_rot + A->Sm_vibqm;                                        /* Total         */
 
     return;
+}
+
+/*
+    Convert a rotational temperature to a moment of inertia in (g/mol)*A^2.
+*/
+double thermo_kelvin2inertia(double kelvin) {
+    return (CNS_h*CNS_h*CNS_NA) / (8.0*M_PI*M_PI*CNS_kB*1E-23*kelvin);
+}
+
+/*
+    Convert vibrational frequencies from kelvin to cm-1.
+*/
+double thermo_kelvin2cm(double kelvin) {
+    return kelvin*(CNS_kB/(CNS_h*CNS_C*100.0));
 }
 
