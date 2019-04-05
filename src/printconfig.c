@@ -18,7 +18,11 @@ thermo_printconfig(const Thermo *A)
     fprintf(fpout, "   Temperature [K]:           %g\n",A->T);
     fprintf(fpout, "   Number of moles [mol]:     %g\n",A->n);
     fprintf(fpout, "   Volume [dm^3]:             %g\n",A->V);
-    fprintf(fpout, "   Concentration [M]:         %g\n", A->n/A->V);
+    if (A->pressure>0.0) {
+        fprintf(fpout, "   Pressure [atm]:            %g\n", A->pressure);
+    } else {
+        fprintf(fpout, "   Concentration [M]:         %g\n", A->n/A->V);
+    }
     fprintf(fpout, "   Molecular mass [g/mol]:    %g\n",A->m);
     fprintf(fpout, "   Molar energy [kcal/mol]:   %.6f\n",A->E);
     fprintf(fpout, "   Degree of freedom:\n");

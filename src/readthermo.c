@@ -52,6 +52,12 @@ thermo_readthermo(Thermo *A, const char *fname)
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
+        /* Pressure (atm) */
+        else if (strncmp(key, "pressure", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->pressure));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
         /* Molecular mass in g/mol */
         else if (strncmp(key, "mass", 4)==0) {
             nr = sscanf(val, "%lf", &(A->m));
@@ -74,7 +80,6 @@ thermo_readthermo(Thermo *A, const char *fname)
         else if (strncmp(key, "rotations", 4)==0) {
             nr = sscanf(val, "%d", &(A->r));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
-
             /* Read inertia moments in g/mol/A^2 */
             if (A->r>0) {
                 A->I = cyg_malloc(NULL, (A->r)*cyg_sizeof(double));
@@ -125,6 +130,12 @@ thermo_readthermo(Thermo *A, const char *fname)
             cyg_logErr("Unknown keyword <%s>", key);
             return E_FAILURE;
         }
+    }
+
+    /* Validate nmols, volume, and pressure */
+    if (A->pressure>0.0) {
+        A->n = 1.0;
+        A->V = (1000.0*CNS_kB*CNS_NA) * A->T / (A->pressure*101325.0);
     }
 
     /* Clean and return */

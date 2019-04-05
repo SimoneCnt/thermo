@@ -45,6 +45,7 @@ typedef struct {
     double T;   /* Temperature in kelvin */
     double V;   /* Volume */
     double n;   /* Number of mols  */
+    double pressure; /* Pressure for a gas in atmosphere */
     double m;	/* Mass of the system in g/mol */
     double E;	/* Energy of the system in kcal/mol */
     double *I;	/* Moments of inertia in g/mol*A^2 */
