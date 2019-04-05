@@ -1,0 +1,37 @@
+
+# Ethane example. 
+# Reproduce the Gaussian thermochemistry output given in http://gaussian.com/thermo/
+
+temperature = 298.15
+mass = 30.04695
+pressure = 1.0
+
+translations = 3
+
+rotations = 3 unit K
+3.67381
+0.98044
+0.98043
+
+sigma = 1
+
+vibrations = 18 unit K
+602.31
+1607.07
+1607.45
+1683.83
+1978.85
+1978.87
+2303.03
+2389.95
+2389.96
+2404.55
+2417.29
+2417.30
+4202.52
+4227.44
+4244.32
+4244.93
+4291.74
+4292.31
+

@@ -1,0 +1,55 @@
+
+    Thermo 2.0
+    ==========
+
+Copyright (C) 2014-2017-2019 Simone Conti
+Copyright (C) 2015-2016 Université de Strasbourg
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Simone Conti.
+
+
+Molecule A: <ethane.inp>                
+---------------------------------------------
+
+Found unit <K> for rotations
+Found unit <K> for vibrations
+Parsed thermodynamic quantities:
+   Temperature [K]:           298.15
+   Number of moles [mol]:     1
+   Volume [dm^3]:             24.4654
+   Pressure [atm]:            1
+   Molecular mass [g/mol]:    30.0469
+   Molar energy [kcal/mol]:   0.000000
+   Degree of freedom:
+      translational:          3
+      rotational:             3
+         moments of inerzia [g/mol/A^2]:
+            6.601966
+            24.738249
+            24.738501
+         symmetry number:     1
+      vibrational modes:      18
+         frequencies [1/cm]: 
+ 418.626387  1116.969513  1117.233626  1170.320381  1375.369536  1375.383437  
+1600.685905  1661.098326  1661.105277  1671.245834  1680.100577  1680.107527  
+2920.897482  2938.217749  2949.949935  2950.373906  2982.908484  2983.304653  
+
+Extensive quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl    TotQm 
+   U       0.000      0.889      0.889     10.665     49.212     12.442     50.990 kcal
+   S       0.000     36.134     19.848    -39.769      1.136     16.213     57.118  cal
+ -TS       0.000    -10.773     -5.918     11.857     -0.339     -4.834    -17.030 kcal
+   F       0.000     -9.885     -5.029     22.522     48.874      7.608     33.960 kcal
+
+Intensive (molar) quantities:
+            Elec      Trans        Rot      VibCl      VibQm      TotCl      TotQm 
+   Um      0.000      0.889      0.889     10.665     49.212     12.442     50.990 kcal/mol
+   Sm      0.000     34.147     19.848    -39.769      1.136     14.226     55.130  cal/mol
+ -TSm      0.000    -10.181     -5.918     11.857     -0.339     -4.241    -16.437 kcal/mol
+   Fm      0.000     -9.292     -5.029     22.522     48.874      8.201     34.553 kcal/mol
+
+Zero point vibrational energy:      48.968 kcal/mol
+

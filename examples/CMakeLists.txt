@@ -43,3 +43,6 @@ cyg_addtest_cmp(conv conv.out)
 cyg_addtest_bin(insulin thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/insulin/monomer.inp -B ${CMAKE_CURRENT_SOURCE_DIR}/insulin/dimer.inp -s 2:1 -o insulin.out)
 cyg_addtest_cmp(insulin insulin.out)
 
+cyg_addtest_bin(ethane thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/ethane/ethane.inp -o ethane.out)
+cyg_addtest_cmp(ethane ethane.out)
+
