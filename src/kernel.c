@@ -47,6 +47,20 @@ enum {
     THERMO_LAST
 };
 
+/*
+    Convert frequency in cm-1 to kelvin.
+*/
+double thermo_cm2kelvin(double cm) {
+    return cm/(CNS_kB/(CNS_h*CNS_C*100.0));
+
+}
+
+/*
+    Convert vibrational frequencies from kelvin to cm-1.
+*/
+double thermo_kelvin2cm(double kelvin) {
+    return kelvin*(CNS_kB/(CNS_h*CNS_C*100.0));
+}
 
 /*
     Convert a rotational temperature to a moment of inertia in (g/mol)*A^2.
@@ -56,11 +70,12 @@ double thermo_kelvin2inertia(double kelvin) {
 }
 
 /*
-    Convert vibrational frequencies from kelvin to cm-1.
+    Convert rotational frequencies [cm-1] to moment of inertia [(g/mol)*A^2]
 */
-double thermo_kelvin2cm(double kelvin) {
-    return kelvin*(CNS_kB/(CNS_h*CNS_C*100.0));
+double thermo_freq2inertia(double freq) {
+    return thermo_kelvin2inertia(thermo_cm2kelvin(freq));
 }
+
 
 
 /*
@@ -308,7 +323,7 @@ static inline void thermo_vibqm(double temperature, int nvib, double *freq, doub
     *F   = thermo_vibqm_F(temperature, nvib, freq);
     *ZPE = thermo_vibqm_ZPE(nvib, freq);
 }
- 
+
 
 /*
     Main function to compute everything

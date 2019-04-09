@@ -46,3 +46,6 @@ cyg_addtest_cmp(insulin insulin.out)
 cyg_addtest_bin(ethane thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/ethane/ethane.inp -o ethane.out)
 cyg_addtest_cmp(ethane ethane.out)
 
+cyg_addtest_bin(benzene_dimer thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/benzene_dimer/benzene_dimer.inp -o benzene_dimer.out)
+cyg_addtest_cmp(benzene_dimer benzene_dimer.out)
+

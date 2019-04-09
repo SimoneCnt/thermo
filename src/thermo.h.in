@@ -80,9 +80,13 @@ int thermo_readhessian(Thermo *A);
 int thermo_calcfreqs(Thermo *A);
 int mtx_dsyev(int n, double *a, double *w, const char *JOBZ, const char *UPLO);
 
+/* Convert units */
+double thermo_cm2kelvin(double cm);
 double thermo_kelvin2inertia (double kelvin);
 double thermo_kelvin2cm(double kelvin);
+double thermo_freq2inertia(double freq);
 
+/* Compute thermodynamical quantities */
 double *thermo_compute(double temperature, double energy,
     int ntr, double mass, double volume, double nmols,
     int nrot, double *inertia, double symmetry,

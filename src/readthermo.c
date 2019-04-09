@@ -86,7 +86,7 @@ thermo_readthermo(Thermo *A, const char *fname)
             if (strstr(val, "unit")!=NULL) {
                 nr = sscanf(val, " %*d %*s %7s", unit);
                 cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s> while reading unit", val, key);
-                if (strncmp(unit, "K", 1)==0 || strncmp(unit, "gmolA2", 6)==0) {
+                if (strncmp(unit, "K", 1)==0 || strncmp(unit, "gmolA2", 6)==0 || strncmp(unit, "cm-1", 4)==0) {
                     fprintf(fpout, "Found unit <%s> for rotations\n", unit);
                 } else {
                     cyg_logErr("Impossible to understand unit <%s> for rotations. Possible values are gmolA2 (default) or K\n", unit);
@@ -104,6 +104,8 @@ thermo_readthermo(Thermo *A, const char *fname)
                         cyg_assert(nr==1, E_FAILURE, "Impossible to read inertia moment #%d (expected #%d)", i, A->r);
                         if (strncmp(unit, "K", 1)==0) {
                             A->I[i] = thermo_kelvin2inertia(tmpd);
+                        } else if (strncmp(unit, "cm-1", 4)==0) {
+                            A->I[i] = thermo_freq2inertia(tmpd);
                         } else {
                             A->I[i] = tmpd;
                         }
