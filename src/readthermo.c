@@ -130,6 +130,7 @@ thermo_readthermo(Thermo *A, const char *fname)
                 }
             }
             /* Read vibrational modes */
+            if (A->v<1) continue;
             A->nu = cyg_malloc(NULL, (A->v)*cyg_sizeof(double));
             cyg_assert(A->nu!=NULL, E_FAILURE, "Memory allocation failed!");
             for (i=0; i<A->v; i++) {
