@@ -22,6 +22,7 @@ thermo_delete(Thermo *A)
     if (A->vdos!=NULL) {free(A->vdos); A->vdos=NULL;}
     if (A->hessfile) {free(A->hessfile); A->hessfile=NULL;}
     if (A->hessian) {free(A->hessian); A->hessian=NULL;}
+    if (A->results) {free(A->results); A->results=NULL;}
     return;
 }
 

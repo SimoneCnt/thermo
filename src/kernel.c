@@ -16,37 +16,6 @@
 #define LIGHTSPEED  299792458.0                 /* Speed of light [ m/s ]             */
 #define J2KCALMOL   (AVOGADRO/(4.184*1000.0))   /* Convert joule to kcal/mol [ kcal/J ] */
 #define PI          M_PI                        /* 3.14... */
-
-enum {
-    THERMO_FIRST = 0,
-    THERMO_LNQ_TR,
-    THERMO_LNQ_ROT,
-    THERMO_LNQ_VIBCL,
-    THERMO_LNQ_VIBQM,
-    THERMO_LNQ_ELEC,
-    THERMO_LNQ,
-    THERMO_U_TR,
-    THERMO_U_ROT,
-    THERMO_U_VIBCL,
-    THERMO_U_VIBQM,
-    THERMO_U_ELEC,
-    THERMO_U,
-    THERMO_S_TR,
-    THERMO_S_ROT,
-    THERMO_S_VIBCL,
-    THERMO_S_VIBQM,
-    THERMO_S_ELEC,
-    THERMO_S,
-    THERMO_F_TR,
-    THERMO_F_ROT,
-    THERMO_F_VIBCL,
-    THERMO_F_VIBQM,
-    THERMO_F_ELEC,
-    THERMO_F,
-    THERMO_ZPE,
-    THERMO_LAST
-};
-
 /*
     Convert frequency in cm-1 to kelvin.
 */
@@ -180,10 +149,17 @@ static inline double thermo_rot_S(double temperature, int nrot, double *inertia,
 
 /* Compute all F, U, S for rotations */
 static inline void thermo_rot(double temperature, int nrot, double *inertia, double symmetry, double *LNQ, double *F, double *U, double *S) {
-    *LNQ = thermo_rot_lnq(temperature, nrot, inertia, symmetry);
-    *S   = thermo_rot_S(temperature, nrot, inertia, symmetry);
-    *U   = thermo_rot_U(temperature, nrot);
-    *F   = thermo_rot_F(temperature, nrot, inertia, symmetry);
+    if (nrot<1.0) {
+        *LNQ = 1.0;
+        *S   = 0.0;
+        *U   = 0.0;
+        *F   = 0.0;
+    } else {
+        *LNQ = thermo_rot_lnq(temperature, nrot, inertia, symmetry);
+        *S   = thermo_rot_S(temperature, nrot, inertia, symmetry);
+        *U   = thermo_rot_U(temperature, nrot);
+        *F   = thermo_rot_F(temperature, nrot, inertia, symmetry);
+    }
 }
 
 
@@ -326,12 +302,102 @@ static inline void thermo_vibqm(double temperature, int nvib, double *freq, doub
 
 
 /*
+    Solation entropy as by:
+        A. J. Garza "Solvation Entropy Made Simple", JCTC 2019.
+*/
+static inline void solvation_entropy_easysolv(double temperature, double MWs, double Vm, double Vs,
+    double density, double acentricity, double permittivity, double expansion,
+    double rgyr_m, double rgyr_s, double asa_m, double asa_s,
+    double *dStr, double *dSrot, double *Sc_omega, double *Sc_epsilon, double *Sc_alpha) {
+
+    double volume;      /* The corrected volume -- the output! */
+    double cbrt_Vm;     /* Cubic root of Vm */
+    double cbrt_Vs;     /* Cubic root of Vs */
+    double Vfree;       /* Free volume in the solvent (per molecule) */
+    double cbrt_Vfree;  /* Cubic root of the free volume */
+    double Nc;          /* Average number of accessible cavities */
+    double vc;          /* Volume of one solute cavity */
+    double cbrt_vc;     /* Cubic root of vc */
+    double x;           /* Hopping probability */
+    double Nx;          /* Number of sites for hopping per cavity */
+
+    double Ns    = ((AVOGADRO*1000.0*1E-27)*density)/MWs; // Number of molecules per angstrom^3
+    double Vone  = 1.0/Ns;  // Angstrom^3 per molecule
+    Vfree = Vone - Vs;
+
+    /* Compute vc */
+    /*printf("Vs = %lf\n", Vs);
+    printf("Vm = %lf\n", Vm);
+    printf("Ns = %lf\n", Ns);
+    printf("Vone = %lf\n", Vone);
+    printf("Vfree = %lf\n", Vfree);*/
+    cbrt_Vfree = cbrt(Vfree);
+    cbrt_Vm = cbrt(Vm);
+    cbrt_vc = cbrt_Vfree + cbrt_Vm;
+    vc = cbrt_vc * cbrt_vc * cbrt_vc;
+    /*printf("rc = %lf\n", cbrt_vc);
+    printf("vc = %lf\n", vc);*/
+    double cbrt_vcs = cbrt_Vfree + cbrt(Vs);
+
+    /* Compute Nc */
+    cbrt_Vs = cbrt(Vs);
+    x = fmax( ((cbrt_Vfree*cbrt_Vfree)-(cbrt_Vm*cbrt_Vm)), 0.0 ) / ( (cbrt_Vfree*cbrt_Vfree)+(cbrt_Vs*cbrt_Vs));
+    Nx = 4.0 * ( (cbrt_vc*cbrt_vc) / ((cbrt_Vfree*cbrt_Vfree)+(cbrt_Vs*cbrt_Vs)) );
+    Nc = 1.0 + Nx * ( x/(1.0-x) );
+    volume = Nc*vc*(AVOGADRO*1E-27);
+    /*printf("x = %lf\n", x);
+    printf("Nx = %lf\n", Nx);
+    printf("Nc = %g (~1?)\n", Nc);*/
+    //printf("volume = %lf\n", volume);
+
+    // Translational entropy in the liquid
+    //*Str = thermo_tr_S(temperature, 3, solute_mass, volume, 1.0) + BOLTZMANN*J2KCALMOL*1000.0;
+    *dStr = BOLTZMANN*J2KCALMOL*1000.0*log(volume);
+    //printf("Str = %g\n", Str);
+
+    // Rotational entropy correction in the liquid
+    *dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((cbrt_vc - rgyr_m)/cbrt_vc);
+    //printf("dSrot = %lf\n", dSrot);
+
+    // Cavity entropy -- omega model
+    double Sc_zero = (J2KCALMOL*BOLTZMANN*1000.0) * (Vm/Vs) * log(1.0-Vs*Ns);
+    double G = asa_m/asa_s;
+    double Sc_omega_dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((cbrt_vcs - rgyr_s)/cbrt_vcs);
+    *Sc_omega = Sc_zero - G*( (5.365*acentricity*(J2KCALMOL*BOLTZMANN*1000.0)) + Sc_omega_dSrot );
+    /*printf("Sc_zero = %lf\n", Sc_zero);
+    printf("G = %lf\n", G);
+    printf("Sc_omega_dSrot = %lf\n", Sc_omega_dSrot);
+    printf("Sc_omega = %lf\n", Sc_omega);*/
+
+    // Cavity entropy -- epsilon model
+    double SPT_R = cbrt(Vm/Vs);
+    double SPT_y =  ((permittivity-1.0)/(permittivity+2.0))*(3.0/(4.0*PI));
+    *Sc_epsilon = -log(1.0-SPT_y) + SPT_R*3.0*(SPT_y/(1.0-SPT_y)) + (SPT_R*SPT_R)*3.0*(SPT_y/(1.0-SPT_y)) + (SPT_R*SPT_R)*(9.0/2.0)*(SPT_y/(1.0-SPT_y))*(SPT_y/(1.0-SPT_y));
+    *Sc_epsilon *= -BOLTZMANN*J2KCALMOL*1000.0;
+    /*printf("R = %lf\n", SPT_R);
+    printf("y = %lf\n", SPT_y);
+    printf("Sc_epsilon = %lf\n", Sc_epsilon);*/
+
+    // Cavity entropy -- epsilon-alpha model
+    double dfdy = (-(SPT_R*SPT_R)*(6.0*SPT_y+3.0) + 3.0*SPT_R*(SPT_y-1.0) - (SPT_y-1.0)*(SPT_y-1.0)) / ((1.0-SPT_y)*(1.0-SPT_y)*(1.0-SPT_y));
+    *Sc_alpha = *Sc_epsilon - ((expansion/1000.0)*temperature)*(BOLTZMANN*J2KCALMOL*1000.0)*SPT_y*dfdy;
+    /*printf("dfdy = %lf\n", dfdy);
+    printf("Sc_alpha = %lf\n", Sc_alpha);
+    printf("Sc_epsilon,alpha = %lf\n", Sc_epsilon + Sc_alpha);*/
+
+}
+
+
+/*
     Main function to compute everything
 */
 double *thermo_compute(double temperature, double energy,
     int ntr, double mass, double volume, double nmols,
     int nrot, double *inertia, double symmetry,
-    int nvib, double *freq) {
+    int nvib, double *freq,
+    double solute_volume, double solvent_volume, double solvent_mass, double solvent_density,
+    double solvent_acentricity, double solvent_permittivity, double solvent_expansion,
+    double rgyr_m, double rgyr_s, double asa_m, double asa_s) {
 
     /* Vector to store all results */
     double *res;
@@ -346,7 +412,7 @@ double *thermo_compute(double temperature, double energy,
     res[THERMO_U_ELEC]   = energy;
     res[THERMO_S_ELEC]   = 0.0;
     res[THERMO_F_ELEC]   = energy;
-    
+
     /* Ideal gas */
     thermo_tr(temperature, ntr, mass, volume, nmols, res+THERMO_LNQ_TR, res+THERMO_F_TR, res+THERMO_U_TR, res+THERMO_S_TR);
     thermo_rot(temperature, nrot, inertia, symmetry, res+THERMO_LNQ_ROT, res+THERMO_F_ROT, res+THERMO_U_ROT, res+THERMO_S_ROT);
@@ -358,6 +424,11 @@ double *thermo_compute(double temperature, double energy,
     res[THERMO_U]   = res[THERMO_U_TR] + res[THERMO_U_ROT] + res[THERMO_U_VIBCL] + res[THERMO_U_ELEC];
     res[THERMO_S]   = res[THERMO_S_TR] + res[THERMO_S_ROT] + res[THERMO_S_VIBCL] + res[THERMO_S_ELEC];
     res[THERMO_F]   = res[THERMO_F_TR] + res[THERMO_F_ROT] + res[THERMO_F_VIBCL] + res[THERMO_F_ELEC];
+
+    /* Solvation entropy based on "Solvation entropy made simple" */
+    solvation_entropy_easysolv(temperature, solvent_mass, solute_volume, solvent_volume, solvent_density,
+        solvent_acentricity, solvent_permittivity, solvent_expansion, rgyr_m, rgyr_s, asa_m, asa_s,
+        res+THERMO_S_EASYSOLV_TR, res+THERMO_S_EASYSOLV_ROT, res+THERMO_S_EASYSOLV_OMEGA, res+THERMO_S_EASYSOLV_EPSILON, res+THERMO_S_EASYSOLV_ALPHA);
 
     return res;
 }

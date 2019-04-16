@@ -17,8 +17,9 @@ thermo_readthermo(Thermo *A, const char *fname)
     char    *row=NULL, *key, *val;
     char    unit[8];
     int     nr, i;
-    double  tmpd;
+    double  tmpd, concentration;
     FILE    *fp;
+    bool    convert_density_to_volume=false;
 
     /* Open input config file */
     fp = cyg_fopen(fname, "r");
@@ -52,6 +53,29 @@ thermo_readthermo(Thermo *A, const char *fname)
         else if (strncmp(key, "volume", 4)==0) {
             nr = sscanf(val, "%lf", &(A->V));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Concentration */
+        else if (strncmp(key, "concentration", 13)==0) {
+            memset(unit, '\0', sizeof(unit));
+            nr = sscanf(val, "%lf", &concentration);
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+            if (strstr(val, "unit")!=NULL) {
+                nr = sscanf(val, " %*f %*s %7s", unit);
+                cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s> while reading unit", val, key);
+                if (strncmp(unit, "M", 1)==0) {
+                    fprintf(fpout, "Found unit <%s> for concentration\n", unit);
+                    A->V = concentration;
+                    A->n = 1.0;
+                } else if (strncmp(unit, "g/ml", 4)==0) {
+                    fprintf(fpout, "Found unit <%s> for concentration\n", unit);
+                    A->V = 1.0/(1000.0*concentration);
+                    convert_density_to_volume = true;
+                } else {
+                    cyg_logErr("Impossible to understand unit <%s> for concentration. Possible values are M (default) or g/ml\n", unit);
+                    return E_FAILURE;
+                }
+            }
         }
 
         /* Pressure (atm) */
@@ -161,6 +185,72 @@ thermo_readthermo(Thermo *A, const char *fname)
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
+        /* van der Waals volume of the solute [A^3] */
+        else if (strncmp(key, "solute_volume", 13)==0) {
+            nr = sscanf(val, "%lf", &(A->solute_volume));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* van der Waals volume of the solute [A^3] */
+        else if (strncmp(key, "solvent_volume", 14)==0) {
+            nr = sscanf(val, "%lf", &(A->solvent_volume));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* solvent molecular weight [g/mol] */
+        else if (strncmp(key, "solvent_mass", 12)==0) {
+            nr = sscanf(val, "%lf", &(A->solvent_mass));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* density of the solvent [g/ml] */
+        else if (strncmp(key, "solvent_density", 15)==0) {
+            nr = sscanf(val, "%lf", &(A->density));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* acentricity of the solvent */
+        else if (strncmp(key, "solvent_acentricity", 19)==0) {
+            nr = sscanf(val, "%lf", &(A->acentricity));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* permittivity of the solvent */
+        else if (strncmp(key, "solvent_permittivity", 20)==0) {
+            nr = sscanf(val, "%lf", &(A->permittivity));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* isobaric thermcal expansion coefficient of the solvent [10^-3/K] */
+        else if (strncmp(key, "solvent_expansion", 17)==0) {
+            nr = sscanf(val, "%lf", &(A->thermal_expansion));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* radius of gyration of the solute [A] */
+        else if (strncmp(key, "rgyr", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->rgyr_m));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* radius of gyration of the solvent [A] */
+        else if (strncmp(key, "solvent_rgyr", 12)==0) {
+            nr = sscanf(val, "%lf", &(A->rgyr_s));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* sasa of the solute [A^2] */
+        else if (strncmp(key, "sasa", 4)==0) {
+            nr = sscanf(val, "%lf", &(A->asa_m));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* sasa of the solvent [A^2] */
+        else if (strncmp(key, "solvent_sasa", 12)==0) {
+            nr = sscanf(val, "%lf", &(A->asa_s));
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
         /* Unknown Keyword */
         else {
             cyg_logErr("Unknown keyword <%s>", key);
@@ -168,10 +258,13 @@ thermo_readthermo(Thermo *A, const char *fname)
         }
     }
 
-    /* Validate nmols, volume, and pressure */
+    /* Validate nmols, volume, concentration, and pressure */
     if (A->pressure>0.0) {
         A->n = 1.0;
         A->V = (1000.0*CNS_kB*CNS_NA) * A->T / (A->pressure*101325.0);
+    }
+    if (convert_density_to_volume) {
+        A->V *= A->m;
     }
 
     /* Clean and return */

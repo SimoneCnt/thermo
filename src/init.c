@@ -29,6 +29,23 @@ thermo_init(Thermo *A)
     A->nu_np = (int)lrint(ceil(4000.0/A->dnu));
     A->vdos=NULL;
     A->hessfile = NULL;
+
+    /* To compute solvation entropy: */
+    A->solute_volume = NAN;
+    A->solvent_volume = NAN;
+    A->solvent_mass = NAN;
+    A->density = NAN;
+    A->acentricity = NAN;
+    A->permittivity = NAN;
+    A->thermal_expansion = NAN;
+    A->rgyr_s = NAN;
+    A->rgyr_m = NAN;
+    A->asa_s = NAN;
+    A->asa_m = NAN;
+
+    /* Vector containing all computed thermodynamic quantities */
+    A->results = NULL;
+
     return;
 }
 

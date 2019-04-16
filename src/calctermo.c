@@ -24,7 +24,12 @@ thermo_calcthermo(Thermo *A)
     double kBT = CNS_kB * A->T;     /* kB T */
     double tmp;
 
-    double *res = thermo_compute(A->T, A->E, A->t, A->m, A->V, A->n, A->r, A->I, A->s, A->v, A->nu);
+    A->results = thermo_compute(A->T, A->E, A->t, A->m, A->V, A->n, A->r, A->I, A->s, A->v, A->nu,
+        A->solute_volume, A->solvent_volume, A->solvent_mass, A->density,
+        A->acentricity, A->permittivity, A->thermal_expansion,
+        A->rgyr_m, A->rgyr_s, A->asa_m, A->asa_s);
+    double *res = A->results;
+
     if (!res) {
         fprintf(stderr, "thermo_calcthermo: thermo computation failed!\n");
         return;

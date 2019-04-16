@@ -7,6 +7,7 @@
 */
 
 #include <stdio.h>
+#include <math.h>
 #include <thermo.h>
 
 void
@@ -40,6 +41,21 @@ thermo_printconfig(const Thermo *A)
         if ((i+1)%6==0 && i+1!=A->v) {fprintf(fpout, "\n");}
     }
     fprintf(fpout, "\n");
+
+    if (!isnan(A->solute_volume))     fprintf(fpout, "   Solute vdw volume:          %g\n", A->solute_volume);
+    if (!isnan(A->solvent_volume))    fprintf(fpout, "   Solvent vdw volume:         %g\n", A->solvent_volume);
+    if (!isnan(A->solvent_mass))      fprintf(fpout, "   Solvent molecular weight:   %g\n", A->solvent_mass);
+    if (!isnan(A->density))           fprintf(fpout, "   Solvent density:            %g\n", A->density);
+    if (!isnan(A->acentricity))       fprintf(fpout, "   Solvent acentricity:        %g\n", A->acentricity);
+    if (!isnan(A->permittivity))      fprintf(fpout, "   Solvent permittivity:       %g\n", A->permittivity);
+    if (!isnan(A->thermal_expansion)) fprintf(fpout, "   Solvent thermal expansion:  %g\n", A->thermal_expansion);
+
+    if (!isnan(A->rgyr_m))            fprintf(fpout, "   Solute gyration radius:     %g\n", A->rgyr_m);
+    if (!isnan(A->rgyr_s))            fprintf(fpout, "   Solvent gyration radius:    %g\n", A->rgyr_s);
+    if (!isnan(A->asa_m))             fprintf(fpout, "   Solute accessible surface:  %g\n", A->asa_m);
+    if (!isnan(A->asa_s))             fprintf(fpout, "   Solvent accessible surface: %g\n", A->asa_s);
+
+
     fprintf(fpout, "\n");
     return;
 }

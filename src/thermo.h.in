@@ -63,7 +63,61 @@ typedef struct {
     double *vdos; /* Vibrational density of states */
     double ZPE; /* Zero-Point vibrational energy */
     double qm_corr; /* Vibrational quantum correction as defined by M. Cecchini, JCTC 2015 */
+
+    /* To compute solvation entropy: */
+    double solute_volume;       /* van der Waals volume of one solute molecule [A^3] */
+    double solvent_volume;      /* van der Waals volume of one solvent molecule [A^3] */
+    double solvent_mass;        /* molecular weight of the solvent [g/mol] */
+    double density;             /* density of the solvent [g/ml] */
+    double acentricity;         /* acentric factor of the solvent */
+    double permittivity;        /* relative permittivity of the solvent */
+    double thermal_expansion;   /* isobaric thermal expansion coefficient [10^-3/K] */
+
+    double rgyr_m;  /* Rasdius of gyration of the solute */
+    double rgyr_s;  /* Radius of gyration of the solvent */
+    double asa_m;   /* accessible surface area of the solute */
+    double asa_s;   /* accessible surface area of the solvent */
+
+    double *results;    /* Vector containing all computed thermodynamic quantities. Indices are in the enum below. */
 } Thermo;
+
+
+enum {
+    THERMO_FIRST = 0,
+    THERMO_LNQ_TR,
+    THERMO_LNQ_ROT,
+    THERMO_LNQ_VIBCL,
+    THERMO_LNQ_VIBQM,
+    THERMO_LNQ_ELEC,
+    THERMO_LNQ,
+    THERMO_U_TR,
+    THERMO_U_ROT,
+    THERMO_U_VIBCL,
+    THERMO_U_VIBQM,
+    THERMO_U_ELEC,
+    THERMO_U,
+    THERMO_S_TR,
+    THERMO_S_ROT,
+    THERMO_S_VIBCL,
+    THERMO_S_VIBQM,
+    THERMO_S_ELEC,
+    THERMO_S,
+    THERMO_F_TR,
+    THERMO_F_ROT,
+    THERMO_F_VIBCL,
+    THERMO_F_VIBQM,
+    THERMO_F_ELEC,
+    THERMO_F,
+    THERMO_ZPE,
+    THERMO_S_SOLV_VNEXCL,
+    THERMO_S_SOLV_VFREE,
+    THERMO_S_EASYSOLV_TR,
+    THERMO_S_EASYSOLV_ROT,
+    THERMO_S_EASYSOLV_OMEGA,
+    THERMO_S_EASYSOLV_EPSILON,
+    THERMO_S_EASYSOLV_ALPHA,
+    THERMO_LAST
+};
 
 
 void thermo_calcthermo(Thermo *A);
@@ -90,7 +144,10 @@ double thermo_freq2inertia(double freq);
 double *thermo_compute(double temperature, double energy,
     int ntr, double mass, double volume, double nmols,
     int nrot, double *inertia, double symmetry,
-    int nvib, double *freq);
+    int nvib, double *freq,
+    double solute_vdw, double solvent_vdw, double solvent_mass, double solvent_density,
+    double solvent_acentricity, double solvent_permittivity, double solvent_expansion,
+    double rgyr_m, double rgyr_s, double asa_m, double asa_s);
 
 
 #endif

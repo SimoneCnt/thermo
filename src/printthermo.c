@@ -48,6 +48,25 @@ thermo_printthermo(const Thermo *A, int onlyInt)
     fprintf(fpout, "Vibrational quantum correction: %10.3f kcal/mol\n", A->qm_corr);
     }
 
+    if (!isnan(A->density)) {
+        double *res = A->results;
+        double dStot_omega = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_OMEGA];
+        double dStot_epsilon = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_EPSILON];
+        double dStot_alpha = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_ALPHA];
+        fprintf(fpout, "\n");
+        fprintf(fpout, "Solvation Entropy\n");
+        fprintf(fpout, "%-20s %10s %10s %10s %10s %10s %10s             %10s %10s %10s         \n", "", "dS_trans", "dS_rot", "dS_cav", "dS_tot", "S_totcl", "S_totqm", "-TdS_tot", "F_totcl", "F_totqm");
+        fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Omega", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
+            res[THERMO_S_EASYSOLV_OMEGA], dStot_omega, dStot_omega+A->Sm_totcl, dStot_omega+A->Sm_totqm,
+            -A->T*dStot_omega/1000.0, A->Fm_totcl-A->T*dStot_omega/1000.0, A->Fm_totqm-A->T*dStot_omega/1000.0);
+        fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Epsilon", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
+            res[THERMO_S_EASYSOLV_EPSILON], dStot_epsilon, dStot_epsilon+A->Sm_totcl, dStot_epsilon+A->Sm_totqm,
+            -A->T*dStot_epsilon/1000.0, A->Fm_totcl-A->T*dStot_epsilon/1000.0, A->Fm_totqm-A->T*dStot_epsilon/1000.0);
+        fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Eps,Alpha", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
+            res[THERMO_S_EASYSOLV_ALPHA], dStot_alpha, dStot_alpha+A->Sm_totcl, dStot_alpha+A->Sm_totqm,
+            -A->T*dStot_alpha/1000.0, A->Fm_totcl-A->T*dStot_alpha/1000.0, A->Fm_totqm-A->T*dStot_alpha/1000.0);
+    }
+
     fprintf(fpout, "\n");
 
     return;
