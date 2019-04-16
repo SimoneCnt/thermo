@@ -9,15 +9,15 @@ include(CheckIncludeFiles)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 # Set compiler options for C 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 # GCC
 if(${CMAKE_C_COMPILER_ID} MATCHES "GNU") 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O1 -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs ")
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native -ffast-math")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native")
 # Clang
 elseif(${CMAKE_C_COMPILER_ID} MATCHES "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O1 -pedantic -Wall -W -Wextra -Wfatal-errors -Wmissing-prototypes -Wstrict-prototypes -Wconversion -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wnested-externs")
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native -ffast-math")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fshort-enums -fno-common -O3 -march=native")
 endif()
 
 # Get version from last git commit
