@@ -18,9 +18,6 @@
 #define BUILD_DATE  __DATE__ " at " __TIME__
 
 /* Constants */
-#define CNS_PI     3.14159265358979323846  /* pi []                              */
-#define CNS_2PI    (2.0*CNS_PI)            /* 2pi []                             */
-#define CNS_PI2    (CNS_PI*CNS_PI)         /* pi^2 []                            */
 #define CNS_kB     1.3806488E-23           /* Boltzmann constant [ J/K ]         */
 #define CNS_h      6.62606957E-34          /* Planck constant [ Js ]             */
 #define CNS_h2     (CNS_h*CNS_h)           /* Planck constant squared [ (Js)^2 ] */

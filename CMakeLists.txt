@@ -48,6 +48,7 @@ set(SRC_THERMO
     src/dsyev.c
     src/vdos.c 
     src/thermo.c
+    src/kernel.c
 )
 
 # Build thermo (statically linked to libthermo)

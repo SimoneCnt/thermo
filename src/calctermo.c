@@ -14,8 +14,6 @@
 #include <math.h>
 #include <thermo.h>
 
-#include "kernel.c"
-
 void 
 thermo_calcthermo(Thermo *A) 
 {

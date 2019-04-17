@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <thermo.h>
+
 
 #define PLANCK      6.62606957E-34              /* Planck constant [ Js ] */
 #define AVOGADRO    6.02214129E+23              /* Avogadro number [mol-1] */
@@ -16,11 +18,13 @@
 #define LIGHTSPEED  299792458.0                 /* Speed of light [ m/s ]             */
 #define J2KCALMOL   (AVOGADRO/(4.184*1000.0))   /* Convert joule to kcal/mol [ kcal/J ] */
 #define PI          M_PI                        /* 3.14... */
+
+
 /*
     Convert frequency in cm-1 to kelvin.
 */
 double thermo_cm2kelvin(double cm) {
-    return cm/(CNS_kB/(CNS_h*CNS_C*100.0));
+    return cm/(BOLTZMANN/(PLANCK*LIGHTSPEED*100.0));
 
 }
 
@@ -28,14 +32,14 @@ double thermo_cm2kelvin(double cm) {
     Convert vibrational frequencies from kelvin to cm-1.
 */
 double thermo_kelvin2cm(double kelvin) {
-    return kelvin*(CNS_kB/(CNS_h*CNS_C*100.0));
+    return kelvin*(BOLTZMANN/(PLANCK*LIGHTSPEED*100.0));
 }
 
 /*
     Convert a rotational temperature to a moment of inertia in (g/mol)*A^2.
 */
 double thermo_kelvin2inertia(double kelvin) {
-    return (CNS_h*CNS_h*CNS_NA) / (8.0*M_PI*M_PI*CNS_kB*1E-23*kelvin);
+    return ((PLANCK*PLANCK*AVOGADRO)/(8.0*PI*PI*BOLTZMANN*1E-23))/kelvin;
 }
 
 /*
