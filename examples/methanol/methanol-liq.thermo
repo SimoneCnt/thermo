@@ -1,0 +1,30 @@
+
+# Liquid methanol
+
+temperature = 298.15
+concentration = 0.796 unit g/ml
+
+translations = 3
+
+rotations = 3
+3.98199904
+20.50103433
+21.27739477
+
+mass = 32.04
+sigma = 1
+energy = 0.0
+vibrations = 0
+
+solute_volume = 35.24161
+solvent_volume = 35.28708
+solvent_mass = 32.04
+solvent_density = 0.796
+solvent_acentricity = 0.556
+solvent_permittivity = 32.6
+solvent_expansion = 1.09
+rgyr = 1.1944
+solvent_rgyr = 1.1944
+sasa = 119.5194
+solvent_sasa = 119.5194
+
