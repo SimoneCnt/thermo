@@ -350,10 +350,9 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
     printf("Nc = %g (~1?)\n", Nc);*/
     //printf("volume = %lf\n", volume);
 
-    // Translational entropy in the liquid
-    //*Str = thermo_tr_S(temperature, 3, solute_mass, volume, 1.0) + BOLTZMANN*J2KCALMOL*1000.0;
-    *dStr = BOLTZMANN*J2KCALMOL*1000.0*log(volume);
-    //printf("Str = %g\n", Str);
+    /* Translational entropy difference to bring from 1bar gas to liquid confined in volume */
+    *dStr = BOLTZMANN*J2KCALMOL*1000.0*log(volume/(BOLTZMANN*AVOGADRO*1000.0*temperature/1E5));
+    //printf("dStr = %g\n", dStr);
 
     // Rotational entropy correction in the liquid
     *dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((cbrt_vc - rgyr_m)/cbrt_vc);
