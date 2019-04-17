@@ -342,6 +342,9 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
     /*printf("rc = %lf\n", cbrt_vc);
     printf("vc = %lf\n", vc);*/
     double cbrt_vcs = cbrt_Vfree + cbrt(Vs);
+    double vcs = cbrt_vcs*cbrt_vcs*cbrt_vcs;
+    double rc = cbrt(vc*(3.0/(4.0*PI)));
+    double rcs = cbrt(vcs*(3.0/(4.0*PI)));
 
     /* Compute Nc */
     cbrt_Vs = cbrt(Vs);
@@ -359,13 +362,13 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
     //printf("dStr = %g\n", dStr);
 
     // Rotational entropy correction in the liquid
-    *dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((cbrt_vc - rgyr_m)/cbrt_vc);
+    *dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((rc-rgyr_m)/rc);
     //printf("dSrot = %lf\n", dSrot);
 
     // Cavity entropy -- omega model
     double Sc_zero = (J2KCALMOL*BOLTZMANN*1000.0) * (Vm/Vs) * log(1.0-Vs*Ns);
     double G = asa_m/asa_s;
-    double Sc_omega_dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((cbrt_vcs - rgyr_s)/cbrt_vcs);
+    double Sc_omega_dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((rcs-rgyr_s)/rcs);
     *Sc_omega = Sc_zero - G*( (5.365*acentricity*(J2KCALMOL*BOLTZMANN*1000.0)) + Sc_omega_dSrot );
     /*printf("Sc_zero = %lf\n", Sc_zero);
     printf("G = %lf\n", G);
