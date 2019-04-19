@@ -30,21 +30,24 @@ thermo_init(Thermo *A)
     A->vdos=NULL;
     A->hessfile = NULL;
 
-    /* To compute solvation entropy: */
     A->solute_volume = NAN;
-    A->solvent_volume = NAN;
-    A->solvent_mass = NAN;
-    A->density = NAN;
-    A->acentricity = NAN;
-    A->permittivity = NAN;
-    A->thermal_expansion = NAN;
-    A->rgyr_s = NAN;
     A->rgyr_m = NAN;
-    A->asa_s = NAN;
     A->asa_m = NAN;
+
+    /* To compute solvation entropy: */
+    A->solvent.name = "";
+    A->solvent.vvdw = NAN;
+    A->solvent.mass = NAN;
+    A->solvent.density = NAN;
+    A->solvent.acentricity = NAN;
+    A->solvent.permittivity = NAN;
+    A->solvent.expansion = NAN;
+    A->solvent.rgyr = NAN;
+    A->solvent.bbox = NAN;
 
     /* Vector containing all computed thermodynamic quantities */
     A->results = NULL;
+
 
     return;
 }

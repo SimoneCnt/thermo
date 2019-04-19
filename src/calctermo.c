@@ -23,9 +23,9 @@ thermo_calcthermo(Thermo *A)
     double tmp;
 
     A->results = thermo_compute(A->T, A->E, A->t, A->m, A->V, A->n, A->r, A->I, A->s, A->v, A->nu,
-        A->solute_volume, A->solvent_volume, A->solvent_mass, A->density,
-        A->acentricity, A->permittivity, A->thermal_expansion,
-        A->rgyr_m, A->rgyr_s, A->asa_m, A->asa_s);
+        A->solute_volume, A->solvent.vvdw, A->solvent.mass, A->solvent.density,
+        A->solvent.acentricity, A->solvent.permittivity, A->solvent.expansion,
+        A->rgyr_m, A->solvent.rgyr, A->asa_m, A->solvent.bbox);
     double *res = A->results;
 
     if (!res) {

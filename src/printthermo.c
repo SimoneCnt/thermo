@@ -48,7 +48,7 @@ thermo_printthermo(const Thermo *A, int onlyInt)
     fprintf(fpout, "Vibrational quantum correction: %10.3f kcal/mol\n", A->qm_corr);
     }
 
-    if (!isnan(A->density)) {
+    if (!isnan(A->solvent.density)) {
         double *res = A->results;
         double dStot_omega = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_OMEGA];
         double dStot_epsilon = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_EPSILON];

@@ -2,7 +2,7 @@
 /*
     Thermo header file.
 
-    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015 Université de Strasbourg
 */
 
@@ -28,6 +28,19 @@
 
 /* File pointer for the output */
 extern FILE *fpout;
+
+/* Solvent properties */
+typedef struct {
+    const char *name;       /* Name of the solvent -- just for output */
+    double density;         /* Density of the solvent in g/ml -- from experiment */
+    double acentricity;     /* Acentric factor -- from experiment */
+    double permittivity;    /* Permittivity -- from experiment */
+    double expansion;       /* Isobaric thermal expansion coefficient in 1E-3/K -- from experiment */
+    double mass;            /* Molecular weight of one solvent molecule in g/mol -- computed */
+    double bbox;            /* Surface area of the minimum bounding box for one solvent molecule in A^2 (considering vdw radii) -- computed */
+    double vvdw;            /* Van der Waals volume in A^3 -- computed */
+    double rgyr;            /* Gyration radius in A -- computed */
+} ThermoSolvent;
 
 /* Structure which contain all input informations about a system */
 typedef struct {
@@ -62,18 +75,10 @@ typedef struct {
     double qm_corr; /* Vibrational quantum correction as defined by M. Cecchini, JCTC 2015 */
 
     /* To compute solvation entropy: */
+    ThermoSolvent solvent;      /* Solvent to use */
     double solute_volume;       /* van der Waals volume of one solute molecule [A^3] */
-    double solvent_volume;      /* van der Waals volume of one solvent molecule [A^3] */
-    double solvent_mass;        /* molecular weight of the solvent [g/mol] */
-    double density;             /* density of the solvent [g/ml] */
-    double acentricity;         /* acentric factor of the solvent */
-    double permittivity;        /* relative permittivity of the solvent */
-    double thermal_expansion;   /* isobaric thermal expansion coefficient [10^-3/K] */
-
-    double rgyr_m;  /* Rasdius of gyration of the solute */
-    double rgyr_s;  /* Radius of gyration of the solvent */
-    double asa_m;   /* accessible surface area of the solute */
-    double asa_s;   /* accessible surface area of the solvent */
+    double rgyr_m;              /* Radius of gyration of the solute */
+    double asa_m;               /* accessible surface area of the solute */
 
     double *results;    /* Vector containing all computed thermodynamic quantities. Indices are in the enum below. */
 } Thermo;
@@ -145,6 +150,12 @@ double *thermo_compute(double temperature, double energy,
     double solute_vdw, double solvent_vdw, double solvent_mass, double solvent_density,
     double solvent_acentricity, double solvent_permittivity, double solvent_expansion,
     double rgyr_m, double rgyr_s, double asa_m, double asa_s);
+
+/* Deals with solvents */
+int thermo_get_solvent_from_name(char *name);
+ThermoSolvent thermo_get_solvent_from_id(int id);
+void thermo_print_solvent_id(FILE *fp, int solventid);
+void thermo_print_solvent(FILE *fp, ThermoSolvent);
 
 
 #endif

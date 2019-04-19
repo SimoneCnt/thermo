@@ -16,10 +16,11 @@ thermo_readthermo(Thermo *A, const char *fname)
 
     char    *row=NULL, *key, *val;
     char    unit[8];
-    int     nr, i;
+    int     nr, i, solvent_id;
     double  tmpd, concentration;
     FILE    *fp;
     bool    convert_density_to_volume=false;
+    char solvent_name[32];
 
     /* Open input config file */
     fp = cyg_fopen(fname, "r");
@@ -193,37 +194,37 @@ thermo_readthermo(Thermo *A, const char *fname)
 
         /* van der Waals volume of the solute [A^3] */
         else if (strncmp(key, "solvent_volume", 14)==0) {
-            nr = sscanf(val, "%lf", &(A->solvent_volume));
+            nr = sscanf(val, "%lf", &(A->solvent.vvdw));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
         /* solvent molecular weight [g/mol] */
         else if (strncmp(key, "solvent_mass", 12)==0) {
-            nr = sscanf(val, "%lf", &(A->solvent_mass));
+            nr = sscanf(val, "%lf", &(A->solvent.mass));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
         /* density of the solvent [g/ml] */
         else if (strncmp(key, "solvent_density", 15)==0) {
-            nr = sscanf(val, "%lf", &(A->density));
+            nr = sscanf(val, "%lf", &(A->solvent.density));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
         /* acentricity of the solvent */
         else if (strncmp(key, "solvent_acentricity", 19)==0) {
-            nr = sscanf(val, "%lf", &(A->acentricity));
+            nr = sscanf(val, "%lf", &(A->solvent.acentricity));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
         /* permittivity of the solvent */
         else if (strncmp(key, "solvent_permittivity", 20)==0) {
-            nr = sscanf(val, "%lf", &(A->permittivity));
+            nr = sscanf(val, "%lf", &(A->solvent.permittivity));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
         /* isobaric thermcal expansion coefficient of the solvent [10^-3/K] */
         else if (strncmp(key, "solvent_expansion", 17)==0) {
-            nr = sscanf(val, "%lf", &(A->thermal_expansion));
+            nr = sscanf(val, "%lf", &(A->solvent.expansion));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
@@ -235,7 +236,7 @@ thermo_readthermo(Thermo *A, const char *fname)
 
         /* radius of gyration of the solvent [A] */
         else if (strncmp(key, "solvent_rgyr", 12)==0) {
-            nr = sscanf(val, "%lf", &(A->rgyr_s));
+            nr = sscanf(val, "%lf", &(A->solvent.rgyr));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
 
@@ -247,8 +248,17 @@ thermo_readthermo(Thermo *A, const char *fname)
 
         /* sasa of the solvent [A^2] */
         else if (strncmp(key, "solvent_sasa", 12)==0) {
-            nr = sscanf(val, "%lf", &(A->asa_s));
+            nr = sscanf(val, "%lf", &(A->solvent.bbox));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        }
+
+        /* Solvent name */
+        else if (strcmp(key, "solvent ")==0) {
+            nr = sscanf(val, "%31s", solvent_name);
+            cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+            solvent_id = thermo_get_solvent_from_name(solvent_name);
+            cyg_assert(solvent_id>=0, E_FAILURE, "Unknown solvent <%s>", val);
+            A->solvent = thermo_get_solvent_from_id(solvent_id);
         }
 
         /* Unknown Keyword */

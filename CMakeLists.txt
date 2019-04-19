@@ -49,6 +49,7 @@ set(SRC_THERMO
     src/vdos.c 
     src/thermo.c
     src/kernel.c
+    src/solvents.c
 )
 
 # Build thermo (statically linked to libthermo)
