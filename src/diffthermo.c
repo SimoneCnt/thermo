@@ -139,6 +139,12 @@ thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D)
     /* Vibrational quantum correction ~ see M. Cecchini, JCTC 2015 */
     D->qm_corr = D->Fm_totqm - D->Fm_totcl;
 
+    /* Results array */
+    D->results = malloc(THERMO_LAST*sizeof(double));
+    for (i=0; i<THERMO_LAST; i++) {
+        D->results[i] = nB * B->results[i] - nA * A->results[i];
+    }
+
     return;
 }
 
