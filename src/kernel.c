@@ -395,6 +395,53 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
 
 
 /*
+    Return a description of the given id (index of results array).
+*/
+const char *thermo_description(int id) {
+    if (id<=0 || id>=THERMO_LAST) {
+        fprintf(stderr, "Out of bound value for id = %d", id);
+        return NULL;
+    }
+    const char *desc[THERMO_LAST];
+    desc[THERMO_FIRST]              = "NOTHING_DO_NOT_USE";
+    desc[THERMO_LNQ_TR]             = "log_translational_partition_function";
+    desc[THERMO_LNQ_ROT]            = "log_rotational_partition_function";
+    desc[THERMO_LNQ_VIBCL]          = "log_classical_vibrational_partition_function";
+    desc[THERMO_LNQ_VIBQM]          = "log_quantum_vibrational_partition_function";
+    desc[THERMO_LNQ_ELEC]           = "log_electronic_partition_function";
+    desc[THERMO_LNQ]                = "log_total_partition_function";
+    desc[THERMO_U_TR]               = "translational_internal_energy";
+    desc[THERMO_U_ROT]              = "rotational_internal_energy";
+    desc[THERMO_U_VIBCL]            = "classical_vibrational_internal_energy";
+    desc[THERMO_U_VIBQM]            = "quantum_vibrational_internal_energy";
+    desc[THERMO_U_ELEC]             = "electronic_internal_energy";
+    desc[THERMO_U]                  = "total_internal_energy";
+    desc[THERMO_S_TR]               = "translational_entropy";
+    desc[THERMO_S_ROT]              = "rotational_entropy";
+    desc[THERMO_S_VIBCL]            = "classical_vibrational_entropy";
+    desc[THERMO_S_VIBQM]            = "quantum_vibrational_entropy";
+    desc[THERMO_S_ELEC]             = "electronic_vibrational_entropy";
+    desc[THERMO_S]                  = "total_entropy";
+    desc[THERMO_F_TR]               = "translational_free_energy";
+    desc[THERMO_F_ROT]              = "rotational_free_energy";
+    desc[THERMO_F_VIBCL]            = "classical_vibrational_free_energy";
+    desc[THERMO_F_VIBQM]            = "quantum_vibrational_free_energy";
+    desc[THERMO_F_ELEC]             = "electronic_free_energy";
+    desc[THERMO_F]                  = "total_free_energy";
+    desc[THERMO_ZPE]                = "zero_point_vibrational_energy";
+    desc[THERMO_S_SOLV_VNEXCL]      = "solvation_entropy_nonexcluded";
+    desc[THERMO_S_SOLV_VFREE]       = "solvation_entropy_free_volume";
+    desc[THERMO_S_EASYSOLV_TR]      = "solvation_entropy_easysolv_translations";
+    desc[THERMO_S_EASYSOLV_ROT]     = "solvation_entropy_easysolv_rotations";
+    desc[THERMO_S_EASYSOLV_OMEGA]   = "solvation_entropy_easysolv_omega";
+    desc[THERMO_S_EASYSOLV_EPSILON] = "solvation_entropy_easysolv_epsilon";
+    desc[THERMO_S_EASYSOLV_ALPHA]   = "solvation_entropy_easysolv_alpha";
+    desc[THERMO_LAST]               = "NOTHING_DO_NOT_USE";
+    return desc[id];
+}
+
+
+/*
     Main function to compute everything
 */
 double *thermo_compute(double temperature, double energy,
