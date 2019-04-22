@@ -2,7 +2,7 @@
 /*
     Print the evaluated internal energy, entropy and free energy.
 
-    Copyright (C) 2014, 2015 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015 Université de Strasbourg
 */
 
@@ -12,8 +12,16 @@
 #include <thermo.h>
 
 void 
-thermo_printthermo(const Thermo *A, int onlyInt) 
+thermo_printthermo(const Thermo *A, int onlyInt, bool raw_output)
 {
+
+    if (raw_output) {
+        int i;
+        for (i=1; i<THERMO_LAST; i++) {
+            fprintf(fpout, "%-46s = %10.3f\n", thermo_description(i), A->results[i]);
+        }
+        return;
+    }
 
     if (onlyInt!=1) {
     fprintf(fpout, "Extensive quantities:\n");
@@ -50,21 +58,18 @@ thermo_printthermo(const Thermo *A, int onlyInt)
 
     if (!isnan(A->solvent.density)) {
         double *res = A->results;
-        double dStot_omega = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_OMEGA];
-        double dStot_epsilon = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_EPSILON];
-        double dStot_alpha = res[THERMO_S_EASYSOLV_TR]+res[THERMO_S_EASYSOLV_ROT]+res[THERMO_S_EASYSOLV_ALPHA];
         fprintf(fpout, "\n");
         fprintf(fpout, "Solvation Entropy\n");
         fprintf(fpout, "%-20s %10s %10s %10s %10s %10s %10s             %10s %10s %10s         \n", "", "dS_trans", "dS_rot", "dS_cav", "dS_tot", "S_totcl", "S_totqm", "-TdS_tot", "F_totcl", "F_totqm");
         fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Omega", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
-            res[THERMO_S_EASYSOLV_OMEGA], dStot_omega, dStot_omega+A->Sm_totcl, dStot_omega+A->Sm_totqm,
-            -A->T*dStot_omega/1000.0, A->Fm_totcl-A->T*dStot_omega/1000.0, A->Fm_totqm-A->T*dStot_omega/1000.0);
+            res[THERMO_S_EASYSOLV_CAV_OMEGA], res[THERMO_S_EASYSOLV_TOT_OMEGA], res[THERMO_S_EASYSOLV_TOT_OMEGA]+A->Sm_totcl, res[THERMO_S_EASYSOLV_TOT_OMEGA]+A->Sm_totqm,
+            -A->T*res[THERMO_S_EASYSOLV_TOT_OMEGA]/1000.0, A->Fm_totcl-A->T*res[THERMO_S_EASYSOLV_TOT_OMEGA]/1000.0, A->Fm_totqm-A->T*res[THERMO_S_EASYSOLV_TOT_OMEGA]/1000.0);
         fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Epsilon", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
-            res[THERMO_S_EASYSOLV_EPSILON], dStot_epsilon, dStot_epsilon+A->Sm_totcl, dStot_epsilon+A->Sm_totqm,
-            -A->T*dStot_epsilon/1000.0, A->Fm_totcl-A->T*dStot_epsilon/1000.0, A->Fm_totqm-A->T*dStot_epsilon/1000.0);
+            res[THERMO_S_EASYSOLV_CAV_EPS], res[THERMO_S_EASYSOLV_TOT_EPS], res[THERMO_S_EASYSOLV_TOT_EPS]+A->Sm_totcl, res[THERMO_S_EASYSOLV_TOT_EPS]+A->Sm_totqm,
+            -A->T*res[THERMO_S_EASYSOLV_TOT_EPS]/1000.0, A->Fm_totcl-A->T*res[THERMO_S_EASYSOLV_TOT_EPS]/1000.0, A->Fm_totqm-A->T*res[THERMO_S_EASYSOLV_TOT_EPS]/1000.0);
         fprintf(fpout, "%-20s %10.3f %10.3f %10.3f %10.3f %10.3f %10.3f cal/molK    %10.3f %10.3f %10.3f kcal/mol\n", "EasySolv_Eps,Alpha", res[THERMO_S_EASYSOLV_TR], res[THERMO_S_EASYSOLV_ROT],
-            res[THERMO_S_EASYSOLV_ALPHA], dStot_alpha, dStot_alpha+A->Sm_totcl, dStot_alpha+A->Sm_totqm,
-            -A->T*dStot_alpha/1000.0, A->Fm_totcl-A->T*dStot_alpha/1000.0, A->Fm_totqm-A->T*dStot_alpha/1000.0);
+            res[THERMO_S_EASYSOLV_CAV_ALPHA], res[THERMO_S_EASYSOLV_TOT_ALPHA], res[THERMO_S_EASYSOLV_TOT_ALPHA]+A->Sm_totcl, res[THERMO_S_EASYSOLV_TOT_ALPHA]+A->Sm_totqm,
+            -A->T*res[THERMO_S_EASYSOLV_TOT_ALPHA]/1000.0, A->Fm_totcl-A->T*res[THERMO_S_EASYSOLV_TOT_ALPHA]/1000.0, A->Fm_totqm-A->T*res[THERMO_S_EASYSOLV_TOT_ALPHA]/1000.0);
     }
 
     fprintf(fpout, "\n");

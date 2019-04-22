@@ -2,7 +2,7 @@
 /*
     Thermo
 
-    Copyright (C) 2014-2017-2019 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015-2016 Université de Strasbourg
 */
 
@@ -27,6 +27,7 @@ main(int argc, char *argv[])
     int hasA=0, hasB=0, hasStechio=0, nA, nB, nr, cumul=0, vdos=0, ret;
     char *nameA=NULL, *nameB=NULL;
     char *outfile=NULL;
+    bool raw_output = false;
     fpout = stderr;
 
     /* Define and initialize Thermo structures */
@@ -41,6 +42,7 @@ main(int argc, char *argv[])
         {"A",       required_argument, 0, 'A'},
         {"B",       required_argument, 0, 'B'},
         {"out",     required_argument, 0, 'o'},
+        {"raw",     no_argument,       0, 'r'},
         {"stechio", required_argument, 0, 's'},
         {"cumul",   no_argument,       0, 'c'},
         {"vdos",    no_argument,       0, 'd'},
@@ -53,7 +55,7 @@ main(int argc, char *argv[])
 
     /* Parse command line options */
     while (1) {
-        c = getopt_long_only(argc, argv, "A:B:o:s:cdn:vh", long_options, &option_index);
+        c = getopt_long_only(argc, argv, "A:B:o:rs:cdn:vh", long_options, &option_index);
 
         /* Detect the end of the options. */
         if (c == -1) break;
@@ -72,6 +74,10 @@ main(int argc, char *argv[])
 
             case 'o': /* Output file */
                 outfile = optarg;
+                break;
+
+            case 'r': /* raw output format */
+                raw_output = true;
                 break;
 
             case 's': /* Stechiometric coefficients */
@@ -158,7 +164,9 @@ main(int argc, char *argv[])
     } else {
         fpout = stdout;
     }
-    version();
+
+    /* Print version */
+    if (!raw_output) version();
 
     /* Check if you gave at least A or B */
     if (!hasA && !hasB) {
@@ -171,7 +179,7 @@ main(int argc, char *argv[])
     /* Work with mol A */
     if (hasA) {
         char *sname = strrchr(nameA, '/'); if (sname==NULL) sname=nameA; else sname++;
-        fprintf(fpout, "\nMolecule A: <%s>\
+        if (!(raw_output && !hasStechio)) fprintf(fpout, "\nMolecule A: <%s>\
                 \n---------------------------------------------\n\n", sname);
         ret = thermo_readthermo(&A, nameA);
         cyg_assert(ret==E_SUCCESS, E_FAILURE, "Failing reading thermo input file <%s>", nameA);
@@ -179,9 +187,9 @@ main(int argc, char *argv[])
             thermo_readhessian(&A);
             thermo_calcfreqs(&A);
         }
-        thermo_printconfig(&A);
+        thermo_printconfig(&A, raw_output);
         thermo_calcthermo(&A);
-        thermo_printthermo(&A,0);
+        thermo_printthermo(&A,0, raw_output);
         if (cumul) thermo_cumulvib(&A, "cumul_A");
         if (vdos)  thermo_vdos(&A, "vdos_A.dat");
     }
@@ -189,7 +197,7 @@ main(int argc, char *argv[])
     /* Work with mol B */
     if (hasB) {
         char *sname = strrchr(nameB, '/'); if (sname==NULL) sname=nameB; else sname++;
-        fprintf(fpout, "\nMolecule B: <%s>\
+        if (!(raw_output && !hasStechio)) fprintf(fpout, "\nMolecule B: <%s>\
                 \n---------------------------------------------\n\n", sname);
         ret = thermo_readthermo(&B, nameB);
         cyg_assert(ret==E_SUCCESS, E_FAILURE, "Failing reading thermo input file <%s>", nameB);
@@ -197,9 +205,9 @@ main(int argc, char *argv[])
             thermo_readhessian(&B);
             thermo_calcfreqs(&B);
         }
-        thermo_printconfig(&B);
+        thermo_printconfig(&B, raw_output);
         thermo_calcthermo(&B);
-        thermo_printthermo(&B,0);
+        thermo_printthermo(&B,0, raw_output);
         if (cumul) thermo_cumulvib(&B, "cumul_B");
         if (vdos)  thermo_vdos(&B, "vdos_B.dat");
     }
@@ -209,7 +217,7 @@ main(int argc, char *argv[])
         fprintf(fpout, "\nDifferences for the reaction %dA <-> %dB\
                 \n---------------------------------------------\n\n", nA, nB);
         thermo_diffthermo(&A, &B, nA, nB, &D);
-        thermo_printthermo(&D,1);
+        thermo_printthermo(&D,1, raw_output);
         if (cumul) thermo_cumulvib(&D, "cumul_D");
     }
 

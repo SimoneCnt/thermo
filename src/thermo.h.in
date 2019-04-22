@@ -9,6 +9,10 @@
 #ifndef _THERMO_
 #define _THERMO_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 /* System-specific variables set at configuration/build time */
 #define GIT_VERSION "@GIT_VERSION@"
 #define SYSTEM_GEN  "@CMAKE_SYSTEM@"
@@ -130,8 +134,8 @@ void thermo_cumulvib(const Thermo *A, const char *filename);
 void thermo_delete(Thermo *A);
 void thermo_diffthermo(const Thermo *A, const Thermo *B, int nA, int nB, Thermo *D);
 void thermo_init(Thermo *A);
-void thermo_printconfig(const Thermo *A);
-void thermo_printthermo(const Thermo *A, int onlyInt); 
+void thermo_printconfig(const Thermo *A, bool raw_output);
+void thermo_printthermo(const Thermo *A, int onlyInt, bool raw_output);
 int  thermo_readthermo(Thermo *A, const char *fname);
 void thermo_vdos(Thermo *A, const char *fname);
 //void thermo_vdosfvib(const Thermo *A, const char *fname);

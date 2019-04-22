@@ -2,7 +2,7 @@
 /*
     Print the parsed quantities from a Thermo input file.
 
-    Copyright (C) 2014-2017 Simone Conti
+    Copyright (C) 2014-2019 Simone Conti
     Copyright (C) 2015 Université de Strasbourg
 */
 
@@ -11,8 +11,11 @@
 #include <thermo.h>
 
 void
-thermo_printconfig(const Thermo *A) 
+thermo_printconfig(const Thermo *A, bool raw_output)
 {
+
+    if (raw_output) return;
+
     int i;
 
     fprintf(fpout, "Parsed thermodynamic quantities:\n");
