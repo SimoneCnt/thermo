@@ -187,7 +187,7 @@ thermo_readthermo(Thermo *A, const char *fname)
         }
 
         /* van der Waals volume of the solute [A^3] */
-        else if (strncmp(key, "solute_volume", 13)==0) {
+        else if (strncmp(key, "vvdw", 4)==0) {
             nr = sscanf(val, "%lf", &(A->solute_volume));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
@@ -241,7 +241,7 @@ thermo_readthermo(Thermo *A, const char *fname)
         }
 
         /* sasa of the solute [A^2] */
-        else if (strncmp(key, "sasa", 4)==0) {
+        else if (strncmp(key, "bbox", 4)==0) {
             nr = sscanf(val, "%lf", &(A->asa_m));
             cyg_assert(nr==1, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
         }
