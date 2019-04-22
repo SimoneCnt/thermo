@@ -24,6 +24,7 @@ thermo_init(Thermo *A)
     A->T   = 300.0;   /* Temperature */
     A->n   = 1.0;     /* Number of moles */
     A->V   = 1.0;     /* Volume */
+    A->s   = 1;
     A->pressure = -1;   /* Pressure (set negative as flag) */
     A->dnu = 1.0;     /* Accuracy in vibrational spectra */
     A->nu_np = (int)lrint(ceil(4000.0/A->dnu));
