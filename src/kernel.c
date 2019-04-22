@@ -463,6 +463,12 @@ double *thermo_compute(double temperature, double energy,
         return NULL;
     }
 
+    /* Initialize everything to zero */
+    int i;
+    for (i=0; i<THERMO_LAST; i++) {
+        res[i] = 0.0;
+    }
+
     /* Energy */
     res[THERMO_LNQ_ELEC] = energy/(J2KCALMOL*BOLTZMANN*temperature);
     res[THERMO_U_ELEC]   = energy;
@@ -482,12 +488,14 @@ double *thermo_compute(double temperature, double energy,
     res[THERMO_F]   = res[THERMO_F_TR] + res[THERMO_F_ROT] + res[THERMO_F_VIBCL] + res[THERMO_F_ELEC];
 
     /* Solvation entropy based on "Solvation entropy made simple" */
-    solvation_entropy_easysolv(temperature, solvent_mass, solute_volume, solvent_volume, solvent_density,
-        solvent_acentricity, solvent_permittivity, solvent_expansion, rgyr_m, rgyr_s, asa_m, asa_s,
-        res+THERMO_S_EASYSOLV_TR, res+THERMO_S_EASYSOLV_ROT, res+THERMO_S_EASYSOLV_CAV_OMEGA, res+THERMO_S_EASYSOLV_CAV_EPS, res+THERMO_S_EASYSOLV_CAV_ALPHA);
-    res[THERMO_S_EASYSOLV_TOT_OMEGA] = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_OMEGA];
-    res[THERMO_S_EASYSOLV_TOT_EPS]   = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_EPS];
-    res[THERMO_S_EASYSOLV_TOT_ALPHA] = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_ALPHA];
+    if (!isnan(solvent_density)) {
+        solvation_entropy_easysolv(temperature, solvent_mass, solute_volume, solvent_volume, solvent_density,
+            solvent_acentricity, solvent_permittivity, solvent_expansion, rgyr_m, rgyr_s, asa_m, asa_s,
+            res+THERMO_S_EASYSOLV_TR, res+THERMO_S_EASYSOLV_ROT, res+THERMO_S_EASYSOLV_CAV_OMEGA, res+THERMO_S_EASYSOLV_CAV_EPS, res+THERMO_S_EASYSOLV_CAV_ALPHA);
+        res[THERMO_S_EASYSOLV_TOT_OMEGA] = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_OMEGA];
+        res[THERMO_S_EASYSOLV_TOT_EPS]   = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_EPS];
+        res[THERMO_S_EASYSOLV_TOT_ALPHA] = res[THERMO_S_EASYSOLV_TR] + res[THERMO_S_EASYSOLV_ROT] + res[THERMO_S_EASYSOLV_CAV_ALPHA];
+    }
 
     return res;
 }
