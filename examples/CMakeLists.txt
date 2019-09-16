@@ -49,3 +49,7 @@ cyg_addtest_cmp(ethane ethane.out)
 cyg_addtest_bin(benzene_dimer thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/benzene_dimer/benzene_dimer.inp -o benzene_dimer.out)
 cyg_addtest_cmp(benzene_dimer benzene_dimer.out)
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/ala6/ala6.hes DESTINATION ${CMAKE_BINARY_DIR}/examples/ala6/)
+cyg_addtest_bin(ala6 thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/ala6/ala6.inp -o ala6.out)
+cyg_addtest_cmp(ala6 ala6.out)
+

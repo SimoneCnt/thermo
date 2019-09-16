@@ -1,0 +1,17 @@
+
+# Ala6 -- Testing the reading hessian
+
+temperature = 300
+nmols = 1
+volume = 1
+mass = 1
+sigma = 1
+translations = 3
+rotations = 3
+1
+1
+1
+
+hessian=ala6.hes
+
+
