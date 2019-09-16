@@ -47,13 +47,12 @@ set(SRC_THERMO
     src/calcfreqs.c
     src/dsyev.c
     src/vdos.c 
-    src/thermo.c
     src/kernel.c
     src/solvents.c
 )
 
 # Build thermo (statically linked to libthermo)
-add_executable(thermo ${SRC_THERMO})
+add_executable(thermo ${SRC_THERMO} src/thermo.c)
 
 # Link math library
 target_link_libraries(thermo m)
@@ -97,4 +96,12 @@ add_custom_target(doc
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Generating documentation with pandoc"
 )
+
+
+# Install!
+install(TARGETS thermo
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib/static)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/src/thermo.h DESTINATION "include/")
 
