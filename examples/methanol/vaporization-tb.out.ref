@@ -1,0 +1,118 @@
+
+Molecule A: <methanol-gas-tb.thermo>                
+---------------------------------------------
+
+log_translational_partition_function           =     16.105
+log_rotational_partition_function              =      8.253
+log_classical_vibrational_partition_function   =      0.000
+log_quantum_vibrational_partition_function     =      0.000
+log_electronic_partition_function              =      0.000
+log_total_partition_function                   =     24.358
+translational_internal_energy                  =      1.007
+rotational_internal_energy                     =      1.007
+classical_vibrational_internal_energy          =      0.000
+quantum_vibrational_internal_energy            =      0.000
+electronic_internal_energy                     =      0.000
+total_internal_energy                          =      2.014
+translational_entropy                          =     34.985
+rotational_entropy                             =     19.381
+classical_vibrational_entropy                  =      0.000
+quantum_vibrational_entropy                    =      0.000
+electronic_vibrational_entropy                 =      0.000
+total_entropy                                  =     54.366
+translational_free_energy                      =    -10.811
+rotational_free_energy                         =     -5.540
+classical_vibrational_free_energy              =     -0.000
+quantum_vibrational_free_energy                =     -0.000
+electronic_free_energy                         =      0.000
+total_free_energy                              =    -16.351
+zero_point_vibrational_energy                  =      0.000
+solvation_entropy_nonexcluded                  =      0.000
+solvation_entropy_free_volume                  =      0.000
+solvation_entropy_easysolv_translations        =      0.000
+solvation_entropy_easysolv_rotations           =      0.000
+solvation_entropy_easysolv_cavity_omega        =      0.000
+solvation_entropy_easysolv_cavity_epsilon      =      0.000
+solvation_entropy_easysolv_cavity_alpha        =      0.000
+solvation_entropy_easysolv_total_omega         =      0.000
+solvation_entropy_easysolv_total_epsilon       =      0.000
+solvation_entropy_easysolv_total_alpha         =      0.000
+
+Molecule B: <methanol-liq-tb.thermo>                
+---------------------------------------------
+
+Found unit <g/ml> for concentration
+log_translational_partition_function           =      9.557
+log_rotational_partition_function              =      8.253
+log_classical_vibrational_partition_function   =      0.000
+log_quantum_vibrational_partition_function     =      0.000
+log_electronic_partition_function              =      0.000
+log_total_partition_function                   =     17.810
+translational_internal_energy                  =      1.007
+rotational_internal_energy                     =      1.007
+classical_vibrational_internal_energy          =      0.000
+quantum_vibrational_internal_energy            =      0.000
+electronic_internal_energy                     =      0.000
+total_internal_energy                          =      2.014
+translational_entropy                          =     21.973
+rotational_entropy                             =     19.381
+classical_vibrational_entropy                  =      0.000
+quantum_vibrational_entropy                    =      0.000
+electronic_vibrational_entropy                 =      0.000
+total_entropy                                  =     41.354
+translational_free_energy                      =     -6.415
+rotational_free_energy                         =     -5.540
+classical_vibrational_free_energy              =     -0.000
+quantum_vibrational_free_energy                =     -0.000
+electronic_free_energy                         =      0.000
+total_free_energy                              =    -11.956
+zero_point_vibrational_energy                  =      0.000
+solvation_entropy_nonexcluded                  =      0.000
+solvation_entropy_free_volume                  =      0.000
+solvation_entropy_easysolv_translations        =    -10.307
+solvation_entropy_easysolv_rotations           =     -2.138
+solvation_entropy_easysolv_cavity_omega        =     -5.779
+solvation_entropy_easysolv_cavity_epsilon      =     -4.420
+solvation_entropy_easysolv_cavity_alpha        =     -2.047
+solvation_entropy_easysolv_total_omega         =    -18.224
+solvation_entropy_easysolv_total_epsilon       =    -16.865
+solvation_entropy_easysolv_total_alpha         =    -14.491
+
+Differences for the reaction 1A <-> 1B                
+---------------------------------------------
+
+log_translational_partition_function           =     -6.548
+log_rotational_partition_function              =      0.000
+log_classical_vibrational_partition_function   =      0.000
+log_quantum_vibrational_partition_function     =      0.000
+log_electronic_partition_function              =      0.000
+log_total_partition_function                   =     -6.548
+translational_internal_energy                  =      0.000
+rotational_internal_energy                     =      0.000
+classical_vibrational_internal_energy          =      0.000
+quantum_vibrational_internal_energy            =      0.000
+electronic_internal_energy                     =      0.000
+total_internal_energy                          =      0.000
+translational_entropy                          =    -13.012
+rotational_entropy                             =      0.000
+classical_vibrational_entropy                  =      0.000
+quantum_vibrational_entropy                    =      0.000
+electronic_vibrational_entropy                 =      0.000
+total_entropy                                  =    -13.012
+translational_free_energy                      =      4.395
+rotational_free_energy                         =      0.000
+classical_vibrational_free_energy              =      0.000
+quantum_vibrational_free_energy                =      0.000
+electronic_free_energy                         =      0.000
+total_free_energy                              =      4.395
+zero_point_vibrational_energy                  =      0.000
+solvation_entropy_nonexcluded                  =      0.000
+solvation_entropy_free_volume                  =      0.000
+solvation_entropy_easysolv_translations        =    -10.307
+solvation_entropy_easysolv_rotations           =     -2.138
+solvation_entropy_easysolv_cavity_omega        =     -5.779
+solvation_entropy_easysolv_cavity_epsilon      =     -4.420
+solvation_entropy_easysolv_cavity_alpha        =     -2.047
+solvation_entropy_easysolv_total_omega         =    -18.224
+solvation_entropy_easysolv_total_epsilon       =    -16.865
+solvation_entropy_easysolv_total_alpha         =    -14.491

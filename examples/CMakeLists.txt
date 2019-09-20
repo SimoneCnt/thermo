@@ -53,3 +53,7 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/ala6/ala6.hes DESTINATION ${CMAKE_BINARY_D
 cyg_addtest_bin(ala6 thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/ala6/ala6.inp -o ala6.out)
 cyg_addtest_cmp(ala6 ala6.out)
 
+cyg_addtest_bin(methanol-water           thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-gas.thermo    -B ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-liq.thermo    --stechio 1:1 --raw -o vaporization.out)
+cyg_addtest_bin(methanol-vaporization    thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-gas.thermo    -B ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-water.thermo  --stechio 1:1 --raw -o solution-water.out)
+cyg_addtest_bin(methanol-vaporization-tb thermo -A ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-gas-tb.thermo -B ${CMAKE_CURRENT_SOURCE_DIR}/methanol/methanol-liq-tb.thermo --stechio 1:1 --raw -o vaporization-tb.out)
+
