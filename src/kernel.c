@@ -325,71 +325,45 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
     double x;           /* Hopping probability */
     double Nx;          /* Number of sites for hopping per cavity */
 
+    /* Compute free volume */
     double Ns    = ((AVOGADRO*1000.0*1E-27)*density)/MWs; // Number of molecules per angstrom^3
     double Vone  = 1.0/Ns;  // Angstrom^3 per molecule
     Vfree = Vone - Vs;
-
-    /* Compute vc */
-    /*printf("Vs = %lf\n", Vs);
-    printf("Vm = %lf\n", Vm);
-    printf("Ns = %lf\n", Ns);
-    printf("Vone = %lf\n", Vone);
-    printf("Vfree = %lf\n", Vfree);*/
     cbrt_Vfree = cbrt(Vfree);
     cbrt_Vm = cbrt(Vm);
     cbrt_vc = cbrt_Vfree + cbrt_Vm;
     vc = cbrt_vc * cbrt_vc * cbrt_vc;
-    /*printf("rc = %lf\n", cbrt_vc);
-    printf("vc = %lf\n", vc);*/
     double cbrt_vcs = cbrt_Vfree + cbrt(Vs);
     double vcs = cbrt_vcs*cbrt_vcs*cbrt_vcs;
     double rc = cbrt(vc*(3.0/(4.0*PI)));
     double rcs = cbrt(vcs*(3.0/(4.0*PI)));
-
-    /* Compute Nc */
     cbrt_Vs = cbrt(Vs);
     x = fmax( ((cbrt_Vfree*cbrt_Vfree)-(cbrt_Vm*cbrt_Vm)), 0.0 ) / ( (cbrt_Vfree*cbrt_Vfree)+(cbrt_Vs*cbrt_Vs));
     Nx = 4.0 * ( (cbrt_vc*cbrt_vc) / ((cbrt_Vfree*cbrt_Vfree)+(cbrt_Vs*cbrt_Vs)) );
     Nc = 1.0 + Nx * ( x/(1.0-x) );
     volume = Nc*vc*(AVOGADRO*1E-27);
-    /*printf("x = %lf\n", x);
-    printf("Nx = %lf\n", Nx);
-    printf("Nc = %g (~1?)\n", Nc);*/
-    //printf("volume = %lf\n", volume);
 
     /* Translational entropy difference to bring from 1bar gas to liquid confined in volume */
     *dStr = BOLTZMANN*J2KCALMOL*1000.0*log(volume/(BOLTZMANN*AVOGADRO*1000.0*temperature/1E5));
-    //printf("dStr = %g\n", dStr);
 
-    // Rotational entropy correction in the liquid
+    /* Rotational entropy correction in the liquid */
     *dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((rc-rgyr_m)/rc);
-    //printf("dSrot = %lf\n", dSrot);
 
-    // Cavity entropy -- omega model
+    /* Cavity entropy -- omega model */
     double Sc_zero = (J2KCALMOL*BOLTZMANN*1000.0) * (Vm/Vs) * log(1.0-Vs*Ns);
     double G = asa_m/asa_s;
     double Sc_omega_dSrot = (3.0*BOLTZMANN*J2KCALMOL*1000.0)*log((rcs-rgyr_s)/rcs);
     *Sc_omega = Sc_zero - G*( (5.365*acentricity*(J2KCALMOL*BOLTZMANN*1000.0)) + Sc_omega_dSrot );
-    /*printf("Sc_zero = %lf\n", Sc_zero);
-    printf("G = %lf\n", G);
-    printf("Sc_omega_dSrot = %lf\n", Sc_omega_dSrot);
-    printf("Sc_omega = %lf\n", Sc_omega);*/
 
-    // Cavity entropy -- epsilon model
+    /* Cavity entropy -- epsilon model */
     double SPT_R = cbrt(Vm/Vs);
     double SPT_y =  ((permittivity-1.0)/(permittivity+2.0))*(3.0/(4.0*PI));
     *Sc_epsilon = -log(1.0-SPT_y) + SPT_R*3.0*(SPT_y/(1.0-SPT_y)) + (SPT_R*SPT_R)*3.0*(SPT_y/(1.0-SPT_y)) + (SPT_R*SPT_R)*(9.0/2.0)*(SPT_y/(1.0-SPT_y))*(SPT_y/(1.0-SPT_y));
     *Sc_epsilon *= -BOLTZMANN*J2KCALMOL*1000.0;
-    /*printf("R = %lf\n", SPT_R);
-    printf("y = %lf\n", SPT_y);
-    printf("Sc_epsilon = %lf\n", Sc_epsilon);*/
 
-    // Cavity entropy -- epsilon-alpha model
+    /* Cavity entropy -- epsilon-alpha model */
     double dfdy = (-(SPT_R*SPT_R)*(6.0*SPT_y+3.0) + 3.0*SPT_R*(SPT_y-1.0) - (SPT_y-1.0)*(SPT_y-1.0)) / ((1.0-SPT_y)*(1.0-SPT_y)*(1.0-SPT_y));
     *Sc_alpha = *Sc_epsilon - ((expansion/1000.0)*temperature)*(BOLTZMANN*J2KCALMOL*1000.0)*SPT_y*dfdy;
-    /*printf("dfdy = %lf\n", dfdy);
-    printf("Sc_alpha = %lf\n", Sc_alpha);
-    printf("Sc_epsilon,alpha = %lf\n", Sc_epsilon + Sc_alpha);*/
 
 }
 
@@ -398,11 +372,11 @@ static inline void solvation_entropy_easysolv(double temperature, double MWs, do
     Return a description of the given id (index of results array).
 */
 const char *thermo_description(int id) {
-    if (id<=0 || id>=THERMO_LAST) {
+    if (id<=THERMO_FIRST || id>=THERMO_LAST) {
         fprintf(stderr, "Out of bound value for id = %d", id);
         return NULL;
     }
-    const char *desc[THERMO_LAST];
+    const char *desc[THERMO_LAST+1];
     desc[THERMO_FIRST]                = "NOTHING_DO_NOT_USE";
     desc[THERMO_LNQ_TR]               = "log_translational_partition_function";
     desc[THERMO_LNQ_ROT]              = "log_rotational_partition_function";

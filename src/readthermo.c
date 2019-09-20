@@ -36,7 +36,7 @@ thermo_readthermo(Thermo *A, const char *fname)
         /* Parse all key:val pairs */
         key = strtok(row, "=");
         val = strtok(NULL, "=");
-        cyg_assert(val!=NULL, E_FAILURE, "Invalid value <%s> for key <%s>", val, key);
+        cyg_assert(val, E_FAILURE, "Cannot read value for key <%s>", key);
 
         /* Temperature in kelvin */
         if (strncmp(key, "temperature", 4)==0) {
