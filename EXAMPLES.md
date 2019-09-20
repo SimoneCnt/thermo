@@ -105,10 +105,6 @@ form the work of M. Cecchini, JCTC 2015 [@cecchini2015quantum], where they
 were used to develop a quantum correction to the classical conformational free
 energy difference.
 
-> M. Cecchini, "Quantum Corrections to the Free Energy Difference between
-> Peptides and Proteins Conformers", Journal of Chemical Theory and 
-> Computation, 2015 ASAP
-
 The quantum correction is by default calculated by Thermo; for example, for 
 the myosin converter
 
@@ -116,5 +112,113 @@ the myosin converter
 
 Thermo calculates a quantum correction of 1.09 kcal mol<sup>-1</sup>, in 
 perfect agreement with the Cecchini paper. 
+
+
+Solvation Entropy
+-----------------
+
+Thermo implements the "Solvation Entropy Made Simple" approach of Alejandro J.
+Garza to compute solvation entropies of small molecules in different solvents
+[@garza2019solvation]. This approach include three different approximations of
+the solvation entropy, which are called in this code `Omega`, `Epsilon` and
+`Eps,Alpha`.
+
+To compute solvation entropies you need two input files, one for the molecule
+in the gas state, one for the molecule in solution. For example, for the
+solvation entropy of methanol in water the input for the methanol in gas would
+look like:
+
+```
+> # Methanol gas
+> temperature = 298.15
+> pressure = 0.9869233
+> translations = 3
+> rotations = 3
+> 3.98199904
+> 20.50103433
+> 21.27739477
+> mass = 32.04
+> sigma = 1
+> energy = 0.0
+> vibrations = 0
+```
+
+For the solution:
+
+```
+> # Methanol in water
+> temperature = 298.15
+> concentration = 1 unit M
+> translations = 3
+> rotations = 3
+> 3.98199904
+> 20.50103433
+> 21.27739477
+> mass = 32.04
+> sigma = 1
+> energy = 0.0
+> vibrations = 0
+> vvdw = 35.24161
+> bbox = 119.5194
+> rgyr = 1.1944
+> solvent = water
+```
+
+The differences are in the concentration/pressure (1bar in gas phase, 1M in
+solution), and in the addition of 4 keywords for the solution: the van der
+Waals volume (vvdw), the surface of the bounding box (bbox), the radius of
+gyration (rgyr), and the name of the solvent. Running the first script you
+would get a total molar entropy of 53.373 cal/mol/K (Sgas). Running the second
+the total molar entropy becomes 46.994 cal/mol/K (Ssolv), but three more lines
+are present in the output, showing the solvation Omega, Epsilon and Eps,Alpha
+solvation entropies.
+
+The columns `dS_trans` and `dS_rot` contain the corrections to the
+translational and rotational entropies, the column `dS_cav` instead contains
+the cavity entropy computed in the three different methods.  Follow `dS_tot`
+with the total solvation entropy correction, and `S_totcl` and `S_totqm` which
+sums the solvation entropy corrections to the total entropy. Last the column
+`-TdS_tot`, `F_totcl`, `F_totqm` contain the free energies. For methanol in
+water, the solvation entropies corrections (dSsolv) are -21.066, -20.095 and
+-19.474 cal/mol/K for the three methods.
+
+The final solvation entropy can be obtained as (Ssolv + dSsolv) - Sgas,
+obtaining -27.445, -26.474, and -25.853 cal/mol/K. The experimental value is
+-27.2 cal/mol/K.
+
+### Condensation entropy and vaporization enthalpy
+
+In a very similar way it is possible to compute entropy of moving from the gas
+phase to the liquid (condensation) and the vaporization enthalpy.  For the
+condensation entropy, the final state is a molecule in solution in a solvent
+composed by the same molecule, at a concentration that can be derived from the
+density of the liquid. For example, for the condensation entropy of gas
+methanol into liquid methanol, it is enough to change the concentration in the
+previous input file from `1M` to `0.796 unit g/ml`, and change the solvent line
+from water to methanol.
+
+If the condensation -- or better the evaporation -- entropy is computed at the
+boiling temperature (Tb) of the liquid, we can take advantage of the fact that
+at Tb the vaporization free energy is equal to zero, which implies the
+vaporization enthalpy is equal to the vaporization entropy divided by the
+boiling temperature. To compute the vaporization entropy at Tb, change change
+the temperature field in the input files of both the gas phase and the liquid
+phase.
+
+You can run these examples from the methanol directory:
+
+```
+# Solvation entropy of methanol from 1bar to 1M in water
+thermo -A methanol-gas.thermo -B methanol-water.thermo \
+    --stechio 1:1 --raw -o solution-water.out
+
+# Vaporization entropy of methanol from the liquid at 25C
+thermo -A methanol-gas.thermo -B methanol-liq.thermo \
+    --stechio 1:1 --raw -o vaporization.out
+
+# Vaporization entropy of methanol from the liquid at boiling temperature
+thermo -A methanol-gas-tb.thermo -B methanol-liq-tb.thermo \
+    --stechio 1:1 --raw -o vaporization-tb.out.ref
+```
 
 

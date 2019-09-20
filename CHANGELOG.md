@@ -3,8 +3,11 @@ Changelog
 
 Unreleased
 ----------
+ - Add approximation for solvation entropy from A. J. Garza
  - Update documentation: add Usage section and how to link lapack
  - Add more info about building and code version with --version
+ - Add --raw command line option
+ - Add more examples/checks
  - Add changelog file
 
 v2.0 - Jul 12, 2017
